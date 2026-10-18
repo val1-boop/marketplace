@@ -1,8 +1,8 @@
 # Guía: conectar el marketplace a tu laboratorio de AWS
 
-> **El plan maestro es el [README](README.md)** (Fases 0 a 11, con todos los pasos clic por clic).
+> **El plan maestro es el [GUIA_REPLICA.md](GUIA_REPLICA.md)** (Fases 0 a 11, con todos los pasos clic por clic).
 > Esta guía es un resumen para quien ya tiene los recursos de la Parte 5. Si algo aquí y en el
-> README no coincide, manda el README.
+> GUIA_REPLICA.md no coincide, manda el GUIA_REPLICA.md.
 >
 > **Nombres en inglés:** las Lambdas empiezan con `lambda` y el API se llama `apiGatewayMarketplace`.
 
@@ -75,7 +75,7 @@ Guárdalo en un lugar seguro y **no lo pongas en el código ni en capturas**. Lo
 ## Fase 3. Las 19 funciones Lambda
 
 La lista exacta (nombre, archivo, variable, tiempo de espera y tablas) está en la **sección 4.3
-del README** y los pasos clic por clic en su **Fase 6**. Resumen:
+del GUIA_REPLICA.md** y los pasos clic por clic en su **Fase 6**. Resumen:
 
 1. **Lambda → Funciones → Crear función → Crear desde cero**, nombre igual al archivo, Python 3.14
    (o 3.13), rol existente **LabRole**.
@@ -94,7 +94,7 @@ Debe responder `statusCode 200` con el "Wireless Mouse" de ejemplo de la Parte 5
 
 ## Fase 4. API Gateway `apiGatewayMarketplace`
 
-Las 18 rutas están en la **sección 4.4 del README** y los pasos en su **Fase 7**. Reglas del
+Las 18 rutas están en la **sección 4.4 del GUIA_REPLICA.md** y los pasos en su **Fase 7**. Reglas del
 profesor que siempre se cumplen:
 
 - **Una Lambda por ruta.**
@@ -122,7 +122,7 @@ Crea la colección `Marketplace - Protected API`:
 
 Si las cinco dan lo esperado, el API está protegido y valida igual que la app. Las peticiones 6
 a 10 de la tienda (carrito, pedido ajeno, cantidad inválida y reseñas) están en la **Fase 8 del
-README**.
+GUIA_REPLICA.md**.
 
 ## Fase 6. Configurar y arrancar Flask
 
