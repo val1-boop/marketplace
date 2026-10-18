@@ -156,11 +156,18 @@ def test_reflected_xss_in_search_is_escaped(as_alice):
 
 
 # ------------------------------------------------------------------ búsqueda
-def test_search_by_name_and_code(as_alice):
+def test_search_by_name_and_sku(as_alice):
     body = as_alice.get("/items/", query_string={"q": "laptop"}).get_data(as_text=True)
     assert "Laptop HP Victus" in body and "Mouse Logitech" not in body
-    body = as_alice.get("/items/", query_string={"q": "prod-002"}).get_data(as_text=True)
+    # Se busca por el SKU público del vendedor, no por el product_id interno.
+    body = as_alice.get("/items/", query_string={"q": "mou-log-002"}).get_data(as_text=True)
     assert "Mouse Logitech" in body and "Laptop HP Victus" not in body
+
+
+def test_search_does_not_match_internal_product_id(as_alice):
+    # El product_id interno (PROD-002) NO debe funcionar como búsqueda pública.
+    body = as_alice.get("/items/", query_string={"q": "prod-002"}).get_data(as_text=True)
+    assert "Mouse Logitech" not in body
 
 
 @pytest.mark.parametrize("payload", ["' OR '1'='1", "' OR 1=1 --", "'; DROP TABLE products;--",

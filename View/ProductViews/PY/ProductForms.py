@@ -37,11 +37,23 @@ class StrictMoney:
             raise StopValidation(message)
 
 
+def upper_filter(value):
+    """Normaliza el SKU a mayúsculas (los SKU no distinguen may/min)."""
+    return value.upper() if isinstance(value, str) else value
+
+
 class ProductForm(FlaskForm):
     name = StringField(
         "Nombre del producto",
         filters=[strip_filter],
         validators=[DataRequired(), Length(min=3, max=120), NoControlChars()],
+    )
+    seller_sku = StringField(
+        "SKU (opcional)",
+        filters=[strip_filter, upper_filter],
+        validators=[Optional(), Length(min=2, max=40),
+                    Regexp(r"^[A-Z0-9][A-Z0-9 ._-]{1,39}$",
+                           message="El SKU admite de 2 a 40 caracteres: letras, números, espacio y . - _")],
     )
     description = TextAreaField(
         "Descripción",
@@ -70,10 +82,11 @@ class ProductForm(FlaskForm):
     version = HiddenField(validators=[Optional(), Regexp(r"^\d{1,9}$")])
 
     def to_dto(self):
-        """Copia SOLO los 6 campos editables (el seller_id lo pone el servidor)."""
+        """Copia SOLO los campos editables (el seller_id lo pone el servidor)."""
         return ProductInputDTO(name=self.name.data, category=self.category.data, price=self.price.data,
                                stock=self.stock.data, condition=self.condition.data,
-                               description=self.description.data or "")
+                               description=self.description.data or "",
+                               seller_sku=self.seller_sku.data or "")
 
 
 class MyProductsSearchForm(SearchFormBase):

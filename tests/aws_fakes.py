@@ -483,12 +483,12 @@ class FakeApiGateway:
 
 
 def seed_item(table, product_id, name, seller_id, price="100.00", stock=5,
-              category="computers", status="ACTIVE", description=""):
+              category="computers", status="ACTIVE", description="", seller_sku=""):
     import unicodedata
     table.items[product_id] = {
         "product_id": product_id, "name": name,
         "search_name": unicodedata.normalize("NFKC", name).casefold(),
-        "description": description,
+        "description": description, "seller_sku": seller_sku,
         "category": category, "listed_category": category if status == "ACTIVE" else None,
         "price": Decimal(price), "stock": Decimal(stock), "seller_id": seller_id,
         "condition": "NEW", "status": status, "version": Decimal(1), "sales_count": Decimal(0),

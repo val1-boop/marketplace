@@ -14,7 +14,7 @@
     <li><a href="{{ url_for('items.catalog') }}">Tienda</a></li>
     {% if dept %}<li><a href="{{ url_for('items.catalog', department=dept) }}">{{ DEPARTMENTS[dept] }}</a></li>{% endif %}
     <li><a href="{{ url_for('items.catalog', category=product.category) }}">{{ category_label(product.category) }}</a></li>
-    <li aria-current="page">{{ product.product_id }}</li>
+    <li aria-current="page">{{ product.name }}</li>
   </ol>
 </nav>
 
@@ -27,7 +27,7 @@
   </div>
 
   <div class="product-info">
-    <p class="muted small">Código {{ product.product_id }} · {{ condition_label(product.condition) }}{% if product.sales_count %} · {{ product.sales_count }} vendido{{ "" if product.sales_count == 1 else "s" }}{% endif %}</p>
+    <p class="muted small">{% if product.seller_sku %}SKU {{ product.seller_sku }} · {% endif %}{{ condition_label(product.condition) }}{% if product.sales_count %} · {{ product.sales_count }} vendido{{ "" if product.sales_count == 1 else "s" }}{% endif %}</p>
     <h1>{{ product.name }}</h1>
     <a class="rating-link" href="#opiniones">{{ rating(product) }}</a>
 

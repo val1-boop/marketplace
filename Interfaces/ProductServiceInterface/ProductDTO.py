@@ -67,6 +67,7 @@ class ProductDTO:
     blocked_reason: str = None
     version: int = 1
     search_name: str = ""
+    seller_sku: str = ""
     created_at: str = ""
     updated_at: str = ""
     description: str = ""
@@ -120,6 +121,7 @@ class ProductDTO:
                 blocked_reason=data.get("blocked_reason"),
                 version=int(data.get("version") or 1),
                 search_name=str(data.get("search_name") or ""),
+                seller_sku=str(data.get("seller_sku") or ""),
                 created_at=str(data.get("created_at") or ""),
                 updated_at=str(data.get("updated_at") or ""),
                 description=str(data.get("description") or "")[:2000],
@@ -149,10 +151,12 @@ class ProductInputDTO:
     stock: int
     condition: str
     description: str = ""
+    seller_sku: str = ""
 
     def as_dict(self):
         return {"name": self.name, "category": self.category, "price": self.price,
-                "stock": self.stock, "condition": self.condition, "description": self.description}
+                "stock": self.stock, "condition": self.condition, "description": self.description,
+                "seller_sku": self.seller_sku}
 
 
 @dataclass

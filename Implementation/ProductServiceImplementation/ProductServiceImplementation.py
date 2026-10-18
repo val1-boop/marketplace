@@ -31,9 +31,10 @@ RELATED_LIMIT = 4
 
 
 def _matches(product, q):
-    """Búsqueda literal (sin SQL, sin comodines ni expresiones regulares): nombre o código."""
+    """Búsqueda literal (sin SQL, sin comodines ni expresiones regulares): nombre o SKU público.
+    El product_id interno NO se busca: no se expone al usuario."""
     return normalize_search(q) in (product.search_name or normalize_search(product.name)) \
-        or q.strip().upper() in product.product_id
+        or (bool(product.seller_sku) and q.strip().upper() in product.seller_sku)
 
 
 class ProductServiceImplementation(IProductService):

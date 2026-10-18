@@ -150,7 +150,8 @@
       <h3><a href="{{ url_for('items.detail', product_id=p.product_id) }}">{{ p.name }}</a></h3>
       <span class="tile-price">${{ "{:,.2f}".format(p.price) }}</span>
     </div>
-    <p class="tile-desc">{{ p.description or (condition_label(p.condition) ~ " · " ~ p.product_id) }}</p>
+    <p class="tile-desc">{{ p.description or condition_label(p.condition) }}</p>
+    {% if p.seller_sku %}<span class="tile-sku">SKU {{ p.seller_sku }}</span>{% endif %}
     {{ rating(p) }}
     {% if seller_name %}<span class="tile-meta">Vendido por {{ seller_name }}</span>{% endif %}
     {% if show_actions %}<div class="tile-actions">{{ buy_buttons(p, next_url) }}</div>{% endif %}

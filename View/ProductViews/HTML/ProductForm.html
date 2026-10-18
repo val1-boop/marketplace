@@ -7,13 +7,14 @@
 <form class="formcard formcard-wide" method="post" action="{{ url_for('items.edit', product_id=product.product_id) if product else url_for('items.create') }}">
   <h1>{{ "Editar producto" if product else "Publicar producto" }}</h1>
   <p class="muted">
-    {% if product %}Código {{ product.product_id }}. El código no se puede cambiar.
-    {% else %}El código del producto se genera automáticamente y tu código de vendedor se toma de tu cuenta.{% endif %}
+    {% if product %}Edita los datos de tu producto. El SKU es tu código y puedes cambiarlo.
+    {% else %}Tu código de vendedor se toma de tu cuenta. El SKU es opcional y lo defines tú.{% endif %}
   </p>
   {{ form.hidden_tag() }}
   <fieldset>
     <legend>¿Qué vendes?</legend>
     {{ render_field(form.name, hint="Lo que verán los compradores en el catálogo. Entre 3 y 120 caracteres.", placeholder="Ej. Monitor curvo 27 QHD") }}
+    {{ render_field(form.seller_sku, hint="Tu código de producto, el que aparece en la tarjeta (opcional). Letras, números y . - _", placeholder="Ej. MON-27QHD-001") }}
     {{ render_field(form.description, hint="Características, estado y qué incluye. Entre 10 y 2000 caracteres.", placeholder="Ej. Pantalla de 27 pulgadas, 165 Hz, incluye cable DisplayPort…") }}
     <div class="row2">
       {{ render_field(form.category, hint="Así te encuentran en los filtros.") }}

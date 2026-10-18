@@ -33,6 +33,17 @@ DEMO_DESCRIPTIONS = {
     "Silla ergonomica": "Silla de oficina con soporte lumbar ajustable, respaldo de malla y descansabrazos 3D.",
     "Router WiFi 6 doble banda": "Router WiFi 6 AX3000 de doble banda con 4 antenas y control parental.",
 }
+# SKU público de cada producto demo (el vendedor lo define; no es el product_id interno).
+DEMO_SKUS = {
+    "Laptop HP Victus": "LAP-HPV-001",
+    "Mouse Logitech": "MOU-LOG-002",
+    "Monitor curvo 27 QHD": "MON-27Q-003",
+    "Teclado mecanico RGB": "TEC-RGB-004",
+    "Audifonos con cancelacion": "AUD-ANC-005",
+    "SSD externo 1TB": "SSD-1TB-006",
+    "Silla ergonomica": "SIL-ERG-007",
+    "Router WiFi 6 doble banda": "ROU-WIFI6-008",
+}
 
 
 def _create_user(email, first, last, password, role):
@@ -111,7 +122,7 @@ def register_cli(app):
         for name, category, price, stock in DEMO_PRODUCTS:
             product = products.create_product(seller.seller_id, ProductInputDTO(
                 name=name, category=category, price=Decimal(price), stock=stock, condition="NEW",
-                description=DEMO_DESCRIPTIONS[name],
+                description=DEMO_DESCRIPTIONS[name], seller_sku=DEMO_SKUS.get(name, ""),
             ))
             click.echo(f"  {product.product_id}  {name}")
         click.echo("Datos de demostración listos.")
@@ -131,11 +142,32 @@ def register_cli(app):
                 continue
             products.update_product(product.product_id, seller.seller_id, ProductInputDTO(
                 name=product.name, category=product.category, price=product.price, stock=product.stock,
-                condition=product.condition, description=text,
+                condition=product.condition, description=text, seller_sku=product.seller_sku,
             ), product.version)
             updated += 1
             click.echo(f"  {product.product_id}  {product.name}")
         click.echo(f"Descripciones agregadas: {updated}.")
+
+    @app.cli.command("seed-skus")
+    def seed_skus():
+        """Asigna el SKU público a los productos de demostración que aún no lo tienen."""
+        email = os.environ.get("SEED_USER_EMAIL")
+        seller = find_user_by_email(email) if email else None
+        if seller is None or not seller.seller_id:
+            raise click.ClickException("No existe el vendedor de demostración (SEED_USER_EMAIL).")
+        products = product_service()
+        updated = 0
+        for product in products.list_seller_products(seller.seller_id):
+            sku = DEMO_SKUS.get(product.name)
+            if not sku or product.seller_sku:
+                continue
+            products.update_product(product.product_id, seller.seller_id, ProductInputDTO(
+                name=product.name, category=product.category, price=product.price, stock=product.stock,
+                condition=product.condition, description=product.description, seller_sku=sku,
+            ), product.version)
+            updated += 1
+            click.echo(f"  {product.product_id}  {product.name}  {sku}")
+        click.echo(f"SKU agregados: {updated}.")
 
     @app.cli.command("create-admin")
     @click.option("--email", prompt=True)

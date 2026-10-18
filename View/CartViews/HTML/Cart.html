@@ -19,7 +19,7 @@
           {% if p %}
             <span class="pill">{{ category_label(p.category) }}</span>
             <h2><a href="{{ url_for('items.detail', product_id=line.product_id) }}">{{ p.name }}</a></h2>
-            <p class="muted small">{{ condition_label(p.condition) }} · {{ line.product_id }} · ${{ "{:,.2f}".format(p.price) }} c/u</p>
+            <p class="muted small">{{ condition_label(p.condition) }}{% if p.seller_sku %} · SKU {{ p.seller_sku }}{% endif %} · ${{ "{:,.2f}".format(p.price) }} c/u</p>
           {% else %}
             <h2>Producto {{ line.product_id }}</h2>
           {% endif %}

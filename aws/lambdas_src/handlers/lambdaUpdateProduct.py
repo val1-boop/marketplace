@@ -23,12 +23,12 @@ def _update(product_id, item, role, seller_id, data):
     product = validate_product(data, allowed_extra=("action", "expected_version"))
     values = {
         ":n": product["name"], ":sn": product["search_name"], ":d": product["description"],
-        ":c": product["category"],
+        ":c": product["category"], ":sku": product["seller_sku"],
         ":p": product["price"], ":s": product["stock"], ":cd": product["condition"],
         ":u": now_iso(), ":one": 1, ":sid": seller_id, ":v": expected,
     }
     expression = ("SET #n = :n, search_name = :sn, description = :d, category = :c, price = :p, stock = :s, "
-                  "#cond = :cd, updated_at = :u, #ver = #ver + :one")
+                  "#cond = :cd, seller_sku = :sku, updated_at = :u, #ver = #ver + :one")
     if item.get("status") == "ACTIVE":
         expression += ", listed_category = :c"
     try:

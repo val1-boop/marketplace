@@ -75,4 +75,6 @@ class ProductsAPI(ApiGatewayClient):
         }
         if data.get("description") is not None:
             payload["description"] = data["description"]
+        if data.get("seller_sku"):
+            payload["seller_sku"] = data["seller_sku"]
         return payload

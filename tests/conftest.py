@@ -65,8 +65,9 @@ def _user(key, role):
 @pytest.fixture
 def table():
     fake = FakeTable()
-    seed_item(fake, "PROD-001", "Laptop HP Victus", SELLERS["alice"], "18500.00", 7)
-    seed_item(fake, "PROD-002", "Mouse Logitech", SELLERS["bob"], "500.00", 25, "computer-accessories")
+    seed_item(fake, "PROD-001", "Laptop HP Victus", SELLERS["alice"], "18500.00", 7, seller_sku="LAP-HP-001")
+    seed_item(fake, "PROD-002", "Mouse Logitech", SELLERS["bob"], "500.00", 25, "computer-accessories",
+              seller_sku="MOU-LOG-002")
     return fake
 
 

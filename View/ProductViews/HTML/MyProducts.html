@@ -42,7 +42,7 @@
       <tr>
         <td><div class="cell-product {{ category_class(p.category) }}">
           <span class="mini">{{ icon(category_icon(p.category)) }}</span>
-          <div><a href="{{ url_for('items.detail', product_id=p.product_id) }}">{{ p.name }}</a><br><span class="muted small">{{ p.product_id }}</span></div>
+          <div><a href="{{ url_for('items.detail', product_id=p.product_id) }}">{{ p.name }}</a><br><span class="muted small">{% if p.seller_sku %}SKU {{ p.seller_sku }}{% else %}Sin SKU{% endif %}</span></div>
         </div></td>
         <td>{{ category_label(p.category) }}</td>
         <td class="num">{{ money(p.price) }}</td>

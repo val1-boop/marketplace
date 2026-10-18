@@ -41,7 +41,9 @@ ORDER_ID_RE = re.compile(r"^[0-9A-HJKMNP-TV-Z]{26}\Z")
 DISPLAY_NAME_RE = re.compile(r"^[^\W\d_]+(?:[ '.\-][^\W\d_]+)*\.?\Z")
 CATEGORIES = {"monitors", "computers", "storage", "networking", "computer-accessories", "audio", "office"}
 CONDITIONS = {"NEW", "USED", "REFURBISHED"}
-PRODUCT_FIELDS = {"name", "description", "category", "price", "stock", "condition"}
+PRODUCT_FIELDS = {"name", "description", "category", "price", "stock", "condition", "seller_sku"}
+# SKU público que escribe el vendedor (opcional): letras, números y . - _ (y espacios), 2 a 40.
+SKU_RE = re.compile(r"^[A-Z0-9][A-Z0-9 ._-]{1,39}\Z")
 MX_STATES = {
     "Aguascalientes", "Baja California", "Baja California Sur", "Campeche", "Chiapas",
     "Chihuahua", "Ciudad de México", "Coahuila", "Colima", "Durango", "Estado de México",
@@ -253,6 +255,15 @@ def validate_product(data, allowed_extra=()):
     stock = parse_int(data.get("stock"), 0, 100000)
     if stock is None:
         errors.append("stock debe ser un entero entre 0 y 100000")
+    # SKU público del vendedor: opcional. Si viene vacío se guarda como "".
+    raw_sku = data.get("seller_sku", "")
+    if raw_sku is None or raw_sku == "":
+        seller_sku = ""
+    elif isinstance(raw_sku, str) and SKU_RE.match(unicodedata.normalize("NFKC", raw_sku).strip().upper()):
+        seller_sku = unicodedata.normalize("NFKC", raw_sku).strip().upper()
+    else:
+        seller_sku = None
+        errors.append("seller_sku admite de 2 a 40 caracteres: letras, números, espacio y . - _")
     if errors:
         raise ApiError(400, "Datos inválidos", errors)
     return {
@@ -263,6 +274,7 @@ def validate_product(data, allowed_extra=()):
         "condition": condition,
         "price": price,
         "stock": stock,
+        "seller_sku": seller_sku,
     }
 
 
@@ -283,6 +295,7 @@ def public(item):
         "price": money(item.get("price", 0)),
         "stock": int(item.get("stock", 0)),
         "seller_id": item.get("seller_id", ""),
+        "seller_sku": item.get("seller_sku", ""),
         "condition": item.get("condition", "NEW"),
         "status": item.get("status", "ACTIVE"),
         "blocked_reason": item.get("blocked_reason"),
@@ -477,12 +490,12 @@ def _update(product_id, item, role, seller_id, data):
     product = validate_product(data, allowed_extra=("action", "expected_version"))
     values = {
         ":n": product["name"], ":sn": product["search_name"], ":d": product["description"],
-        ":c": product["category"],
+        ":c": product["category"], ":sku": product["seller_sku"],
         ":p": product["price"], ":s": product["stock"], ":cd": product["condition"],
         ":u": now_iso(), ":one": 1, ":sid": seller_id, ":v": expected,
     }
     expression = ("SET #n = :n, search_name = :sn, description = :d, category = :c, price = :p, stock = :s, "
-                  "#cond = :cd, updated_at = :u, #ver = #ver + :one")
+                  "#cond = :cd, seller_sku = :sku, updated_at = :u, #ver = #ver + :one")
     if item.get("status") == "ACTIVE":
         expression += ", listed_category = :c"
     try:
