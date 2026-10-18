@@ -1,0 +1,96 @@
+/* Vista de productos (estilo Stuffus): banner "Tienda", filtros laterales, ficha y formularios. */
+
+/* ------------------------------------------------------------ banner de la tienda */
+.shop-banner { position: relative; border-radius: var(--radius-l); overflow: hidden; padding: 22px 30px 0; margin-bottom: 34px;
+               min-height: 220px; display: flex; flex-direction: column; justify-content: space-between;
+               background: var(--soft) url("ShopBanner.svg") center / cover no-repeat; }
+.shop-banner .crumbs { margin: 0; }
+.shop-word { margin: 0; font-size: clamp(4.5rem, 15vw, 11rem); font-weight: 850; letter-spacing: -.06em; line-height: .78;
+             color: var(--ink); }
+
+/* ------------------------------------------------------------ Mis productos: filtros y acciones */
+.myfilters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 18px; }
+.myfilters input[type="search"], .myfilters select {
+  padding: 9px 14px; border: 1px solid var(--line); border-radius: var(--pill); font: inherit; background: #fff; }
+.myfilters input[type="search"] { flex: 1; min-width: 220px; }
+.row-actions { display: flex; gap: 6px; align-items: center; justify-content: flex-end; }
+
+/* ------------------------------------------------------------ catálogo */
+.catalog { display: grid; grid-template-columns: 250px 1fr; gap: 32px; align-items: start; }
+.filters { position: sticky; top: 96px; display: grid; gap: 14px; }
+.facet { border: 1px solid var(--line); border-radius: var(--radius-l); padding: 16px; }
+.facet h2 { font-size: 1rem; letter-spacing: -.01em; margin-bottom: 10px; }
+.facet ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.facet a { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 7px 10px;
+           border-radius: var(--pill); color: var(--text); text-decoration: none; font-size: .92rem; }
+.facet a:hover { background: var(--soft-2); }
+.facet a[aria-current="true"] { background: var(--ink); color: #fff; }
+.facet a[aria-current="true"] .n { color: #d0d0d0; }
+.facet .sub a { padding-left: 14px; }
+.facet .n { color: var(--muted); font-size: .8rem; font-variant-numeric: tabular-nums; }
+.facet-label { display: flex; align-items: center; gap: 8px; }
+.facet-label .icon { width: 16px; height: 16px; color: var(--cat); }
+.facet a[aria-current="true"] .facet-label .icon { color: #fff; }
+.check-box { width: 16px; height: 16px; border-radius: 5px; border: 1.5px solid var(--line-strong); display: inline-block; }
+.facet a[aria-current="true"] .check-box { background: #fff; border-color: #fff; box-shadow: inset 0 0 0 3px var(--ink); }
+.facet-dark { background: var(--dark); color: #d6d6d6; border: 0; }
+.facet-dark h2 { color: #fff; }
+
+.results-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+.results-head h1 { margin: 0 0 4px; }
+.results-head p { margin: 0; }
+.sortform { display: flex; align-items: center; gap: 8px; margin: 0; }
+.sortform label { color: var(--muted); font-size: .9rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: var(--pill); background: var(--soft);
+        color: var(--ink); text-decoration: none; font-size: .85rem; font-weight: 600; }
+.chip:hover { background: var(--ink); color: #fff; }
+.chip-clear { background: transparent; text-decoration: underline; }
+
+/* ------------------------------------------------------------ ficha de producto */
+.product { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; align-items: start; }
+.product-media { position: sticky; top: 96px; aspect-ratio: 1 / 1; border-radius: var(--radius-l); background: var(--cat-soft);
+                 color: var(--cat); display: grid; place-items: center; }
+.product-media > .icon { width: 38%; height: 38%; stroke-width: 1; }
+.product-media .pill { position: absolute; top: 18px; left: 18px; background: #fff; color: var(--ink); }
+.product-media .ini { position: absolute; bottom: 18px; right: 22px; font-weight: 800; letter-spacing: .08em; opacity: .35; }
+.product-media .tile-fav { top: 16px; right: 16px; }
+.product-info h1 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); letter-spacing: -.035em; margin-bottom: 8px; }
+.rating-link { text-decoration: none; }
+.rating-link:hover .rating { color: var(--ink); }
+.pricetag { display: flex; align-items: baseline; gap: 6px; margin: 18px 0 10px; }
+.pricetag strong { font-size: 2.2rem; font-weight: 800; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.pricetag span { color: var(--muted); font-weight: 600; }
+.description { white-space: pre-line; color: var(--ink-2); line-height: 1.65; }
+.stock-line { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.stock-line.in_stock { color: var(--ok); }
+.stock-line.few_left { color: var(--warn); }
+.stock-line.sold_out { color: var(--danger); }
+.buybox { padding: 18px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 16px 0; }
+.buyform { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0; }
+.buyform label { font-weight: 600; font-size: .9rem; }
+.buyform .btn { flex: 1; min-width: 170px; padding: 13px 20px; }
+.assurances { list-style: none; margin: 0 0 18px; padding: 0; display: grid; gap: 8px; color: var(--muted); font-size: .9rem; }
+.assurances li { display: flex; gap: 10px; align-items: center; }
+.seller { display: flex; align-items: center; gap: 12px; padding: 14px; background: var(--soft-2); border-radius: var(--radius-m); }
+.seller > div { flex: 1; }
+.owner-actions { margin-top: 16px; }
+.specs { display: grid; grid-template-columns: max-content 1fr; gap: 10px 24px; margin: 22px 0 0; padding: 18px; border: 1px solid var(--line);
+         border-radius: var(--radius-m); font-size: .93rem; }
+.specs dt { color: var(--muted); }
+.specs dd { margin: 0; font-weight: 600; }
+
+@media (max-width: 960px) {
+  .catalog, .product { grid-template-columns: 1fr; }
+  .filters { position: static; }
+  .product-media { position: relative; top: 0; }
+  .filters { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 960px) {
+  .catalog > section { order: -1; }  /* en celular primero los productos, luego los filtros */
+}
+@media (max-width: 560px) {
+  .filters { grid-template-columns: 1fr; }
+  .shop-banner { background-image: none; }
+  .shop-banner { padding: 16px 18px 0; min-height: 160px; }
+}

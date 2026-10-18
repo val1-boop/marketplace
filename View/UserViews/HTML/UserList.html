@@ -1,0 +1,48 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import icon, pagination_nav, status_badge %}
+{% block styles %}<link rel="stylesheet" href="{{ asset_url('UserViews', 'CSS', 'User.css') }}">{% endblock %}
+{% block title %}Usuarios{% endblock %}
+{% block content %}
+<div class="toolbar">
+  <div>
+    <h1>Usuarios</h1>
+    <p class="muted">{{ pagination.total }} cuenta{{ "" if pagination.total == 1 else "s" }}{% if q %} para “{{ q }}”{% endif %}.</p>
+  </div>
+  <a class="btn btn-primary" href="{{ url_for('users.create') }}">{{ icon("plus") }} Nuevo usuario</a>
+</div>
+<div class="toolbar">
+  <form method="get" action="{{ url_for('users.list_users') }}" role="search">
+    <label class="visually-hidden" for="uq">Buscar usuarios</label>
+    {{ form.q(id="uq", placeholder="Buscar por nombre o correo") }}
+    <button type="submit" class="btn">{{ icon("search") }} Buscar</button>
+    {% if q %}<a class="btn" href="{{ url_for('users.list_users') }}">Quitar</a>{% endif %}
+  </form>
+</div>
+{% for error in form.q.errors %}<div class="flash flash-error">{{ icon("alert") }}<span>{{ error }}</span></div>{% endfor %}
+{% if pagination.items %}
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Usuario</th><th>Rol</th><th>Estado</th><th>Vendedor</th><th>Último acceso</th><th><span class="visually-hidden">Acciones</span></th></tr></thead>
+    <tbody>
+    {% for u in pagination.items %}
+      <tr>
+        <td><div class="cell-product">
+          <span class="avatar" aria-hidden="true">{{ u.first_name[:1]|upper }}</span>
+          <div><a href="{{ url_for('users.detail', user_id=u.id) }}">{{ u.full_name }}</a><br><span class="muted small">{{ u.email }}</span></div>
+        </div></td>
+        <td><span class="badge badge-role">{{ "Administrador" if u.is_admin else "Vendedor" }}</span></td>
+        <td>{{ status_badge(u.status) }}</td>
+        <td>{{ u.seller_id or "—" }}</td>
+        <td class="small">{{ u.last_login_at|dt }}</td>
+        <td><a class="btn btn-sm" href="{{ url_for('users.edit', user_id=u.id) }}">{{ icon("edit") }} Editar</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ pagination_nav(pagination, 'users.list_users', q=q) if q else pagination_nav(pagination, 'users.list_users') }}
+{% else %}
+<div class="empty">{{ icon("users") }}<h2>No hay usuarios que coincidan</h2><p>Revisa la búsqueda o crea un usuario nuevo.</p>
+  <a class="btn" href="{{ url_for('users.list_users') }}">Ver todos</a></div>
+{% endif %}
+{% endblock %}

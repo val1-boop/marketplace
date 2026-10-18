@@ -1,0 +1,44 @@
+/* Opiniones de clientes (como Amazon): promedio, histograma y estrellas para calificar. */
+.reviews-layout { display: grid; grid-template-columns: 320px 1fr; gap: 40px; align-items: start; }
+.reviews-summary { position: sticky; top: 96px; background: var(--soft-2); border-radius: var(--radius-l); padding: 22px; }
+.avg { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.avg > strong { font-size: 3.2rem; font-weight: 800; letter-spacing: -.04em; line-height: 1; }
+.avg .stars { font-size: 1.2rem; }
+.avg p { margin: 2px 0 0; }
+.histogram { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 8px; }
+.histogram li { display: grid; grid-template-columns: 38px 1fr 40px; align-items: center; gap: 10px; font-size: .88rem; }
+.histogram li > span:first-child { display: flex; align-items: center; gap: 3px; font-weight: 600; }
+.star-mini { width: 13px; height: 13px; fill: var(--star); stroke: none; }
+.histogram .pct { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+.histogram progress { width: 100%; height: 10px; border: 0; border-radius: var(--pill); overflow: hidden; background: #e2e2e2; appearance: none; }
+.histogram progress::-webkit-progress-bar { background: #e2e2e2; border-radius: var(--pill); }
+.histogram progress::-webkit-progress-value { background: var(--star); border-radius: var(--pill); }
+.histogram progress::-moz-progress-bar { background: var(--star); border-radius: var(--pill); }
+
+.review-form { border: 1.5px solid var(--ink); border-radius: var(--radius-l); padding: 22px; margin-bottom: 26px; }
+.review-form h3 { margin-bottom: 12px; }
+.review-form .error { color: var(--danger); font-size: .85rem; }
+/* Estrellas para calificar: radios en orden 5→1 mostrados de derecha a izquierda, así
+   "pasar el mouse" o elegir una estrella ilumina también las anteriores (solo CSS). */
+.star-input { display: inline-flex; flex-direction: row-reverse; gap: 4px; margin-bottom: 10px; }
+.star-input legend { float: left; width: 100%; font-size: .92rem; margin-bottom: 6px; }
+.star-input label { cursor: pointer; color: #d4d4d4; }
+.star-input label .icon { width: 34px; height: 34px; fill: currentColor; stroke: none; }
+.star-input label:hover, .star-input label:hover ~ label,
+.star-input input:checked ~ label { color: var(--star); }
+.star-input input:focus-visible + label { outline: 3px solid var(--ink); border-radius: 6px; }
+.review-hint { display: flex; gap: 8px; align-items: center; margin-bottom: 18px; }
+
+.review-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.review { padding: 20px 0; border-bottom: 1px solid var(--line); }
+.review:first-child { padding-top: 0; }
+.review-head { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 8px; }
+.review-head strong { margin-right: 8px; }
+.review-head .badge .icon { width: 12px; height: 12px; }
+.review-meta { display: flex; align-items: center; gap: 10px; margin-top: 4px; }
+.review-text { white-space: pre-line; margin: 0; line-height: 1.6; overflow-wrap: anywhere; }
+
+@media (max-width: 860px) {
+  .reviews-layout { grid-template-columns: 1fr; }
+  .reviews-summary { position: static; }
+}

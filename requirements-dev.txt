@@ -1,0 +1,5 @@
+-r requirements.txt
+# Herramientas de verificación (versiones con las que se validó el proyecto)
+pytest==9.1.1
+bandit==1.8.6
+pip-audit==2.9.0

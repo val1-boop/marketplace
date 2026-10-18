@@ -1,0 +1,20 @@
+"""Seguridad transversal: hash de contraseñas, política, normalización, roles,
+redirecciones seguras y bitácora. Todo el proyecto importa desde aquí."""
+from Security.SecurityUtils import (  # noqa: F401
+    PRODUCT_ID_RE,
+    SELLER_ID_RE,
+    check_password_policy,
+    dummy_verify,
+    email_hmac,
+    escape_like,
+    hash_password,
+    is_safe_redirect,
+    needs_rehash,
+    new_ulid,
+    normalize_email,
+    normalize_search,
+    normalize_text,
+    role_required,
+    security_log,
+    verify_password,
+)

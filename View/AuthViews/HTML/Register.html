@@ -1,0 +1,34 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import render_field, icon %}
+{% block styles %}<link rel="stylesheet" href="{{ asset_url('AuthViews', 'CSS', 'Auth.css') }}">{% endblock %}
+{% block title %}Crear cuenta{% endblock %}
+{% block content %}
+<section class="auth">
+  <div class="auth-side">
+    <h2>Una sola cuenta para comprar y vender</h2>
+    <p>Con tu cuenta puedes:</p>
+    <ul>
+      <li>{{ icon("cart") }}<span>Comprar con carrito, guardar favoritos y seguir cada pedido hasta que llegue.</span></li>
+      <li>{{ icon("store") }}<span>Publicar productos con tu propio código de vendedor, asignado automáticamente.</span></li>
+      <li>{{ icon("star") }}<span>Opinar con estrellas sobre lo que recibiste.</span></li>
+    </ul>
+  </div>
+  <div class="auth-main">
+    <h1>Crear cuenta</h1>
+    <p class="muted">Todos los campos son obligatorios.</p>
+    <form class="formcard" method="post" action="{{ url_for('auth.register') }}">
+      {{ form.hidden_tag() }}
+      <div class="row2">
+        {{ render_field(form.first_name, autocomplete="given-name") }}
+        {{ render_field(form.last_name, autocomplete="family-name") }}
+      </div>
+      {{ render_field(form.email, placeholder="tu@correo.com") }}
+      {{ render_field(form.password, hint="Mínimo 12 caracteres y al menos 3 de: minúsculas, mayúsculas, números y símbolos. No incluyas tu correo.") }}
+      {{ render_field(form.confirm) }}
+      {{ render_field(form.accept_terms) }}
+      <button type="submit" class="btn btn-primary btn-block">Crear cuenta</button>
+    </form>
+    <p class="auth-switch">¿Ya tienes cuenta? <a href="{{ url_for('auth.login') }}">Inicia sesión</a></p>
+  </div>
+</section>
+{% endblock %}

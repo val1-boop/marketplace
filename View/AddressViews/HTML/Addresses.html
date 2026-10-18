@@ -1,0 +1,48 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import icon %}
+{% block styles %}<link rel="stylesheet" href="{{ asset_url('AddressViews', 'CSS', 'Address.css') }}">{% endblock %}
+{% block title %}Mis direcciones{% endblock %}
+{% block content %}
+<nav aria-label="Ruta"><ol class="crumbs"><li><a href="{{ url_for('main.index') }}">Inicio</a></li><li><a href="{{ url_for('main.profile') }}">Mi perfil</a></li><li aria-current="page">Mis direcciones</li></ol></nav>
+<div class="toolbar">
+  <div>
+    <h1>Mis direcciones</h1>
+    <p class="muted">A dónde enviamos tus compras. Máximo 10.</p>
+  </div>
+  <a class="btn btn-primary" href="{{ url_for('addresses.create') }}">{{ icon("plus") }} Nueva dirección</a>
+</div>
+{% if addresses %}
+<div class="address-grid">
+  {% for a in addresses %}
+  <article class="address-card{% if a.is_default %} is-default{% endif %}">
+    <div class="address-head">
+      <h2>{{ icon("pin") }} {{ a.label }}</h2>
+      {% if a.is_default %}<span class="badge badge-role">Predeterminada</span>{% endif %}
+    </div>
+    <p><strong>{{ a.recipient_name }}</strong><br>{{ a.phone }}</p>
+    <p class="muted">{{ a.line1 }}{% if a.line2 %}<br>{{ a.line2 }}{% endif %}<br>{{ a.city }}, {{ a.state }}<br>C.P. {{ a.postal_code }}, México</p>
+    <div class="actions">
+      <a class="btn btn-sm" href="{{ url_for('addresses.edit', address_id=a.id) }}">{{ icon("edit") }} Editar</a>
+      {% if not a.is_default %}
+        <form class="inline" method="post" action="{{ url_for('addresses.make_default', address_id=a.id) }}">
+          {{ confirm_form.csrf_token }}
+          <button type="submit" class="btn btn-sm btn-ghost">Hacer predeterminada</button>
+        </form>
+      {% endif %}
+      <form class="inline" method="post" action="{{ url_for('addresses.delete', address_id=a.id) }}" data-confirm="¿Eliminar esta dirección?">
+        {{ confirm_form.csrf_token }}
+        <button type="submit" class="btn btn-sm btn-danger">{{ icon("trash") }}<span class="visually-hidden">Eliminar {{ a.label }}</span></button>
+      </form>
+    </div>
+  </article>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty">
+  {{ icon("pin") }}
+  <h2>Aún no tienes direcciones</h2>
+  <p>Agrega una para poder confirmar tus compras.</p>
+  <a class="btn btn-primary" href="{{ url_for('addresses.create') }}">Agregar dirección</a>
+</div>
+{% endif %}
+{% endblock %}

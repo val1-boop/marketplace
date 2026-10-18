@@ -1,0 +1,70 @@
+{# Opiniones de clientes (como Amazon): promedio, histograma, formulario y lista.
+   Se incluye en la ficha de producto. Todo el texto de las reseñas se escapa (Jinja2). #}
+{% from "SharedViews/HTML/Macros.html" import icon, stars, render_field %}
+<section class="section reviews" id="opiniones">
+  <div class="section-head"><h2>Opiniones de clientes</h2></div>
+  <div class="reviews-layout">
+    <aside class="reviews-summary">
+      <div class="avg">
+        <strong>{{ product.rating_avg if product.rating_count else "—" }}</strong>
+        <div>
+          {{ stars(product.stars, product.rating_avg ~ " de 5 estrellas") }}
+          <p class="muted small">{{ product.rating_count }} opinión{{ "" if product.rating_count == 1 else "es" }}</p>
+        </div>
+      </div>
+      <ul class="histogram">
+        {% for n, pct in product.rating_bars %}
+          <li>
+            <span>{{ n }} {{ icon("star", "star-mini") }}</span>
+            <progress max="100" value="{{ pct }}" aria-label="{{ pct }}% con {{ n }} estrellas">{{ pct }}%</progress>
+            <span class="pct">{{ pct }}%</span>
+          </li>
+        {% endfor %}
+      </ul>
+      <p class="muted small">Solo opinan personas que compraron y recibieron este producto, una vez cada una.</p>
+    </aside>
+
+    <div class="reviews-main">
+      {% if review_form %}
+        <form class="review-form" method="post" action="{{ url_for('reviews.create', product_id=product.product_id) }}">
+          <h3>Ya recibiste este producto. ¿Qué te pareció?</h3>
+          {{ review_form.csrf_token }}
+          <fieldset class="star-input">
+            <legend>Calificación</legend>
+            {% for subfield in review_form.rating %}
+              {{ subfield(class="visually-hidden") }}
+              <label for="{{ subfield.id }}" title="{{ subfield.label.text }}">{{ icon("star") }}<span class="visually-hidden">{{ subfield.data }} estrellas: {{ subfield.label.text }}</span></label>
+            {% endfor %}
+          </fieldset>
+          {% for error in review_form.rating.errors %}<p class="error">{{ error }}</p>{% endfor %}
+          {{ render_field(review_form.comment, hint="Entre 10 y 1000 caracteres. Se publicará con tu nombre y la inicial de tu apellido.") }}
+          <button type="submit" class="btn btn-primary">Publicar opinión</button>
+        </form>
+      {% elif current_user.is_authenticated and not current_user.is_admin and not is_owner %}
+        <p class="muted small review-hint">{{ icon("info") }} Podrás opinar cuando recibas este producto (pedido en estado Entregado).</p>
+      {% endif %}
+
+      {% if reviews is none %}
+        <div class="empty"><p>Las opiniones no están disponibles en este momento.</p></div>
+      {% elif reviews.reviews %}
+        <ul class="review-list">
+          {% for r in reviews.reviews %}
+          <li class="review">
+            <div class="review-head">
+              <span class="avatar" aria-hidden="true">{{ r.author_name[:1] }}</span>
+              <div>
+                <strong>{{ r.author_name }}</strong>
+                {% if r.verified %}<span class="badge badge-delivered">{{ icon("check") }} Compra verificada</span>{% endif %}
+                <div class="review-meta">{{ stars(r.stars, r.rating ~ " de 5 estrellas") }}<span class="muted small">{{ r.date_label }}</span></div>
+              </div>
+            </div>
+            <p class="review-text">{{ r.comment }}</p>
+          </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="empty">{{ icon("star") }}<h3>Aún no hay opiniones</h3><p>Las opiniones aparecen cuando alguien recibe su compra.</p></div>
+      {% endif %}
+    </div>
+  </div>
+</section>

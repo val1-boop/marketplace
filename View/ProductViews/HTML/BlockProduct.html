@@ -1,0 +1,16 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import render_field, icon %}
+{% block styles %}<link rel="stylesheet" href="{{ asset_url('ProductViews', 'CSS', 'Product.css') }}">{% endblock %}
+{% block title %}Bloquear producto{% endblock %}
+{% block content %}
+<form class="formcard" method="post" action="{{ url_for('items.block', product_id=product.product_id) }}">
+  <h1>Bloquear producto</h1>
+  <p class="muted">{{ product.name }} ({{ product.product_id }}). Dejará de aparecer en el catálogo; el vendedor verá el motivo.</p>
+  {{ form.hidden_tag() }}
+  {{ render_field(form.reason, hint="Entre 5 y 500 caracteres. Quedará en la bitácora de administración.", placeholder="Ej. Descripción engañosa") }}
+  <div class="form-actions">
+    <button type="submit" class="btn btn-danger">{{ icon("ban") }} Bloquear producto</button>
+    <a class="btn" href="{{ url_for('items.detail', product_id=product.product_id) }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

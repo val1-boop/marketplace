@@ -1,0 +1,107 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import icon, product_tile %}
+{% block styles %}<link rel="stylesheet" href="{{ asset_url('MainViews', 'CSS', 'Main.css') }}">{% endblock %}
+{% block title %}Inicio{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-text">
+    <h1>¿Qué buscas hoy{% if current_user.is_authenticated %}, {{ current_user.first_name }}{% endif %}?</h1>
+    <p>Encuentra tecnología nueva, usada y reacondicionada al mejor precio. Miles de productos te esperan.</p>
+    <form class="hero-search" method="get" action="{{ url_for('items.catalog') }}" role="search">
+      <label class="visually-hidden" for="q-hero">Buscar productos</label>
+      <input id="q-hero" type="search" name="q" maxlength="64" placeholder="Ej. monitor, laptop, PROD-001">
+      <button type="submit" class="btn btn-primary">{{ icon("search") }} Buscar</button>
+    </form>
+    <div class="actions">
+      <a class="btn btn-primary" href="{{ url_for('items.catalog') }}">Ver la tienda {{ icon("arrow") }}</a>
+      <a class="btn" href="{{ url_for('items.create') }}">Vender un producto</a>
+    </div>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    {% for slug in ("monitors", "audio", "computers", "office") %}
+      <div class="hero-tile {{ category_class(slug) }}">{{ icon(category_icon(slug)) }}<span>{{ category_label(slug) }}</span></div>
+    {% endfor %}
+  </div>
+</section>
+
+<div class="perks">
+  <div>{{ icon("truck") }}<div><strong>Entrega de 3 a 7 días</strong><span>Sigue cada paso del envío</span></div></div>
+  <div>{{ icon("star") }}<div><strong>Opiniones verificadas</strong><span>Solo de compras entregadas</span></div></div>
+  <div>{{ icon("shield") }}<div><strong>Cuenta protegida</strong><span>Tus datos siempre seguros</span></div></div>
+  <div>{{ icon("store") }}<div><strong>Compra y vende</strong><span>Con la misma cuenta</span></div></div>
+</div>
+
+{% if shop %}
+<section class="section">
+  <div class="shopbox">
+    <div>
+      <h2>Tu tienda</h2>
+      <p>Código de vendedor <strong>{{ current_user.seller_id }}</strong></p>
+    </div>
+    <dl>
+      <div><dt>Publicados</dt><dd>{{ shop.active }}</dd></div>
+      <div><dt>Pocas piezas o agotados</dt><dd>{{ shop.low }}</dd></div>
+      <div><dt>Bloqueados</dt><dd>{{ shop.blocked }}</dd></div>
+    </dl>
+    <div class="actions">
+      <a class="btn btn-light" href="{{ url_for('items.create') }}">{{ icon("plus") }} Publicar producto</a>
+      <a class="btn btn-light" href="{{ url_for('orders.list_sales') }}">Mis ventas</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="section">
+  <div class="section-head"><h2>Compra por departamento</h2>
+    <a href="{{ url_for('items.catalog') }}">Ver todo</a></div>
+  <div class="catgrid">
+    {% for dept in departments %}{% for slug, count in dept.categories %}
+      <a class="catcard {{ category_class(slug) }}" href="{{ url_for('items.catalog', category=slug) }}">
+        <span class="catcard-ico">{{ icon(category_icon(slug)) }}</span>
+        <strong>{{ category_label(slug) }}</strong>
+        <span class="muted small">{{ dept.label }} · {{ count }} producto{{ "" if count == 1 else "s" }}</span>
+      </a>
+    {% endfor %}{% endfor %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2>Recién publicados</h2>
+    <a href="{{ url_for('items.catalog') }}">Ver todo el catálogo</a>
+  </div>
+  {% if latest %}
+    <div class="grid">
+      {% for p in latest %}{{ product_tile(p, seller_names.get(p.seller_id)) }}{% endfor %}
+    </div>
+  {% else %}
+    <div class="empty">{{ icon("box") }}<h3>Todavía no hay productos</h3><p>Sé el primero en publicar algo.</p>
+      <a class="btn btn-primary" href="{{ url_for('items.create') }}">Publicar producto</a></div>
+  {% endif %}
+</section>
+
+{% if recommended %}
+<section class="section">
+  <div class="section-head">
+    <h2>Te recomendamos</h2>
+    <div class="rail-arrows">
+      <button type="button" class="arrow arrow-prev" data-rail="recomendados" data-dir="-1">{{ icon("chevron") }}<span class="visually-hidden">Anterior</span></button>
+      <button type="button" class="arrow arrow-next" data-rail="recomendados" data-dir="1">{{ icon("chevron") }}<span class="visually-hidden">Siguiente</span></button>
+    </div>
+  </div>
+  <div class="rail" id="recomendados" tabindex="0">
+    {% for p in recommended %}{{ product_tile(p, seller_names.get(p.seller_id)) }}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="cta">
+  <div>
+    <h2>Vende lo que ya no usas y gana más</h2>
+    <p>Publícalo con nosotros y llega a más compradores. Tú decides el precio y las existencias; nosotros te ayudamos a vender.</p>
+  </div>
+  <div class="actions">
+    <a class="btn btn-light" href="{{ url_for('items.create') }}">{{ icon("plus") }} Publicar producto</a>
+  </div>
+</section>
+{% endblock %}

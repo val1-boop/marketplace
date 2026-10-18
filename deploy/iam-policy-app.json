@@ -1,0 +1,17 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "LeerSoloLosSecretosDeLaApp",
+      "Effect": "Allow",
+      "Action": "secretsmanager:GetSecretValue",
+      "Resource": "arn:aws:secretsmanager:us-east-1:CUENTA:secret:marketplace/prod/*"
+    },
+    {
+      "Sid": "EscribirLogsDeLaApp",
+      "Effect": "Allow",
+      "Action": ["logs:CreateLogStream", "logs:PutLogEvents"],
+      "Resource": "arn:aws:logs:us-east-1:CUENTA:log-group:/marketplace/app:*"
+    }
+  ]
+}

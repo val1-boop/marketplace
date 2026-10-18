@@ -1,0 +1,76 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import icon, money %}
+{% block styles %}
+<link rel="stylesheet" href="{{ asset_url('CartViews', 'CSS', 'Cart.css') }}">
+<link rel="stylesheet" href="{{ asset_url('OrderViews', 'CSS', 'Order.css') }}">
+{% endblock %}
+{% block title %}Confirmar compra{% endblock %}
+{% block content %}
+<nav aria-label="Ruta"><ol class="crumbs"><li><a href="{{ url_for('main.index') }}">Inicio</a></li><li><a href="{{ url_for('cart.view') }}">Carrito</a></li><li aria-current="page">Confirmar compra</li></ol></nav>
+<ol class="checkout-steps" aria-label="Pasos">
+  <li class="done">Carrito</li><li class="current" aria-current="step">Envío y confirmación</li><li>Seguimiento</li>
+</ol>
+<h1 class="page-title">Confirmar compra</h1>
+
+<form method="post" action="{{ url_for('orders.checkout') }}" class="cart-layout">
+  {{ form.csrf_token }}
+  <div>
+    <section class="box">
+      <div class="section-head"><h2>{{ icon("pin") }} ¿A dónde lo enviamos?</h2>
+        <a href="{{ url_for('addresses.create', next=url_for('orders.checkout')) }}">{{ icon("plus") }} Nueva dirección</a></div>
+      {% if addresses %}
+        <div class="address-options">
+          {% for a in addresses %}
+            <label class="address-option">
+              <input type="radio" name="address_id" value="{{ a.id }}" {% if form.address_id.data == a.id %}checked{% endif %}>
+              <span>
+                <strong>{{ a.label }}</strong>{% if a.is_default %} <span class="badge">Predeterminada</span>{% endif %}<br>
+                {{ a.recipient_name }} · {{ a.phone }}<br>
+                <span class="muted small">{{ a.one_line }}</span>
+              </span>
+            </label>
+          {% endfor %}
+        </div>
+        {% for error in form.address_id.errors %}<p class="error">{{ error }}</p>{% endfor %}
+      {% else %}
+        <div class="empty">
+          {{ icon("pin") }}
+          <p>Necesitas una dirección de envío para continuar.</p>
+          <a class="btn btn-primary" href="{{ url_for('addresses.create', next=url_for('orders.checkout')) }}">Agregar dirección</a>
+        </div>
+      {% endif %}
+    </section>
+
+    <section class="box">
+      <h2>{{ icon("bag") }} Tu pedido</h2>
+      <ul class="mini-lines">
+        {% for line in cart.lines %}
+          <li class="{{ category_class(line.product.category if line.product else '') }}">
+            <span class="mini">{{ icon(category_icon(line.product.category) if line.product else "box") }}</span>
+            <span class="mini-name">{{ line.product.name if line.product else line.product_id }} <span class="muted">× {{ line.quantity }}</span>
+              {% if not line.available %}<br><span class="error small">{{ line.reason }}</span>{% endif %}</span>
+            <span>{% if line.available %}{{ money(line.subtotal) }}{% endif %}</span>
+          </li>
+        {% endfor %}
+      </ul>
+      <p class="muted small">{{ icon("truck") }} Entrega estimada: de 3 a 7 días después de confirmar. Si compras a varios vendedores, cada uno envía su pedido por separado.</p>
+    </section>
+  </div>
+
+  <aside class="summary">
+    <h2>Resumen</h2>
+    <dl>
+      <div><dt>Productos ({{ cart.units }})</dt><dd>${{ "{:,.2f}".format(cart.total) }}</dd></div>
+      <div><dt>Envío</dt><dd>Incluido</dd></div>
+      <div class="total"><dt>Total</dt><dd>${{ "{:,.2f}".format(cart.total) }} <small>MXN</small></dd></div>
+    </dl>
+    {% if addresses and cart.can_checkout %}
+      <button type="submit" class="btn btn-primary btn-block">Confirmar compra</button>
+    {% else %}
+      <button type="button" class="btn btn-primary btn-block" disabled>Confirmar compra</button>
+      {% if not cart.can_checkout %}<p class="muted small"><a href="{{ url_for('cart.view') }}">Revisa tu carrito</a>: hay productos sin existencias.</p>{% endif %}
+    {% endif %}
+    <p class="muted small summary-note">{{ icon("info") }} Versión de laboratorio: no se cobra nada. El pedido queda como "Confirmado" y el vendedor lo prepara y envía.</p>
+  </aside>
+</form>
+{% endblock %}

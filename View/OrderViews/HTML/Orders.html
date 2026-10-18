@@ -1,0 +1,52 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import icon, money, order_badge %}
+{% block styles %}<link rel="stylesheet" href="{{ asset_url('OrderViews', 'CSS', 'Order.css') }}">{% endblock %}
+{% block title %}{{ "Mis compras" if mode == "buyer" else "Mis ventas" }}{% endblock %}
+{% block content %}
+{% set buyer = mode == "buyer" %}
+<nav aria-label="Ruta"><ol class="crumbs"><li><a href="{{ url_for('main.index') }}">Inicio</a></li><li aria-current="page">{{ "Mis compras" if buyer else "Mis ventas" }}</li></ol></nav>
+<nav class="tabs" aria-label="Pedidos">
+  <a href="{{ url_for('orders.list_orders') }}" {% if buyer %}aria-current="page"{% endif %}>Mis compras</a>
+  <a href="{{ url_for('orders.list_sales') }}" {% if not buyer %}aria-current="page"{% endif %}>Mis ventas</a>
+  {% if not buyer %}<a href="{{ url_for('items.mine') }}">Mis productos</a>{% endif %}
+</nav>
+<div class="toolbar">
+  <div>
+    <h1>{{ "Mis compras" if buyer else "Mis ventas" }}</h1>
+    <p class="muted">{% if buyer %}Sigue el estado de cada pedido y confirma cuando lo recibas.{% else %}Prepara y envía los pedidos que recibió tu tienda ({{ current_user.seller_id }}).{% endif %}</p>
+  </div>
+</div>
+
+{% if orders %}
+  {% if not buyer %}
+    {% set pending = orders|selectattr("status", "in", ["CONFIRMED", "PREPARING"])|list %}
+    {% if pending %}<div class="flash flash-info">{{ icon("info") }}<span>Tienes {{ pending|length }} pedido{{ "" if pending|length == 1 else "s" }} por preparar o enviar.</span></div>{% endif %}
+  {% endif %}
+  <ul class="order-list">
+    {% for o in orders %}
+    <li class="order-card {{ category_class(o.first_category) }}">
+      <span class="order-thumb">{{ icon(category_icon(o.first_category)) }}</span>
+      <div class="order-main">
+        <div class="order-top">{{ order_badge(o) }}<span class="muted small">Pedido …{{ o.short_id }} · {{ o.created_label }}</span></div>
+        <h2><a href="{{ url_for('orders.detail', order_id=o.order_id) }}">{{ o.title }}</a></h2>
+        <p class="muted small">{{ o.status_hint }}{% if o.estimate_label %} {{ o.estimate_label }}.{% endif %}</p>
+      </div>
+      <div class="order-side">
+        {{ money(o.total) }}
+        <span class="muted small">{{ o.units }} pieza{{ "" if o.units == 1 else "s" }}</span>
+        <a class="btn btn-sm{% if not buyer and o.status in ('CONFIRMED', 'PREPARING') %} btn-primary{% endif %}" href="{{ url_for('orders.detail', order_id=o.order_id) }}">
+          {% if not buyer and o.status == 'CONFIRMED' %}Preparar{% elif not buyer and o.status == 'PREPARING' %}Enviar{% elif buyer and o.status == 'SHIPPED' %}Confirmar entrega{% else %}Ver detalle{% endif %}
+        </a>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <div class="empty">
+    {{ icon("bag" if buyer else "receipt") }}
+    <h2>{{ "Aún no has comprado nada" if buyer else "Aún no tienes ventas" }}</h2>
+    <p>{{ "Cuando confirmes una compra la verás aquí con su estado." if buyer else "Cuando alguien compre uno de tus productos aparecerá aquí." }}</p>
+    <a class="btn btn-primary" href="{{ url_for('items.catalog') if buyer else url_for('items.create') }}">{{ "Ir a la tienda" if buyer else "Publicar producto" }}</a>
+  </div>
+{% endif %}
+{% endblock %}

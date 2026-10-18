@@ -1,0 +1,29 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import render_field, icon %}
+{% block styles %}<link rel="stylesheet" href="{{ asset_url('AuthViews', 'CSS', 'Auth.css') }}">{% endblock %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block content %}
+<section class="auth">
+  <div class="auth-side">
+    <h2>Bienvenido de vuelta</h2>
+    <p>Todo lo que puedes hacer con tu cuenta:</p>
+    <ul>
+      <li>{{ icon("cart") }}<span>Compra con carrito y guarda tus favoritos para después.</span></li>
+      <li>{{ icon("truck") }}<span>Sigue cada pedido paso a paso, con entrega estimada de 3 a 7 días.</span></li>
+      <li>{{ icon("star") }}<span>Lee opiniones reales de clientes que ya recibieron su producto.</span></li>
+      <li>{{ icon("store") }}<span>Vende lo que ya no usas con la misma cuenta.</span></li>
+    </ul>
+  </div>
+  <div class="auth-main">
+    <h1>Iniciar sesión</h1>
+    <p class="muted">Entra para comprar, vender y seguir tus pedidos.</p>
+    <form class="formcard" method="post" action="{{ url_for('auth.login', next=next_url) if next_url else url_for('auth.login') }}">
+      {{ form.hidden_tag() }}
+      {{ render_field(form.email, placeholder="tu@correo.com") }}
+      {{ render_field(form.password) }}
+      <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+    </form>
+    <p class="auth-switch">¿Aún no tienes cuenta? <a href="{{ url_for('auth.register') }}">Crear una cuenta</a></p>
+  </div>
+</section>
+{% endblock %}

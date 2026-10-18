@@ -1,0 +1,43 @@
+/* Carrito y resumen de compra (también lo usa la página de confirmar compra). */
+.page-title { margin-bottom: 22px; }
+.page-title .muted { font-weight: 500; font-size: .6em; letter-spacing: 0; }
+.cart-layout { display: grid; grid-template-columns: 1fr 360px; gap: 32px; align-items: start; }
+.cart-lines { display: grid; gap: 14px; }
+.cart-line { display: grid; grid-template-columns: 120px 1fr auto; gap: 18px; align-items: start; padding: 14px;
+             border: 1px solid var(--line); border-radius: var(--radius-l); }
+.cart-line.is-problem { border-color: #f0c2c2; background: #fffafa; }
+.cart-thumb { aspect-ratio: 1 / 1; border-radius: var(--radius-m); background: var(--cat-soft, var(--soft)); color: var(--cat, var(--ink));
+              display: grid; place-items: center; }
+.cart-thumb .icon { width: 44%; height: 44%; stroke-width: 1.2; }
+.cart-info h2 { font-size: 1.1rem; margin: 8px 0 2px; }
+.cart-info h2 a { text-decoration: none; }
+.cart-info h2 a:hover { text-decoration: underline; }
+.cart-info p { margin: 0; }
+.line-problem { display: flex; align-items: center; gap: 6px; color: var(--danger); font-weight: 600; font-size: .9rem; margin-top: 8px !important; }
+.cart-controls { display: flex; align-items: center; gap: 18px; margin-top: 12px; }
+.qtyform { display: flex; gap: 8px; align-items: center; margin: 0; }
+.cart-controls .linklike { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); text-decoration: none; font-size: .9rem; }
+.cart-controls .linklike:hover { color: var(--danger); }
+.cart-sub { font-size: 1.1rem; }
+
+.summary { position: sticky; top: 96px; background: var(--soft-2); border-radius: var(--radius-l); padding: 24px; display: grid; gap: 12px; }
+.summary h2 { margin: 0; }
+.summary dl { margin: 0; display: grid; gap: 10px; }
+.summary dl > div { display: flex; justify-content: space-between; gap: 10px; }
+.summary dt { color: var(--muted); }
+.summary dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.summary .total { border-top: 1px solid var(--line-strong); padding-top: 12px; font-size: 1.2rem; }
+.summary .total dt { color: var(--ink); font-weight: 700; }
+.summary .total dd { font-weight: 800; }
+.summary .total small { font-size: .65em; color: var(--muted); }
+.summary-note { display: flex; gap: 8px; margin: 0; }
+.summary-note .icon { margin-top: 3px; }
+
+@media (max-width: 900px) {
+  .cart-layout { grid-template-columns: 1fr; }
+  .summary { position: static; }
+}
+@media (max-width: 560px) {
+  .cart-line { grid-template-columns: 76px 1fr; }
+  .cart-sub { grid-column: 2; }
+}

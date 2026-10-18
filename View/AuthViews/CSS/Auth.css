@@ -1,0 +1,20 @@
+/* Iniciar sesión, crear cuenta y cambiar contraseña (estilo Stuffus: panel negro + formulario). */
+.auth { display: grid; grid-template-columns: 1fr 1.05fr; gap: 0; border-radius: var(--radius-l); overflow: hidden;
+        border: 1px solid var(--line); min-height: 560px; }
+.auth-side { background: var(--dark); color: #d4d4d4; padding: 44px; display: flex; flex-direction: column; justify-content: flex-end;
+             position: relative; overflow: hidden; }
+.auth-side::before { content: "M"; position: absolute; top: -40px; left: 24px; font-size: 18rem; font-weight: 850; line-height: 1;
+                     color: rgba(255, 255, 255, .05); letter-spacing: -.06em; }
+.auth-side h2 { color: #fff; font-size: clamp(1.6rem, 3vw, 2.3rem); letter-spacing: -.03em; }
+.auth-side ul { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 14px; }
+.auth-side li { display: flex; gap: 12px; align-items: flex-start; }
+.auth-side li .icon { width: 34px; height: 34px; padding: 8px; border-radius: 50%; background: rgba(255,255,255,.1); color: #fff; }
+.auth-main { padding: 44px; display: flex; flex-direction: column; justify-content: center; }
+.auth-main .formcard { border: 0; padding: 0; margin: 12px 0 0; max-width: none; }
+.auth-switch { margin-top: 18px; text-align: center; color: var(--muted); }
+.auth-switch a { font-weight: 650; }
+@media (max-width: 860px) {
+  .auth { grid-template-columns: 1fr; }
+  .auth-side { padding: 28px; }
+  .auth-main { padding: 28px 22px; }
+}

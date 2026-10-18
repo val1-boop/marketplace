@@ -1,0 +1,44 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import render_field %}
+{% block styles %}<link rel="stylesheet" href="{{ asset_url('UserViews', 'CSS', 'User.css') }}">{% endblock %}
+{% block title %}{{ "Editar usuario" if user else "Nuevo usuario" }}{% endblock %}
+{% block content %}
+<form class="formcard" method="post" action="{{ url_for('users.edit', user_id=user.id) if user else url_for('users.create') }}">
+  <h1>{{ "Editar usuario" if user else "Nuevo usuario" }}</h1>
+  <p class="muted">{% if user %}Si cambias rol, estado, correo o contraseña, la persona tendrá que iniciar sesión de nuevo.{% else %}Los vendedores reciben un código de vendedor automático; los administradores no tienen tienda.{% endif %}</p>
+  {{ form.hidden_tag() }}
+  <fieldset>
+    <legend>Datos personales</legend>
+    <div class="row2">
+      {{ render_field(form.first_name) }}
+      {{ render_field(form.last_name) }}
+    </div>
+    {{ render_field(form.email) }}
+  </fieldset>
+  <fieldset>
+    <legend>Acceso</legend>
+    {% if user %}
+      <div class="row2">
+        {{ render_field(form.role) }}
+        {{ render_field(form.status) }}
+      </div>
+      {{ render_field(form.status_reason, hint="Opcional. Se muestra en la ficha del usuario.") }}
+    {% else %}
+      {{ render_field(form.role) }}
+    {% endif %}
+  </fieldset>
+  <fieldset>
+    <legend>Contraseña</legend>
+    {% if user %}
+      {{ render_field(form.new_password, hint="Déjala vacía para no cambiarla. Mínimo 12 caracteres y 3 de: minúsculas, mayúsculas, números y símbolos.") }}
+    {% else %}
+      {{ render_field(form.password, hint="Mínimo 12 caracteres y 3 de: minúsculas, mayúsculas, números y símbolos.") }}
+    {% endif %}
+    {{ render_field(form.confirm) }}
+  </fieldset>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">{{ "Guardar cambios" if user else "Crear usuario" }}</button>
+    <a class="btn" href="{{ url_for('users.detail', user_id=user.id) if user else url_for('users.list_users') }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

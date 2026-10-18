@@ -1,0 +1,81 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import icon, money %}
+{% block styles %}<link rel="stylesheet" href="{{ asset_url('CartViews', 'CSS', 'Cart.css') }}">{% endblock %}
+{% block title %}Carrito{% endblock %}
+{% block content %}
+<nav aria-label="Ruta"><ol class="crumbs"><li><a href="{{ url_for('main.index') }}">Inicio</a></li><li><a href="{{ url_for('items.catalog') }}">Tienda</a></li><li aria-current="page">Carrito</li></ol></nav>
+<h1 class="page-title">Carrito <span class="muted">({{ cart.units }} pieza{{ "" if cart.units == 1 else "s" }})</span></h1>
+
+{% if cart.lines %}
+<div class="cart-layout">
+  <section class="cart-lines" aria-label="Productos en tu carrito">
+    {% for line in cart.lines %}
+      {% set p = line.product %}
+      <article class="cart-line {{ category_class(p.category if p else '') }}{% if not line.available %} is-problem{% endif %}">
+        <a class="cart-thumb" href="{{ url_for('items.detail', product_id=line.product_id) }}" tabindex="-1" aria-hidden="true">
+          {{ icon(category_icon(p.category) if p else "box") }}
+        </a>
+        <div class="cart-info">
+          {% if p %}
+            <span class="pill">{{ category_label(p.category) }}</span>
+            <h2><a href="{{ url_for('items.detail', product_id=line.product_id) }}">{{ p.name }}</a></h2>
+            <p class="muted small">{{ condition_label(p.condition) }} · {{ line.product_id }} · ${{ "{:,.2f}".format(p.price) }} c/u</p>
+          {% else %}
+            <h2>Producto {{ line.product_id }}</h2>
+          {% endif %}
+          {% if not line.available %}
+            <p class="line-problem">{{ icon("alert") }} {{ line.reason }}. Ajusta la cantidad o quítalo para poder comprar.</p>
+          {% endif %}
+          <div class="cart-controls">
+            {% if p and p.status == 'ACTIVE' and p.stock > 0 %}
+              <form class="qtyform" method="post" action="{{ url_for('cart.update', product_id=line.product_id) }}">
+                {{ qty_form.csrf_token }}
+                <label class="visually-hidden" for="qty-{{ loop.index }}">Cantidad</label>
+                <select id="qty-{{ loop.index }}" name="quantity" data-autosubmit>
+                  {% for n in range(1, line.max_quantity + 1) %}
+                    <option value="{{ n }}" {% if n == line.quantity %}selected{% endif %}>{{ n }}</option>
+                  {% endfor %}
+                  {% if line.quantity > line.max_quantity %}<option value="{{ line.quantity }}" selected>{{ line.quantity }}</option>{% endif %}
+                </select>
+                <button type="submit" class="btn btn-sm js-hide">Actualizar</button>
+              </form>
+            {% else %}
+              <span class="muted small">Cantidad: {{ line.quantity }}</span>
+            {% endif %}
+            <form class="inline" method="post" action="{{ url_for('cart.remove', product_id=line.product_id) }}">
+              {{ confirm_form.csrf_token }}
+              <button type="submit" class="linklike">{{ icon("trash") }} Quitar</button>
+            </form>
+          </div>
+        </div>
+        <div class="cart-sub">{% if line.available %}{{ money(line.subtotal) }}{% else %}<span class="muted">—</span>{% endif %}</div>
+      </article>
+    {% endfor %}
+  </section>
+
+  <aside class="summary">
+    <h2>Resumen</h2>
+    <dl>
+      <div><dt>Productos ({{ cart.units }})</dt><dd>${{ "{:,.2f}".format(cart.total) }}</dd></div>
+      <div><dt>Envío</dt><dd>Incluido</dd></div>
+      <div class="total"><dt>Total</dt><dd>${{ "{:,.2f}".format(cart.total) }} <small>MXN</small></dd></div>
+    </dl>
+    {% if cart.can_checkout %}
+      <a class="btn btn-primary btn-block" href="{{ url_for('orders.checkout') }}">Continuar compra {{ icon("arrow") }}</a>
+    {% else %}
+      <button class="btn btn-primary btn-block" type="button" disabled>Continuar compra</button>
+      <p class="muted small">Corrige los productos marcados para continuar.</p>
+    {% endif %}
+    <p class="muted small summary-note">{{ icon("info") }} Los precios se toman al momento de comprar. Si compras a varios vendedores, se crea un pedido por cada uno.</p>
+    <a class="btn btn-ghost btn-block" href="{{ url_for('items.catalog') }}">Seguir comprando</a>
+  </aside>
+</div>
+{% else %}
+<div class="empty">
+  {{ icon("cart") }}
+  <h2>Tu carrito está vacío</h2>
+  <p>Explora la tienda y agrega lo que te guste.</p>
+  <a class="btn btn-primary" href="{{ url_for('items.catalog') }}">Ir a la tienda</a>
+</div>
+{% endif %}
+{% endblock %}

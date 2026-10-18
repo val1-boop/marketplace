@@ -1,0 +1,83 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import icon, money, pagination_nav, status_badge, stock_badge, stars %}
+{% block styles %}<link rel="stylesheet" href="{{ asset_url('ProductViews', 'CSS', 'Product.css') }}">{% endblock %}
+{% block title %}Mis productos{% endblock %}
+{% block content %}
+<nav aria-label="Ruta"><ol class="crumbs"><li><a href="{{ url_for('main.index') }}">Inicio</a></li><li aria-current="page">Mis productos</li></ol></nav>
+<nav class="tabs" aria-label="Mi tienda">
+  <a href="{{ url_for('items.mine') }}" aria-current="page">Mis productos</a>
+  <a href="{{ url_for('orders.list_sales') }}">Mis ventas</a>
+</nav>
+<div class="toolbar">
+  <div>
+    <h1>Mis productos</h1>
+    <p class="muted">Código de vendedor {{ current_user.seller_id }}. {{ pagination.total }} producto{{ "" if pagination.total == 1 else "s" }}.</p>
+  </div>
+  <a class="btn btn-accent" href="{{ url_for('items.create') }}">{{ icon("plus") }} Publicar producto</a>
+</div>
+<form class="myfilters" method="get" action="{{ url_for('items.mine') }}" role="search">
+  <label class="visually-hidden" for="mine-q">Buscar en mis productos</label>
+  <input id="mine-q" type="search" name="q" maxlength="64" value="{{ params.q }}" placeholder="Buscar por nombre o código">
+  <label class="visually-hidden" for="mine-cat">Categoría</label>
+  <select id="mine-cat" name="category" data-autosubmit>
+    <option value="">Todas las categorías</option>
+    {% for cslug, cinfo in CATEGORIES.items() %}<option value="{{ cslug }}" {% if params.category == cslug %}selected{% endif %}>{{ cinfo[0] }}</option>{% endfor %}
+  </select>
+  <label class="visually-hidden" for="mine-status">Estado</label>
+  <select id="mine-status" name="status" data-autosubmit>
+    <option value="">Todos los estados</option>
+    <option value="ACTIVE" {% if params.status == 'ACTIVE' %}selected{% endif %}>Publicados</option>
+    <option value="BLOCKED" {% if params.status == 'BLOCKED' %}selected{% endif %}>Bloqueados</option>
+  </select>
+  <button type="submit" class="btn btn-sm js-hide">Filtrar</button>
+  {% if params.q or params.category or params.status %}<a class="btn btn-sm btn-ghost" href="{{ url_for('items.mine') }}">Limpiar</a>{% endif %}
+</form>
+{% if not valid %}<p class="muted small">La búsqueda no es válida; mostrando todos tus productos.</p>{% endif %}
+{% if pagination.items %}
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Producto</th><th>Categoría</th><th class="num">Precio</th><th class="num">Unidades</th><th>Calificación</th><th>Estado</th><th><span class="visually-hidden">Acciones</span></th></tr></thead>
+    <tbody>
+    {% for p in pagination.items %}
+      <tr>
+        <td><div class="cell-product {{ category_class(p.category) }}">
+          <span class="mini">{{ icon(category_icon(p.category)) }}</span>
+          <div><a href="{{ url_for('items.detail', product_id=p.product_id) }}">{{ p.name }}</a><br><span class="muted small">{{ p.product_id }}</span></div>
+        </div></td>
+        <td>{{ category_label(p.category) }}</td>
+        <td class="num">{{ money(p.price) }}</td>
+        <td class="num">{{ p.stock }}</td>
+        <td>{% if p.rating_count %}{{ stars(p.stars, p.rating_avg ~ " de 5") }} <span class="small muted">({{ p.rating_count }})</span>{% else %}<span class="small muted">—</span>{% endif %}</td>
+        <td>{% if p.status == 'ACTIVE' %}{{ stock_badge(p) }}{% else %}{{ status_badge(p.status) }}{% endif %}</td>
+        <td><div class="row-actions">
+          <a class="btn btn-sm" href="{{ url_for('items.edit', product_id=p.product_id) }}">{{ icon("edit") }} Editar</a>
+          <form class="inline" method="post" action="{{ url_for('items.delete', product_id=p.product_id) }}"
+                data-confirm="¿Eliminar este producto? Esta acción no se puede deshacer.">
+            {{ confirm_form.hidden_tag() }}
+            <button type="submit" class="btn btn-sm btn-danger">{{ icon("trash") }}<span class="visually-hidden">Eliminar {{ p.name }}</span></button>
+          </form>
+        </div></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% set navparams = {} %}
+{% for k, v in params.items() if v %}{% set _ = navparams.update({k: v}) %}{% endfor %}
+{{ pagination_nav(pagination, 'items.mine', **navparams) }}
+{% elif params.q or params.category or params.status %}
+<div class="empty">
+  {{ icon("search") }}
+  <h2>No hay productos con esos filtros</h2>
+  <p>Prueba con otra palabra o quita algún filtro.</p>
+  <a class="btn" href="{{ url_for('items.mine') }}">Quitar filtros</a>
+</div>
+{% else %}
+<div class="empty">
+  {{ icon("store") }}
+  <h2>Tu tienda está vacía</h2>
+  <p>Publica tu primer producto: nombre, descripción, categoría, precio y unidades.</p>
+  <a class="btn btn-accent" href="{{ url_for('items.create') }}">{{ icon("plus") }} Publicar producto</a>
+</div>
+{% endif %}
+{% endblock %}

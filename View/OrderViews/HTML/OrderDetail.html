@@ -1,0 +1,94 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import icon, money, order_badge %}
+{% block styles %}<link rel="stylesheet" href="{{ asset_url('OrderViews', 'CSS', 'Order.css') }}">{% endblock %}
+{% block title %}Pedido {{ order.short_id }}{% endblock %}
+{% block content %}
+{% set list_ep = 'orders.list_orders' if order.viewer == 'buyer' else 'orders.list_sales' %}
+<nav aria-label="Ruta"><ol class="crumbs">
+  <li><a href="{{ url_for('main.index') }}">Inicio</a></li>
+  {% if order.viewer != 'admin' %}<li><a href="{{ url_for(list_ep) }}">{{ "Mis compras" if order.viewer == 'buyer' else "Mis ventas" }}</a></li>{% endif %}
+  <li aria-current="page">Pedido …{{ order.short_id }}</li>
+</ol></nav>
+
+<div class="toolbar">
+  <div>
+    <p class="muted small">{{ {'buyer': 'Tu compra', 'seller': 'Venta de tu tienda', 'admin': 'Vista de administración'}[order.viewer] }} · {{ order.created_label }}</p>
+    <h1>Pedido …{{ order.short_id }} {{ order_badge(order) }}</h1>
+    <p class="muted small">Folio completo: {{ order.order_id }}</p>
+  </div>
+</div>
+
+<section class="box tracker">
+  <ol class="steps">
+    {% for label, state, at in order.steps %}
+      <li class="step step-{{ state }}"><span class="dot">{% if state in ('done', 'current') %}{{ icon("check") }}{% elif state == 'cancelled' %}{{ icon("x") }}{% endif %}</span>
+        <strong>{{ label }}</strong></li>
+    {% endfor %}
+  </ol>
+  <p class="tracker-hint">{{ order.status_hint }} {% if order.estimate_label %}<strong>{{ order.estimate_label }}.</strong>{% endif %}</p>
+
+  {% if order.actions %}
+    <div class="order-actions">
+      {% for action, label in order.actions if action != 'cancel' %}
+        <form method="post" action="{{ url_for('orders.change_status', order_id=order.order_id) }}" class="inline">
+          {{ action_form.csrf_token }}
+          <input type="hidden" name="action" value="{{ action }}">
+          <button type="submit" class="btn btn-primary">{{ icon("truck" if action == 'ship' else "check") }} {{ label }}</button>
+        </form>
+      {% endfor %}
+      {% if order.can_cancel %}
+        <details class="cancel-box">
+          <summary class="btn btn-danger">Cancelar pedido</summary>
+          <form method="post" action="{{ url_for('orders.change_status', order_id=order.order_id) }}"
+                data-confirm="¿Cancelar este pedido? Las piezas regresan al inventario y no se puede deshacer.">
+            {{ action_form.csrf_token }}
+            <input type="hidden" name="action" value="cancel">
+            <div class="field">
+              <label for="reason">Motivo (opcional)</label>
+              <input id="reason" name="reason" maxlength="200" placeholder="Ej. Me equivoqué de modelo">
+            </div>
+            <button type="submit" class="btn btn-danger">Confirmar cancelación</button>
+          </form>
+        </details>
+      {% endif %}
+    </div>
+  {% endif %}
+</section>
+
+<div class="order-layout">
+  <section class="box">
+    <h2>Productos</h2>
+    <ul class="mini-lines">
+      {% for item in order.items %}
+        <li class="{{ category_class(item.category) }}">
+          <span class="mini">{{ icon(category_icon(item.category)) }}</span>
+          <span class="mini-name"><a href="{{ url_for('items.detail', product_id=item.product_id) }}">{{ item.name }}</a>
+            <br><span class="muted small">{{ item.product_id }} · ${{ "{:,.2f}".format(item.unit_price) }} × {{ item.quantity }}</span>
+            {% if order.can_review %}<br><a class="small review-link" href="{{ url_for('items.detail', product_id=item.product_id) }}#opiniones">{{ icon("star") }} Opinar sobre este producto</a>{% endif %}
+          </span>
+          <span>{{ money(item.subtotal) }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+    <div class="order-total"><span>Total</span>{{ money(order.total) }}</div>
+  </section>
+
+  <div class="order-aside">
+    <section class="box">
+      <h2>{{ icon("pin") }} Envío</h2>
+      <p><strong>{{ order.shipment.recipient_name }}</strong><br>{{ order.shipment.phone }}</p>
+      <p class="muted">{{ order.shipment.line1 }}{% if order.shipment.line2 %}, {{ order.shipment.line2 }}{% endif %}<br>
+        {{ order.shipment.city }}, {{ order.shipment.state }}, C.P. {{ order.shipment.postal_code }}</p>
+      <p class="muted small">Esta es una copia tomada al comprar; cambiar tus direcciones no la modifica.</p>
+    </section>
+    <section class="box">
+      <h2>{{ icon("clock") }} Historial</h2>
+      <ol class="history">
+        {% for h in order.history|reverse %}
+          <li><strong>{{ h.label }}</strong><span class="muted small">{{ h.when }} · {{ h.by }}</span></li>
+        {% endfor %}
+      </ol>
+    </section>
+  </div>
+</div>
+{% endblock %}

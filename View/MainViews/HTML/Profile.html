@@ -1,0 +1,46 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import icon %}
+{% block styles %}<link rel="stylesheet" href="{{ asset_url('MainViews', 'CSS', 'Main.css') }}">{% endblock %}
+{% block title %}Mi perfil{% endblock %}
+{% block content %}
+<nav aria-label="Ruta"><ol class="crumbs"><li><a href="{{ url_for('main.index') }}">Inicio</a></li><li aria-current="page">Mi perfil</li></ol></nav>
+<div class="profile">
+  <section class="profile-card">
+    <span class="avatar" aria-hidden="true">{{ user.first_name[:1]|upper }}</span>
+    <h1>{{ user.full_name }}</h1>
+    <span class="badge badge-role">{{ "Administrador" if user.is_admin else "Compras y ventas" }}</span>
+    <dl class="details">
+      <dt>Correo</dt><dd>{{ user.email }}</dd>
+      {% if user.seller_id %}<dt>Código de vendedor</dt><dd>{{ user.seller_id }}</dd>{% endif %}
+      <dt>Último acceso</dt><dd>{{ user.last_login_at|dt }}</dd>
+      <dt>Cuenta creada</dt><dd>{{ user.created_at|dt }}</dd>
+    </dl>
+    <a class="btn btn-block" href="{{ url_for('auth.change_password') }}">{{ icon("key") }} Cambiar contraseña</a>
+  </section>
+  <section>
+    <h2>Accesos rápidos</h2>
+    <div class="shortcuts">
+      {% if user.is_admin %}
+        <a class="shortcut" href="{{ url_for('main.dashboard') }}">{{ icon("chart") }}<div><strong>Panel</strong><span>Moderación y seguridad</span></div></a>
+        <a class="shortcut" href="{{ url_for('users.list_users') }}">{{ icon("users") }}<div><strong>Usuarios</strong><span>Cuentas y roles</span></div></a>
+      {% else %}
+        <a class="shortcut" href="{{ url_for('orders.list_orders') }}">{{ icon("bag") }}<div><strong>Mis compras</strong><span>Estado y entrega</span></div></a>
+        <a class="shortcut" href="{{ url_for('orders.list_sales') }}">{{ icon("receipt") }}<div><strong>Mis ventas</strong><span>Prepara y envía</span></div></a>
+        <a class="shortcut" href="{{ url_for('items.mine') }}">{{ icon("store") }}<div><strong>Mis productos</strong><span>Precio y existencias</span></div></a>
+        <a class="shortcut" href="{{ url_for('addresses.list_addresses') }}">{{ icon("pin") }}<div><strong>Mis direcciones</strong><span>A dónde enviamos</span></div></a>
+        <a class="shortcut" href="{{ url_for('favorites.list_favorites') }}">{{ icon("heart") }}<div><strong>Favoritos</strong><span>Lo que te gustó</span></div></a>
+        <a class="shortcut" href="{{ url_for('cart.view') }}">{{ icon("cart") }}<div><strong>Carrito</strong><span>Listo para comprar</span></div></a>
+      {% endif %}
+    </div>
+  </section>
+  <section>
+    <h2>Privacidad y seguridad de tu cuenta</h2>
+    <ul class="privacy-list">
+      <li>{{ icon("lock") }}<span>Los intentos de acceso están limitados y la cuenta se bloquea 15 minutos tras 5 fallos seguidos.</span></li>
+      <li>{{ icon("shield") }}<span>Al iniciar sesión, cualquier error muestra el mismo mensaje, así nadie puede averiguar qué correos están registrados.</span></li>
+      <li>{{ icon("key") }}<span>Tu contraseña se guarda cifrada; nadie puede leerla, ni siquiera nosotros.</span></li>
+      <li>{{ icon("clock") }}<span>La sesión se cierra sola tras 30 minutos sin actividad.</span></li>
+    </ul>
+  </section>
+</div>
+{% endblock %}

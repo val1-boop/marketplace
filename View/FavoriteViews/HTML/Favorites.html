@@ -1,0 +1,44 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import icon, product_tile %}
+{% block styles %}<link rel="stylesheet" href="{{ asset_url('FavoriteViews', 'CSS', 'Favorite.css') }}">{% endblock %}
+{% block title %}Favoritos{% endblock %}
+{% block content %}
+<nav aria-label="Ruta"><ol class="crumbs"><li><a href="{{ url_for('main.index') }}">Inicio</a></li><li aria-current="page">Favoritos</li></ol></nav>
+<div class="toolbar">
+  <div>
+    <h1>Favoritos</h1>
+    <p class="muted">{{ favorites|length }} producto{{ "" if favorites|length == 1 else "s" }} guardado{{ "" if favorites|length == 1 else "s" }}. Máximo 100.</p>
+  </div>
+  <a class="btn" href="{{ url_for('items.catalog') }}">Seguir explorando</a>
+</div>
+
+{% if favorites %}
+  <div class="grid">
+    {% for fav in favorites %}
+      {% if fav.product %}
+        {{ product_tile(fav.product) }}
+      {% else %}
+        <article class="tile fav-gone">
+          <div class="tile-media">{{ icon("ban") }}<span class="pill">No disponible</span></div>
+          <div class="tile-body">
+            <h3>{{ fav.product_id }}</h3>
+            <p class="tile-desc">Este producto ya no está a la venta.</p>
+            <form method="post" action="{{ url_for('favorites.remove', product_id=fav.product_id) }}">
+              {{ fav_form.csrf_token }}
+              <input type="hidden" name="next" value="{{ url_for('favorites.list_favorites') }}">
+              <button type="submit" class="btn btn-sm">{{ icon("trash") }} Quitar</button>
+            </form>
+          </div>
+        </article>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty">
+    {{ icon("heart") }}
+    <h2>Aún no tienes favoritos</h2>
+    <p>Toca el corazón de cualquier producto para guardarlo aquí.</p>
+    <a class="btn btn-primary" href="{{ url_for('items.catalog') }}">Ir a la tienda</a>
+  </div>
+{% endif %}
+{% endblock %}

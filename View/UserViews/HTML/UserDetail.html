@@ -1,0 +1,56 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import icon, money, status_badge, stock_badge %}
+{% block styles %}<link rel="stylesheet" href="{{ asset_url('UserViews', 'CSS', 'User.css') }}">{% endblock %}
+{% block title %}{{ user.full_name }}{% endblock %}
+{% block content %}
+<nav aria-label="Ruta"><ol class="crumbs">
+  <li><a href="{{ url_for('users.list_users') }}">Usuarios</a></li><li aria-current="page">{{ user.full_name }}</li>
+</ol></nav>
+<section class="panel section">
+  <div class="toolbar">
+    <div class="cell-product">
+      <span class="avatar" aria-hidden="true">{{ user.first_name[:1]|upper }}</span>
+      <div><h1>{{ user.full_name }}</h1>
+        <span class="badge badge-role">{{ "Administrador" if user.is_admin else "Vendedor" }}</span> {{ status_badge(user.status) }}</div>
+    </div>
+    <div class="actions">
+      <a class="btn btn-primary" href="{{ url_for('users.edit', user_id=user.id) }}">{{ icon("edit") }} Editar</a>
+      {% if user.id != current_user.id %}
+      <form class="inline" method="post" action="{{ url_for('users.delete', user_id=user.id) }}"
+            data-confirm="¿Eliminar este usuario? Sus productos se retirarán del catálogo.">
+        {{ confirm_form.hidden_tag() }}
+        <button type="submit" class="btn btn-danger">{{ icon("trash") }} Eliminar</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+  <dl class="details">
+    <dt>Correo</dt><dd>{{ user.email }}</dd>
+    {% if user.status_reason %}<dt>Motivo del estado</dt><dd>{{ user.status_reason }}</dd>{% endif %}
+    <dt>Código de vendedor</dt><dd>{{ user.seller_id or "Sin tienda (administrador)" }}</dd>
+    <dt>Alta</dt><dd>{{ user.created_at|dt }}</dd>
+    <dt>Último acceso</dt><dd>{{ user.last_login_at|dt }}</dd>
+  </dl>
+</section>
+{% if user.seller_id %}
+<section class="section">
+  <div class="section-head"><h2>Productos del vendedor</h2></div>
+  {% if products %}
+  <div class="table-wrap"><table>
+    <thead><tr><th>Producto</th><th class="num">Precio</th><th class="num">Unidades</th><th>Estado</th></tr></thead>
+    <tbody>
+    {% for p in products %}
+      <tr>
+        <td><div class="cell-product {{ category_class(p.category) }}"><span class="mini">{{ icon(category_icon(p.category)) }}</span>
+          <div><a href="{{ url_for('items.detail', product_id=p.product_id) }}">{{ p.name }}</a><br><span class="muted small">{{ p.product_id }}</span></div></div></td>
+        <td class="num">{{ money(p.price) }}</td>
+        <td class="num">{{ p.stock }}</td>
+        <td>{% if p.status == 'ACTIVE' %}{{ stock_badge(p) }}{% else %}{{ status_badge(p.status) }}{% endif %}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  {% else %}<div class="empty">{{ icon("store") }}<p>Este vendedor no tiene productos.</p></div>{% endif %}
+</section>
+{% endif %}
+{% endblock %}

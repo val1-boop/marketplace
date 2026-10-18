@@ -1,0 +1,37 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import render_field %}
+{% block styles %}<link rel="stylesheet" href="{{ asset_url('AddressViews', 'CSS', 'Address.css') }}">{% endblock %}
+{% block title %}{{ "Editar dirección" if address else "Nueva dirección" }}{% endblock %}
+{% block content %}
+<nav aria-label="Ruta"><ol class="crumbs"><li><a href="{{ url_for('main.index') }}">Inicio</a></li><li><a href="{{ url_for('addresses.list_addresses') }}">Mis direcciones</a></li><li aria-current="page">{{ "Editar" if address else "Nueva" }}</li></ol></nav>
+<form class="formcard formcard-wide" method="post"
+      action="{{ url_for('addresses.edit', address_id=address.id) if address else url_for('addresses.create') }}">
+  <h1>{{ "Editar dirección" if address else "Nueva dirección" }}</h1>
+  <p class="muted">Solo enviamos dentro de México. Revisa bien el código postal y el teléfono.</p>
+  {{ form.csrf_token }}
+  {{ form.next }}
+  <fieldset>
+    <legend>¿Quién recibe?</legend>
+    <div class="row2">
+      {{ render_field(form.label, placeholder="Casa") }}
+      {{ render_field(form.recipient_name, placeholder="Nombre y apellido") }}
+    </div>
+    {{ render_field(form.phone, placeholder="5512345678") }}
+  </fieldset>
+  <fieldset>
+    <legend>Dirección</legend>
+    {{ render_field(form.line1, placeholder="Av. Universidad 3000") }}
+    {{ render_field(form.line2, placeholder="Col. Copilco, depto. 4") }}
+    <div class="row3">
+      {{ render_field(form.city, placeholder="Coyoacán") }}
+      {{ render_field(form.state) }}
+      {{ render_field(form.postal_code, placeholder="04510") }}
+    </div>
+    {{ render_field(form.make_default) }}
+  </fieldset>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">{{ "Guardar cambios" if address else "Guardar dirección" }}</button>
+    <a class="btn" href="{{ url_for('addresses.list_addresses') }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

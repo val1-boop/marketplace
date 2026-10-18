@@ -1,0 +1,7 @@
+/* Direcciones de envío. */
+.address-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.address-card { border: 1.5px solid var(--line); border-radius: var(--radius-l); padding: 20px; display: flex; flex-direction: column; }
+.address-card.is-default { border-color: var(--ink); }
+.address-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+.address-head h2 { display: flex; align-items: center; gap: 8px; font-size: 1.1rem; margin: 0; }
+.address-card .actions { margin-top: auto; padding-top: 10px; }

@@ -1,0 +1,10 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% block title %}Error {{ code }}{% endblock %}
+{% block content %}
+<section class="errorpage">
+  <p class="code">{{ code }}</p>
+  <h1>{{ message }}</h1>
+  <p class="muted">Si llegaste aquí desde un enlace de la página, vuelve al inicio e inténtalo de nuevo.</p>
+  <a class="btn btn-primary" href="{{ url_for('main.index') }}">Ir al inicio</a>
+</section>
+{% endblock %}

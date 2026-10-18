@@ -1,0 +1,11 @@
+.env
+*.db
+instance/
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# Certificados descargados (se obtienen con el comando de la Fase 9)
+certs/

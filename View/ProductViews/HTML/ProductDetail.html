@@ -1,0 +1,141 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import icon, product_tile, status_badge, stock_badge, stars, rating, fav_button, render_field %}
+{% block styles %}
+<link rel="stylesheet" href="{{ asset_url('ProductViews', 'CSS', 'Product.css') }}">
+<link rel="stylesheet" href="{{ asset_url('ReviewViews', 'CSS', 'Review.css') }}">
+{% endblock %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block content %}
+{% set dept = CATEGORIES.get(product.category, (None, None))[1] %}
+{% set detail_url = url_for('items.detail', product_id=product.product_id) %}
+<nav aria-label="Ruta">
+  <ol class="crumbs">
+    <li><a href="{{ url_for('main.index') }}">Inicio</a></li>
+    <li><a href="{{ url_for('items.catalog') }}">Tienda</a></li>
+    {% if dept %}<li><a href="{{ url_for('items.catalog', department=dept) }}">{{ DEPARTMENTS[dept] }}</a></li>{% endif %}
+    <li><a href="{{ url_for('items.catalog', category=product.category) }}">{{ category_label(product.category) }}</a></li>
+    <li aria-current="page">{{ product.product_id }}</li>
+  </ol>
+</nav>
+
+<article class="product {{ category_class(product.category) }}">
+  <div class="product-media">
+    {{ icon(category_icon(product.category)) }}
+    <span class="pill">{{ category_label(product.category) }}</span>
+    <span class="ini" aria-hidden="true">{{ product.name|initials }}</span>
+    {% if product.status == 'ACTIVE' %}{{ fav_button(product, detail_url) }}{% endif %}
+  </div>
+
+  <div class="product-info">
+    <p class="muted small">Código {{ product.product_id }} · {{ condition_label(product.condition) }}{% if product.sales_count %} · {{ product.sales_count }} vendido{{ "" if product.sales_count == 1 else "s" }}{% endif %}</p>
+    <h1>{{ product.name }}</h1>
+    <a class="rating-link" href="#opiniones">{{ rating(product) }}</a>
+
+    {% if product.status == 'BLOCKED' and (is_owner or current_user.is_admin) %}
+      <div class="notice">{{ icon("ban") }} <span><strong>Bloqueado por moderación.</strong> Motivo: {{ product.blocked_reason }}</span></div>
+    {% endif %}
+
+    <div class="pricetag"><strong>${{ "{:,.2f}".format(product.price) }}</strong><span>MXN</span></div>
+
+    <p class="stock-line {{ product.stock_state }}">
+      {% if product.status != 'ACTIVE' %}{{ status_badge(product.status) }}
+      {% elif product.stock_state == 'sold_out' %}{{ icon("ban") }} Sin existencias por ahora.
+      {% elif product.stock_state == 'few_left' %}{{ icon("alert") }} Quedan pocas: {{ product.stock }} unidad{{ "" if product.stock == 1 else "es" }}.
+      {% else %}{{ icon("check") }} {{ product.stock }} unidades disponibles.{% endif %}
+    </p>
+
+    <div class="buybox">
+      {% if product.status != 'ACTIVE' %}
+      {% elif not current_user.is_authenticated %}
+        <a class="btn" href="{{ url_for('auth.login', next=detail_url) }}">{{ icon("cart") }} Agregar al carrito</a>
+        <a class="btn btn-primary" href="{{ url_for('auth.login', next=detail_url) }}">Comprar ahora</a>
+        <p class="muted small">Inicia sesión o crea tu cuenta para comprar. Puedes seguir viendo la tienda sin cuenta.</p>
+      {% elif current_user.is_admin %}
+        <p class="muted small">Las cuentas de administración no compran.</p>
+      {% elif is_owner %}
+        <p class="muted small">Este producto es tuyo.</p>
+      {% elif product.stock > 0 %}
+        {# Un solo formulario: el mismo campo de cantidad sirve para los dos botones (formaction). #}
+        <form class="buyform" method="post" action="{{ url_for('cart.add', product_id=product.product_id) }}">
+          {{ cart_form.csrf_token }}
+          <input type="hidden" name="next" value="{{ detail_url }}">
+          <label for="quantity">Cantidad</label>
+          <select id="quantity" name="quantity">
+            {% for n in range(1, [product.stock, 10]|min + 1) %}<option value="{{ n }}">{{ n }}</option>{% endfor %}
+          </select>
+          <button type="submit" class="btn">{{ icon("cart") }} Agregar al carrito</button>
+          <button type="submit" class="btn btn-primary" formaction="{{ url_for('cart.buy_now', product_id=product.product_id) }}">Comprar ahora</button>
+        </form>
+      {% else %}
+        <button class="btn" type="button" disabled>Agotado</button>
+      {% endif %}
+    </div>
+
+    {% if product.description %}
+      <p class="description">{{ product.description }}</p>
+    {% else %}
+      <p class="description muted">El vendedor no agregó una descripción.</p>
+    {% endif %}
+
+    <ul class="assurances">
+      <li>{{ icon("truck") }} Entrega estimada de 3 a 7 días después de confirmar.</li>
+      <li>{{ icon("receipt") }} Sigue tu pedido: Confirmado → En preparación → Enviado → Entregado.</li>
+      <li>{{ icon("shield") }} Puedes cancelar mientras el vendedor no lo prepare.</li>
+    </ul>
+
+    <div class="seller">
+      <span class="avatar" aria-hidden="true">{{ (seller_name or "V")[:1] }}</span>
+      <div>
+        <strong>Vendido por {{ seller_name or "un vendedor del marketplace" }}</strong><br>
+        <span class="muted small">Código de vendedor {{ product.seller_id }}</span>
+      </div>
+      {% if current_user.is_admin and seller_user_id %}
+        <a class="btn btn-sm" href="{{ url_for('users.detail', user_id=seller_user_id) }}">Ver cuenta</a>
+      {% endif %}
+    </div>
+
+    {% if is_owner or current_user.is_admin %}
+    <div class="actions owner-actions">
+      {% if is_owner %}
+        <a class="btn btn-primary" href="{{ url_for('items.edit', product_id=product.product_id) }}">{{ icon("edit") }} Editar producto</a>
+      {% endif %}
+      {% if current_user.is_admin %}
+        {% if product.status == 'ACTIVE' %}
+          <a class="btn" href="{{ url_for('items.block', product_id=product.product_id) }}">{{ icon("ban") }} Bloquear</a>
+        {% elif product.status == 'BLOCKED' %}
+          <form class="inline" method="post" action="{{ url_for('items.unblock', product_id=product.product_id) }}">
+            {{ confirm_form.hidden_tag() }}
+            <button type="submit" class="btn">{{ icon("check") }} Desbloquear</button>
+          </form>
+        {% endif %}
+      {% endif %}
+      <form class="inline" method="post" action="{{ url_for('items.delete', product_id=product.product_id) }}"
+            data-confirm="¿Eliminar este producto? Esta acción no se puede deshacer.">
+        {{ confirm_form.hidden_tag() }}
+        <button type="submit" class="btn btn-danger">{{ icon("trash") }} Eliminar</button>
+      </form>
+    </div>
+    {% endif %}
+
+    <dl class="specs">
+      <dt>Departamento</dt><dd>{{ department_label(product.category) }}</dd>
+      <dt>Categoría</dt><dd>{{ category_label(product.category) }}</dd>
+      <dt>Condición</dt><dd>{{ condition_label(product.condition) }}</dd>
+      <dt>Unidades disponibles</dt><dd>{{ product.stock }}</dd>
+      {% if product.created_at %}<dt>Publicado</dt><dd>{{ product.created_at[:10] }}</dd>{% endif %}
+    </dl>
+  </div>
+</article>
+
+{% include "ReviewViews/HTML/Reviews.html" %}
+
+{% if related %}
+<section class="section">
+  <div class="section-head"><h2>También en {{ category_label(product.category) }}</h2>
+    <a href="{{ url_for('items.catalog', category=product.category) }}">Ver todos</a></div>
+  <div class="grid">
+    {% for p in related %}{{ product_tile(p, related_names.get(p.seller_id)) }}{% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}
