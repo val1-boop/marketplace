@@ -67,12 +67,15 @@
 
 {% set ep = request.endpoint or "" %}
 {% set is_shopper = current_user.is_authenticated and not current_user.is_admin %}
+{# En iniciar sesión / crear cuenta el encabezado se reduce: nada de navegar ni acciones de sesión. #}
+{% set on_auth = ep in ('auth.login', 'auth.register') %}
 <header class="header">
   <div class="header-row">
     <a class="brand" href="{{ url_for('main.index') }}">
       <span class="brand-mark" aria-hidden="true">M</span>
       <span class="brand-name">Marketplace</span>
     </a>
+    {% if not on_auth %}
     <nav class="mainnav" aria-label="Principal">
       <details class="catmenu">
         <summary>Categorías {{ icon("chevron") }}</summary>
@@ -101,7 +104,7 @@
     </nav>
     <form class="search" method="get" action="{{ url_for('items.catalog') }}" role="search">
       <label class="visually-hidden" for="q-top">Buscar productos</label>
-      <input id="q-top" type="search" name="q" maxlength="64" placeholder="Buscar productos o código"
+      <input id="q-top" type="search" name="q" maxlength="64" placeholder="Buscar productos o SKU"
              value="{{ request.args.get('q', '') if ep == 'items.catalog' else '' }}">
       <button type="submit">{{ icon("search") }}<span class="visually-hidden">Buscar</span></button>
     </form>
@@ -156,6 +159,7 @@
         <a class="btn btn-primary btn-sm" href="{{ url_for('auth.login') }}">Iniciar sesión</a>
       {% endif %}
     </div>
+    {% endif %}
   </div>
 </header>
 

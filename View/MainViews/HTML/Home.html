@@ -9,7 +9,7 @@
     <p>Encuentra tecnología nueva, usada y reacondicionada al mejor precio. Miles de productos te esperan.</p>
     <form class="hero-search" method="get" action="{{ url_for('items.catalog') }}" role="search">
       <label class="visually-hidden" for="q-hero">Buscar productos</label>
-      <input id="q-hero" type="search" name="q" maxlength="64" placeholder="Ej. monitor, laptop, PROD-001">
+      <input id="q-hero" type="search" name="q" maxlength="64" placeholder="Ej. monitor, laptop o SKU">
       <button type="submit" class="btn btn-primary">{{ icon("search") }} Buscar</button>
     </form>
     <div class="actions">

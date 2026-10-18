@@ -32,6 +32,27 @@ document.addEventListener("click", function (event) {
   }
 });
 
+// Campos numéricos (<input type="number">): no aceptar letras ni notación científica.
+// Se bloquean "e"/"E"/"+"/"-" (no hay precios ni cantidades negativas) y las letras;
+// el punto decimal solo se permite en campos con decimales (step distinto de "1").
+document.addEventListener("keydown", function (event) {
+  var el = event.target;
+  if (!(el instanceof HTMLInputElement) || el.type !== "number") {
+    return;
+  }
+  // No interferir con atajos ni con teclas de edición/navegación (Backspace, flechas, Tab…).
+  if (event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1) {
+    return;
+  }
+  var step = (el.getAttribute("step") || "").toLowerCase();
+  var allowsDecimal = step === "any" || (step !== "" && step !== "1");
+  var isDigit = event.key >= "0" && event.key <= "9";
+  var isDecimalPoint = event.key === "." && allowsDecimal && el.value.indexOf(".") === -1;
+  if (!isDigit && !isDecimalPoint) {
+    event.preventDefault();
+  }
+});
+
 // Cerrar menús desplegables (<details>) al hacer clic fuera de ellos.
 document.addEventListener("click", function (event) {
   document.querySelectorAll("details.usermenu[open], details.catmenu[open]").forEach(function (menu) {
