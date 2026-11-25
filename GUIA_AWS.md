@@ -21,7 +21,7 @@ Navegador ──► Flask en tu computadora (login, roles, CSRF, validación)
                 └──► API Gateway apiGatewayMarketplace
                        │  autorizador: sin el token secreto de Flask → 401/403
                        ▼
-                     6 Lambdas ──► DynamoDB Products
+                    19 Lambdas ──► DynamoDB Products
 ```
 
 Todo el código que vas a pegar en AWS está en la carpeta `aws/` del proyecto. Ábrela en **Visual Studio Code** (`Archivo → Abrir carpeta…` → la carpeta `marketplace`).

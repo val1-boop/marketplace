@@ -76,7 +76,7 @@ hacen lo mismo por separado, y todas deben terminar con **el mismo resultado**.
 
 ```powershell
 .venv\Scripts\Activate.ps1          # activar entorno
-pytest                              # 346 pruebas (no usan AWS)
+pytest                              # 347 pruebas (no usan AWS)
 bandit -r .                         # análisis estático (sin hallazgos; usa .bandit)
 pip-audit -r requirements.txt       # dependencias vulnerables
 flask --app wsgi check-aws          # conexión a MySQL, PostgreSQL y API

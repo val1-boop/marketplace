@@ -1,6 +1,6 @@
 # Árbol COMPLETO de dependencias de ejecución, con versiones exactas (incluye transitivas)
 # para que todas las réplicas instalen exactamente lo mismo.
-# Probado en Python 3.13: pytest (201 pruebas) y bandit limpios con estas versiones.
+# Probado en Python 3.13: pytest (347 pruebas) y bandit limpios con estas versiones.
 # Verificar vulnerabilidades: pip-audit -r requirements.txt
 
 # --- Flask y núcleo
