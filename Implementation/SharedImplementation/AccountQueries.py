@@ -6,7 +6,7 @@ concatenados en el SQL (sin inyección).
 import secrets
 
 from Core.Extensions import db
-from Models import User
+from Models import Seller, User
 from Security import normalize_email
 
 
@@ -34,15 +34,17 @@ def active_admin_count():
 
 
 def seller_display_names(seller_ids):
-    """Nombre público de cada vendedor: nombre + inicial del apellido (nunca el correo)."""
+    """Nombre público de cada vendedor: el de su tienda si lo configuró; si no, nombre + inicial
+    del apellido (nunca el correo)."""
     ids = {sid for sid in seller_ids if sid}
     if not ids:
         return {}
     rows = db.session.execute(
-        db.select(User.seller_id, User.first_name, User.last_name)
+        db.select(User.seller_id, User.first_name, User.last_name, Seller.store_name)
+        .outerjoin(Seller, Seller.seller_id == User.seller_id)
         .where(User.seller_id.in_(ids), User.status == "active")
     ).all()
-    return {sid: f"{first} {last[:1]}." for sid, first, last in rows}
+    return {sid: (store or f"{first} {last[:1]}.") for sid, first, last, store in rows}
 
 
 def user_id_of_seller(seller_id):
