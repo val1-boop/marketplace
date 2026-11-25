@@ -24,3 +24,5 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: Pruebas automáticas
         run: pytest
+      - name: Análisis estático de seguridad (bandit)
+        run: bandit -r .
