@@ -158,6 +158,7 @@ def create_app(config_name=None):
 
     register_template_helpers(app)
     _register_hooks(app)
+    _register_login_redirect(app)
     _register_error_handlers(app)
 
     from Core.Cli import register_cli
@@ -245,6 +246,24 @@ def _render_error(code):
         return render_template("SharedViews/HTML/Error.html", code=code, message=message), code
     except Exception:  # p. ej. Host no confiable: no hay url_adapter para url_for
         return f"Error {code}: {message}", code, {"Content-Type": "text/plain; charset=utf-8"}
+
+
+def _register_login_redirect(app):
+    """Sin sesión, la persona va al login y, al entrar, regresa a donde estaba.
+
+    Una página (GET) se recuerda tal cual. Una acción (POST: agregar al carrito, favoritos, reseñar…)
+    solo admite POST, así que volver a su dirección daría un 405: se regresa a la página de origen
+    (la ficha del producto), que es lo que hace un marketplace."""
+    from flask_login.utils import login_url
+
+    from Security import is_safe_redirect
+    from View.SharedViews.PY.SafeNext import origin_page
+
+    @login_manager.unauthorized_handler
+    def to_login():
+        flash(login_manager.login_message, login_manager.login_message_category)
+        target = request.full_path.rstrip("?") if request.method in ("GET", "HEAD") else origin_page()
+        return redirect(login_url(login_manager.login_view, target if is_safe_redirect(target) else None))
 
 
 def _register_error_handlers(app):
