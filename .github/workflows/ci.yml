@@ -26,3 +26,7 @@ jobs:
         run: pytest
       - name: Análisis estático de seguridad (bandit)
         run: bandit -r .
+      - name: Dependencias con vulnerabilidades conocidas (pip-audit)
+        run: pip-audit -r requirements.txt
+        # Hoy reporta hallazgos pendientes; se quita cuando se actualicen las librerias.
+        continue-on-error: true
