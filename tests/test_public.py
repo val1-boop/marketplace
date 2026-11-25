@@ -103,7 +103,8 @@ def test_product_list_cache_reduces_api_calls_and_clears_on_write(as_alice, app,
         as_alice.get("/items/")
     assert calls["n"] == 1                         # tres visitas, una sola llamada al API
     post_form(as_alice, "/items/new", {"name": "Monitor 24 pulgadas", "category": "monitors",
-                                       "description": "Descripcion de prueba del producto", "price": "2999.00", "stock": "5", "condition": "NEW"})
+                                       "description": "Descripcion de prueba del producto", "price": "2999.00",
+                                       "stock": "5", "condition": "NEW"})
     body = as_alice.get("/items/").get_data(as_text=True)
     assert "Monitor 24 pulgadas" in body           # la escritura vació la caché
     assert calls["n"] == 2

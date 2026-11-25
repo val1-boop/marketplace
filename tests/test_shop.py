@@ -343,7 +343,8 @@ def test_review_after_delivery_updates_average(as_bob, app, client):
     assert products(app)["PROD-001"]["rating_count"] == 1  # una sola reseña por compra
 
 
-@pytest.mark.parametrize("rating,comment", [("6", "Comentario suficientemente largo"), ("0", "Comentario suficientemente largo"),
+@pytest.mark.parametrize("rating,comment", [("6", "Comentario suficientemente largo"),
+                                            ("0", "Comentario suficientemente largo"),
                                             ("4.5", "Comentario suficientemente largo"), ("5", "corto")])
 def test_review_validation(as_bob, app, client, rating, comment):
     _deliver(as_bob, app, client)
@@ -389,7 +390,8 @@ def test_check_aws_reports_every_store_route(app):
 
 def test_seed_demo_publishes_products_with_description(app, monkeypatch):
     for name, value in {"SEED_ADMIN_EMAIL": "ada@marketplace.mx", "SEED_ADMIN_PASSWORD": "Seed-Admin-Test-2026!",
-                        "SEED_USER_EMAIL": "luis@marketplace.mx", "SEED_USER_PASSWORD": "Seed-Seller-Test-2026!"}.items():
+                        "SEED_USER_EMAIL": "luis@marketplace.mx",
+                        "SEED_USER_PASSWORD": "Seed-Seller-Test-2026!"}.items():
         monkeypatch.setenv(name, value)
     result = app.test_cli_runner().invoke(args=["seed-demo"])
     assert result.exit_code == 0, result.output

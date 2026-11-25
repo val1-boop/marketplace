@@ -90,7 +90,8 @@ def test_idor_edit_other_users_product_post(as_bob, table):
     token = get_csrf(as_bob, "/items/new")
     response = as_bob.post("/items/PROD-001/edit", data={
         "csrf_token": token, "name": "Hackeado", "category": "computers",
-        "description": "Descripcion de prueba del producto", "price": "1.00", "stock": "0", "condition": "NEW", "version": "1",
+        "description": "Descripcion de prueba del producto", "price": "1.00", "stock": "0",
+        "condition": "NEW", "version": "1",
     })
     assert response.status_code == 403
     assert table.items["PROD-001"]["name"] == "Laptop HP Victus"
