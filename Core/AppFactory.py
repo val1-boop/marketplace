@@ -179,7 +179,9 @@ def _validate_config(app):
     if not api_url.startswith("https://"):
         raise RuntimeError("PRODUCTS_API_URL debe ser la URL https:// del API Gateway.")
     if len(app.config.get("PRODUCTS_API_TOKEN") or "") < 32:
-        raise RuntimeError("PRODUCTS_API_TOKEN debe tener al menos 32 caracteres (igual que API_TOKEN del autorizador).")
+        raise RuntimeError(
+            "PRODUCTS_API_TOKEN debe tener al menos 32 caracteres (igual que API_TOKEN del autorizador)."
+        )
     if app.config["APP_ENV"] == "production":
         if app.debug:
             raise RuntimeError("Nunca ejecutar con debug en producción.")

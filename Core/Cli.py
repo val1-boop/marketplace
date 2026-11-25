@@ -24,11 +24,20 @@ DEMO_PRODUCTS = [
     ("Router WiFi 6 doble banda", "networking", "1499.00", 40),
 ]
 DEMO_DESCRIPTIONS = {
-    "Laptop HP Victus": "Laptop para juego y programación: Ryzen 7, 16 GB de RAM, SSD de 512 GB y pantalla de 15.6 pulgadas a 144 Hz.",
+    "Laptop HP Victus": (
+        "Laptop para juego y programación: Ryzen 7, 16 GB de RAM, "
+        "SSD de 512 GB y pantalla de 15.6 pulgadas a 144 Hz."
+    ),
     "Mouse Logitech": "Mouse inalámbrico silencioso con receptor USB, 1000 DPI y hasta 18 meses de batería.",
-    "Monitor curvo 27 QHD": "Monitor curvo de 27 pulgadas, resolución 2560 x 1440, 165 Hz y entradas HDMI y DisplayPort.",
+    "Monitor curvo 27 QHD": (
+        "Monitor curvo de 27 pulgadas, resolución 2560 x 1440, "
+        "165 Hz y entradas HDMI y DisplayPort."
+    ),
     "Teclado mecanico RGB": "Teclado mecánico de tamaño completo con switches rojos, iluminación RGB y reposamuñecas.",
-    "Audifonos con cancelacion": "Audífonos inalámbricos con cancelación activa de ruido, 30 horas de batería y carga rápida.",
+    "Audifonos con cancelacion": (
+        "Audífonos inalámbricos con cancelación activa de ruido, "
+        "30 horas de batería y carga rápida."
+    ),
     "SSD externo 1TB": "Disco de estado sólido portátil de 1 TB con USB-C, hasta 1050 MB/s y carcasa resistente.",
     "Silla ergonomica": "Silla de oficina con soporte lumbar ajustable, respaldo de malla y descansabrazos 3D.",
     "Router WiFi 6 doble banda": "Router WiFi 6 AX3000 de doble banda con 4 antenas y control parental.",

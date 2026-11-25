@@ -61,8 +61,9 @@ def catalog():
     # Solo sin búsqueda ni filtros: con filtros, la página muestra únicamente lo que coincide.
     shown = {p.product_id for p in pagination.items}
     filtered = not valid or any((query.q, query.department, query.category, query.availability))
-    recommended = [] if filtered else sorted((p for p in product_service().list_active_products() if p.product_id not in shown),
-                         key=lambda p: (p.rating_avg, p.rating_count, p.sales_count), reverse=True)[:RECOMMENDED]
+    recommended = [] if filtered else sorted(
+        (p for p in product_service().list_active_products() if p.product_id not in shown),
+        key=lambda p: (p.rating_avg, p.rating_count, p.sales_count), reverse=True)[:RECOMMENDED]
     return render_template(
         "ProductViews/HTML/Catalog.html", form=form, valid=valid, pagination=pagination,
         params=query.__dict__, facets=facets, chips=active_chips(query, filter_url),

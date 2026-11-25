@@ -34,5 +34,3 @@ jobs:
         run: |
           pip install ruff==0.17.6
           ruff check .
-        # Se hace obligatorio al terminar la limpieza de estilo.
-        continue-on-error: true
