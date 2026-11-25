@@ -43,6 +43,14 @@ configurar el `.env`, sembrar datos de demostración y correr la app) están en:
 La configuración local (claves, endpoints y tokens) vive en un archivo `.env` que **no se incluye**
 en el repositorio; usa [`.env.example`](.env.example) como plantilla.
 
+## Ver la aplicación sin AWS (para desarrollar)
+
+```bash
+python tools/dev_fake_aws.py   # http://localhost:5000
+```
+
+Usa SQLite y un DynamoDB simulado en memoria: no se conecta a AWS y sus datos se borran al detenerlo. Las cuentas de prueba y sus contraseñas aleatorias se muestran en la terminal.
+
 ## Pruebas
 
 ```bash
