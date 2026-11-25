@@ -11,3 +11,4 @@ from Models.IdentityModels import (  # noqa: F401
 )
 from Models.SecurityModels import AuthEvent, LoginAttempt  # noqa: F401
 from Models.AddressModels import MAX_ADDRESSES_PER_USER, Address  # noqa: F401
+from Models.SellerModels import Seller  # noqa: F401
