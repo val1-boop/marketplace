@@ -1,0 +1,463 @@
+openapi: 3.0.3
+info:
+  title: Marketplace - API protegida (apiGatewayMarketplace)
+  version: 2.1.0
+  description: |
+    API HTTP de AWS API Gateway con una función Lambda por ruta y DynamoDB como base de datos.
+    Solo el servidor Flask la llama; el navegador nunca. Todas las rutas exigen el token secreto
+    en la cabecera `x-mkt-token` (lo valida la Lambda `lambdaAuthorizer`) y las cabeceras de
+    "actor" que Flask toma de la sesión de la persona. No hay CORS.
+servers:
+  - url: https://{apiId}.execute-api.us-east-1.amazonaws.com
+    description: URL de invocación de la etapa $default (sin barra final)
+    variables:
+      apiId:
+        default: abc123xyz
+security:
+  - mktToken: []
+components:
+  securitySchemes:
+    mktToken:
+      type: apiKey
+      in: header
+      name: x-mkt-token
+      description: Secreto de al menos 32 caracteres, igual a API_TOKEN del autorizador. Sin token responde 401; con token falso, 403.
+  parameters:
+    ActorRole:
+      name: x-mkt-actor-role
+      in: header
+      required: false
+      description: Rol de quien actúa, tomado de la sesión de Flask.
+      schema: {type: string, enum: [user, admin]}
+    ActorSeller:
+      name: x-mkt-actor-seller
+      in: header
+      required: false
+      description: Código de vendedor (SEL-######); vacío si es administrador.
+      schema: {type: string, pattern: '^(SEL-[0-9]{3,8})?$'}
+    ActorUser:
+      name: x-mkt-actor-user
+      in: header
+      required: false
+      description: UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.
+      schema: {type: string, format: uuid}
+    ProductId:
+      name: product_id
+      in: path
+      required: true
+      schema: {type: string, pattern: '^PROD-[0-9]{3,8}$', example: PROD-00000001}
+    OrderId:
+      name: order_id
+      in: path
+      required: true
+      schema: {type: string, pattern: '^[0-9A-HJKMNP-TV-Z]{26}$', example: 01ARZ3NDEKTSV4RRFFQ69G5FAV}
+  responses:
+    Unauthorized:
+      description: Falta el token (lo responde API Gateway antes de llegar a la Lambda).
+    Forbidden:
+      description: Token falso, actor no válido o sin permiso para la operación.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+    NotFound:
+      description: No existe, o no es tuyo (un recurso ajeno responde 404 para no revelar que existe).
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+    BadRequest:
+      description: Datos inválidos o campos no permitidos.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+    Conflict:
+      description: Conflicto de versión, de existencias o de estado del pedido.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+  schemas:
+    Error:
+      type: object
+      properties:
+        mensaje: {type: string}
+        errores:
+          type: array
+          items: {type: string}
+    Product:
+      type: object
+      properties:
+        product_id: {type: string}
+        name: {type: string}
+        description: {type: string}
+        category: {type: string, enum: [monitors, computers, storage, networking, computer-accessories, audio, office]}
+        price: {type: string, example: '749.00'}
+        stock: {type: integer}
+        seller_id: {type: string}
+        seller_sku: {type: string}
+        images:
+          type: array
+          maxItems: 5
+          items: {type: string, pattern: '^[0-9a-f]{32}\.(jpg|png|webp)$'}
+        condition: {type: string, enum: [NEW, USED, REFURBISHED]}
+        status: {type: string, enum: [ACTIVE, BLOCKED, DELISTED]}
+        version: {type: integer}
+        rating_avg: {type: string}
+        rating_count: {type: integer}
+        sales_count: {type: integer}
+    ProductInput:
+      type: object
+      required: [name, category, price, stock]
+      description: Cualquier otro campo se rechaza con 400 (lista blanca). El dueño y el ID los pone el servidor.
+      properties:
+        name: {type: string, minLength: 3, maxLength: 120}
+        description: {type: string, maxLength: 2000}
+        category: {type: string}
+        price: {type: string, description: Entre 0.01 y 9999999.99 con máximo 2 decimales}
+        stock: {type: integer, minimum: 0, maximum: 100000}
+        condition: {type: string, enum: [NEW, USED, REFURBISHED], default: NEW}
+        seller_sku: {type: string, maxLength: 40}
+        images:
+          type: array
+          maxItems: 5
+          items: {type: string}
+    Address:
+      type: object
+      required: [recipient_name, phone, line1, city, state, postal_code]
+      properties:
+        recipient_name: {type: string}
+        phone: {type: string, pattern: '^[0-9]{10}$'}
+        line1: {type: string}
+        line2: {type: string}
+        city: {type: string}
+        state: {type: string}
+        postal_code: {type: string, pattern: '^[0-9]{5}$'}
+    OrderSummary:
+      type: object
+      properties:
+        order_id: {type: string}
+        status: {type: string, enum: [CONFIRMED, PREPARING, SHIPPED, DELIVERED, CANCELLED]}
+        title: {type: string}
+        total: {type: string}
+        units: {type: integer}
+        seller_id: {type: string}
+        created_at: {type: string}
+        estimated_from: {type: string}
+        estimated_to: {type: string}
+    Payment:
+      type: object
+      description: Pago SIMULADO. No se guarda ningún dato de tarjeta.
+      properties:
+        status: {type: string, example: PAID}
+        method: {type: string, example: SIMULATED}
+        amount: {type: string}
+        paid_at: {type: string}
+    Review:
+      type: object
+      properties:
+        review_id: {type: string}
+        rating: {type: integer, minimum: 1, maximum: 5}
+        comment: {type: string}
+        author_name: {type: string}
+paths:
+  /products:
+    get:
+      tags: [Productos]
+      summary: Lista productos (lambdaListProducts)
+      description: |
+        Sin `limit` devuelve hasta 1000 productos. Con `limit` devuelve esa cantidad y un `next_cursor`
+        que se envía como `cursor` para pedir la página siguiente.
+      parameters:
+        - {name: seller_id, in: query, required: false, schema: {type: string, pattern: '^SEL-[0-9]{3,8}$'}}
+        - {name: limit, in: query, required: false, schema: {type: integer, minimum: 1, maximum: 500}}
+        - {name: cursor, in: query, required: false, schema: {type: string, maxLength: 400}}
+      responses:
+        '200':
+          description: Lista de productos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  productos: {type: array, items: {$ref: '#/components/schemas/Product'}}
+                  next_cursor: {type: string, nullable: true}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+    post:
+      tags: [Productos]
+      summary: Publica un producto (lambdaCreateProduct)
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/ProductInput'}
+      responses:
+        '201':
+          description: Producto creado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensaje: {type: string}
+                  producto: {$ref: '#/components/schemas/Product'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+  /products/{product_id}:
+    parameters:
+      - {$ref: '#/components/parameters/ProductId'}
+    get:
+      tags: [Productos]
+      summary: Ficha de un producto (lambdaGetProduct)
+      responses:
+        '200':
+          description: El producto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  producto: {$ref: '#/components/schemas/Product'}
+        '404': {$ref: '#/components/responses/NotFound'}
+    put:
+      tags: [Productos]
+      summary: Edita (dueño) o modera (administrador) un producto (lambdaUpdateProduct)
+      description: |
+        Dueño: `{"action": "update", "expected_version": N, ...campos}` (bloqueo optimista; 409 si cambió).
+        Administrador: `{"action": "block", "reason": "..."}`, `{"action": "unblock"}` o `{"action": "delist"}`.
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action: {type: string, enum: [update, block, unblock, delist]}
+                expected_version: {type: integer}
+                reason: {type: string, minLength: 5, maxLength: 500}
+      responses:
+        '200': {description: Producto actualizado}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+    delete:
+      tags: [Productos]
+      summary: Elimina un producto (dueño o administrador) (lambdaDeleteProduct)
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+      responses:
+        '200': {description: Producto eliminado}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+  /products/{product_id}/reviews:
+    parameters:
+      - {$ref: '#/components/parameters/ProductId'}
+    get:
+      tags: [Reseñas]
+      summary: Reseñas de un producto y si la persona puede opinar (lambdaListReviews)
+      parameters:
+        - {$ref: '#/components/parameters/ActorUser'}
+      responses:
+        '200':
+          description: Reseñas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resenas: {type: array, items: {$ref: '#/components/schemas/Review'}}
+                  puede_opinar: {type: boolean}
+    post:
+      tags: [Reseñas]
+      summary: Publica una reseña (solo de una compra entregada, una vez) (lambdaCreateReview)
+      description: Transacción atómica de DynamoDB que marca la compra como usada, guarda la reseña y actualiza el promedio.
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+        - {$ref: '#/components/parameters/ActorUser'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [rating, comment, author_name]
+              properties:
+                rating: {type: integer, minimum: 1, maximum: 5}
+                comment: {type: string, minLength: 10, maxLength: 1000}
+                author_name: {type: string, minLength: 2, maxLength: 40}
+      responses:
+        '201': {description: Reseña creada}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+  /cart:
+    get:
+      tags: [Carrito]
+      summary: Carrito con precios actuales leídos de Products (lambdaGetCart)
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+        - {$ref: '#/components/parameters/ActorUser'}
+      responses:
+        '200': {description: Líneas del carrito y total}
+        '403': {$ref: '#/components/responses/Forbidden'}
+  /cart/{product_id}:
+    parameters:
+      - {$ref: '#/components/parameters/ProductId'}
+      - {$ref: '#/components/parameters/ActorRole'}
+      - {$ref: '#/components/parameters/ActorSeller'}
+      - {$ref: '#/components/parameters/ActorUser'}
+    put:
+      tags: [Carrito]
+      summary: Agrega o fija la cantidad de un producto (lambdaPutCartItem)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity: {type: integer, minimum: 1, maximum: 10}
+                mode: {type: string, enum: [add, set], default: add}
+      responses:
+        '200': {description: Carrito actualizado}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+    delete:
+      tags: [Carrito]
+      summary: Quita un renglón del carrito (lambdaDeleteCartItem)
+      responses:
+        '200': {description: Renglón eliminado}
+  /favorites:
+    get:
+      tags: [Favoritos]
+      summary: Lista de favoritos (lambdaListFavorites)
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+        - {$ref: '#/components/parameters/ActorUser'}
+      responses:
+        '200': {description: Favoritos}
+  /favorites/{product_id}:
+    parameters:
+      - {$ref: '#/components/parameters/ProductId'}
+      - {$ref: '#/components/parameters/ActorRole'}
+      - {$ref: '#/components/parameters/ActorSeller'}
+      - {$ref: '#/components/parameters/ActorUser'}
+    put:
+      tags: [Favoritos]
+      summary: Agrega un favorito (lambdaAddFavorite)
+      responses:
+        '200': {description: Favorito agregado}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+    delete:
+      tags: [Favoritos]
+      summary: Quita un favorito (lambdaDeleteFavorite)
+      responses:
+        '200': {description: Favorito eliminado}
+  /orders:
+    post:
+      tags: [Pedidos]
+      summary: Paga el carrito y crea un pedido por vendedor (lambdaCreateOrder)
+      description: |
+        Una sola transacción de DynamoDB (TransactWriteItems): crea los pedidos y su pago simulado,
+        descuenta las existencias (solo si alcanzan) y vacía el carrito. Todo o nada.
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+        - {$ref: '#/components/parameters/ActorUser'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [address]
+              properties:
+                address: {$ref: '#/components/schemas/Address'}
+      responses:
+        '201':
+          description: Pedidos creados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensaje: {type: string}
+                  pedidos: {type: array, items: {$ref: '#/components/schemas/OrderSummary'}}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '409': {$ref: '#/components/responses/Conflict'}
+    get:
+      tags: [Pedidos]
+      summary: Mis compras (lambdaListOrders)
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+        - {$ref: '#/components/parameters/ActorUser'}
+      responses:
+        '200': {description: Pedidos del comprador}
+  /orders/{order_id}:
+    parameters:
+      - {$ref: '#/components/parameters/OrderId'}
+      - {$ref: '#/components/parameters/ActorRole'}
+      - {$ref: '#/components/parameters/ActorSeller'}
+      - {$ref: '#/components/parameters/ActorUser'}
+    get:
+      tags: [Pedidos]
+      summary: Detalle de un pedido con renglones, envío, pago e historial (lambdaGetOrder)
+      responses:
+        '200':
+          description: Detalle del pedido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pedido:
+                    allOf:
+                      - {$ref: '#/components/schemas/OrderSummary'}
+                      - type: object
+                        properties:
+                          payment: {$ref: '#/components/schemas/Payment'}
+        '404': {$ref: '#/components/responses/NotFound'}
+    put:
+      tags: [Pedidos]
+      summary: Prepara, envía, entrega o cancela un pedido (lambdaUpdateOrderStatus)
+      description: Transacción atómica. Al cancelar, las piezas regresan al inventario. Quién puede hacer cada acción depende de su papel y del estado.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [action]
+              properties:
+                action: {type: string, enum: [prepare, ship, deliver, cancel]}
+                reason: {type: string, minLength: 3, maxLength: 200}
+      responses:
+        '200': {description: Pedido actualizado}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+  /sales:
+    get:
+      tags: [Pedidos]
+      summary: Mis ventas (lambdaListSales)
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+        - {$ref: '#/components/parameters/ActorUser'}
+      responses:
+        '200': {description: Pedidos que recibió el vendedor}
+        '403': {$ref: '#/components/responses/Forbidden'}

@@ -504,7 +504,7 @@ Los comandos son para **Windows PowerShell** (terminal de VS Code); en Mac o Lin
    ```
 
 ✅ **Punto de control:** copia idéntica, `pip install` sin errores, `SECRET_KEY` con una cadena
-aleatoria y `pytest` con **238 passed**.
+aleatoria y `pytest` con **347 passed**.
 
 ### Fase 2 — DynamoDB (4 tablas)
 
@@ -811,7 +811,7 @@ los productos de demostración.
 
 1. Las pruebas y los análisis deben quedar limpios:
    ```powershell
-   pytest                          # 346 passed
+   pytest                          # 347 passed
    bandit -r .                     # "No issues identified."
    pip-audit -r requirements.txt   # "No known vulnerabilities found"
    ```
@@ -1016,7 +1016,7 @@ exactas de `requirements.txt`):
 
 | Componente | Estado | Cómo |
 |---|---|---|
-| Suite completa (app Flask + Lambdas + cliente del API) | ✅ **346 pruebas pasan** | `pytest` |
+| Suite completa (app Flask + Lambdas + cliente del API) | ✅ **347 pruebas pasan** | `pytest` |
 | Código de las 19 Lambdas | ✅ incluidas en la suite | `tests/test_lambdas.py` y `tests/test_lambdas_shop.py` contra las 4 tablas simuladas (incluye transacciones) |
 | Flujos de compra en Flask | ✅ | `tests/test_shop.py`: carrito, favoritos, direcciones, compra, estados, reseñas y ataques (IDOR, CSRF, precio, XSS, open redirect) |
 | Análisis estático | ✅ sin hallazgos | `bandit` |
