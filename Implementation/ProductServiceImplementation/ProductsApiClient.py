@@ -25,17 +25,28 @@ class ProductsAPI(ApiGatewayClient):
             raise ProductNotFound("ID inválido")
         return "/products/" + quote(product_id, safe="") + suffix
 
+    PAGE_SIZE = 500   # productos por llamada (cada llamada es una invocación de Lambda)
+    MAX_PAGES = 100   # tope de seguridad: 50,000 productos
+
     def list_products(self, seller_id=None):
-        params = None
+        """Todos los productos (o los de un vendedor), pidiendo el API por páginas."""
+        params = {"limit": self.PAGE_SIZE}
         if seller_id is not None:
             if not SELLER_ID_RE.match(seller_id):
                 return []
-            params = {"seller_id": seller_id}
-        body = self.request("GET", "/products", params=params)
-        items = body.get("productos")
-        if not isinstance(items, list):
-            raise ProductsAPIError("Listado inesperado")
-        return [ProductDTO.from_api(item) for item in items]
+            params["seller_id"] = seller_id
+        products = []
+        for _ in range(self.MAX_PAGES):
+            body = self.request("GET", "/products", params=params)
+            items = body.get("productos")
+            if not isinstance(items, list):
+                raise ProductsAPIError("Listado inesperado")
+            products.extend(ProductDTO.from_api(item) for item in items)
+            cursor = body.get("next_cursor")
+            if not cursor:
+                return products
+            params = {**params, "cursor": str(cursor)[:400]}
+        raise ProductsAPIError("El catálogo tiene demasiadas páginas")
 
     def get_product(self, product_id):
         body = self.request("GET", self._path(product_id))
