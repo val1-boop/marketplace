@@ -157,4 +157,144 @@ components:
         rating: {type: integer, minimum: 1, maximum: 5}
         comment: {type: string}
         author_name: {type: string}
-paths: {}
+paths:
+  /products:
+    get:
+      tags: [Productos]
+      summary: Lista productos (lambdaListProducts)
+      description: |
+        Sin `limit` devuelve hasta 1000 productos. Con `limit` devuelve esa cantidad y un `next_cursor`
+        que se envía como `cursor` para pedir la página siguiente.
+      parameters:
+        - {name: seller_id, in: query, required: false, schema: {type: string, pattern: '^SEL-[0-9]{3,8}$'}}
+        - {name: limit, in: query, required: false, schema: {type: integer, minimum: 1, maximum: 500}}
+        - {name: cursor, in: query, required: false, schema: {type: string, maxLength: 400}}
+      responses:
+        '200':
+          description: Lista de productos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  productos: {type: array, items: {$ref: '#/components/schemas/Product'}}
+                  next_cursor: {type: string, nullable: true}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+    post:
+      tags: [Productos]
+      summary: Publica un producto (lambdaCreateProduct)
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/ProductInput'}
+      responses:
+        '201':
+          description: Producto creado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensaje: {type: string}
+                  producto: {$ref: '#/components/schemas/Product'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+  /products/{product_id}:
+    parameters:
+      - {$ref: '#/components/parameters/ProductId'}
+    get:
+      tags: [Productos]
+      summary: Ficha de un producto (lambdaGetProduct)
+      responses:
+        '200':
+          description: El producto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  producto: {$ref: '#/components/schemas/Product'}
+        '404': {$ref: '#/components/responses/NotFound'}
+    put:
+      tags: [Productos]
+      summary: Edita (dueño) o modera (administrador) un producto (lambdaUpdateProduct)
+      description: |
+        Dueño: `{"action": "update", "expected_version": N, ...campos}` (bloqueo optimista; 409 si cambió).
+        Administrador: `{"action": "block", "reason": "..."}`, `{"action": "unblock"}` o `{"action": "delist"}`.
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action: {type: string, enum: [update, block, unblock, delist]}
+                expected_version: {type: integer}
+                reason: {type: string, minLength: 5, maxLength: 500}
+      responses:
+        '200': {description: Producto actualizado}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+    delete:
+      tags: [Productos]
+      summary: Elimina un producto (dueño o administrador) (lambdaDeleteProduct)
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+      responses:
+        '200': {description: Producto eliminado}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+  /products/{product_id}/reviews:
+    parameters:
+      - {$ref: '#/components/parameters/ProductId'}
+    get:
+      tags: [Reseñas]
+      summary: Reseñas de un producto y si la persona puede opinar (lambdaListReviews)
+      parameters:
+        - {$ref: '#/components/parameters/ActorUser'}
+      responses:
+        '200':
+          description: Reseñas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resenas: {type: array, items: {$ref: '#/components/schemas/Review'}}
+                  puede_opinar: {type: boolean}
+    post:
+      tags: [Reseñas]
+      summary: Publica una reseña (solo de una compra entregada, una vez) (lambdaCreateReview)
+      description: Transacción atómica de DynamoDB que marca la compra como usada, guarda la reseña y actualiza el promedio.
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+        - {$ref: '#/components/parameters/ActorUser'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [rating, comment, author_name]
+              properties:
+                rating: {type: integer, minimum: 1, maximum: 5}
+                comment: {type: string, minLength: 10, maxLength: 1000}
+                author_name: {type: string, minLength: 2, maxLength: 40}
+      responses:
+        '201': {description: Reseña creada}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
