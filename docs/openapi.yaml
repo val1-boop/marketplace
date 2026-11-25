@@ -298,3 +298,166 @@ paths:
         '400': {$ref: '#/components/responses/BadRequest'}
         '403': {$ref: '#/components/responses/Forbidden'}
         '404': {$ref: '#/components/responses/NotFound'}
+  /cart:
+    get:
+      tags: [Carrito]
+      summary: Carrito con precios actuales leídos de Products (lambdaGetCart)
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+        - {$ref: '#/components/parameters/ActorUser'}
+      responses:
+        '200': {description: Líneas del carrito y total}
+        '403': {$ref: '#/components/responses/Forbidden'}
+  /cart/{product_id}:
+    parameters:
+      - {$ref: '#/components/parameters/ProductId'}
+      - {$ref: '#/components/parameters/ActorRole'}
+      - {$ref: '#/components/parameters/ActorSeller'}
+      - {$ref: '#/components/parameters/ActorUser'}
+    put:
+      tags: [Carrito]
+      summary: Agrega o fija la cantidad de un producto (lambdaPutCartItem)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity: {type: integer, minimum: 1, maximum: 10}
+                mode: {type: string, enum: [add, set], default: add}
+      responses:
+        '200': {description: Carrito actualizado}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+    delete:
+      tags: [Carrito]
+      summary: Quita un renglón del carrito (lambdaDeleteCartItem)
+      responses:
+        '200': {description: Renglón eliminado}
+  /favorites:
+    get:
+      tags: [Favoritos]
+      summary: Lista de favoritos (lambdaListFavorites)
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+        - {$ref: '#/components/parameters/ActorUser'}
+      responses:
+        '200': {description: Favoritos}
+  /favorites/{product_id}:
+    parameters:
+      - {$ref: '#/components/parameters/ProductId'}
+      - {$ref: '#/components/parameters/ActorRole'}
+      - {$ref: '#/components/parameters/ActorSeller'}
+      - {$ref: '#/components/parameters/ActorUser'}
+    put:
+      tags: [Favoritos]
+      summary: Agrega un favorito (lambdaAddFavorite)
+      responses:
+        '200': {description: Favorito agregado}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+    delete:
+      tags: [Favoritos]
+      summary: Quita un favorito (lambdaDeleteFavorite)
+      responses:
+        '200': {description: Favorito eliminado}
+  /orders:
+    post:
+      tags: [Pedidos]
+      summary: Paga el carrito y crea un pedido por vendedor (lambdaCreateOrder)
+      description: |
+        Una sola transacción de DynamoDB (TransactWriteItems): crea los pedidos y su pago simulado,
+        descuenta las existencias (solo si alcanzan) y vacía el carrito. Todo o nada.
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+        - {$ref: '#/components/parameters/ActorUser'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [address]
+              properties:
+                address: {$ref: '#/components/schemas/Address'}
+      responses:
+        '201':
+          description: Pedidos creados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensaje: {type: string}
+                  pedidos: {type: array, items: {$ref: '#/components/schemas/OrderSummary'}}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '409': {$ref: '#/components/responses/Conflict'}
+    get:
+      tags: [Pedidos]
+      summary: Mis compras (lambdaListOrders)
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+        - {$ref: '#/components/parameters/ActorUser'}
+      responses:
+        '200': {description: Pedidos del comprador}
+  /orders/{order_id}:
+    parameters:
+      - {$ref: '#/components/parameters/OrderId'}
+      - {$ref: '#/components/parameters/ActorRole'}
+      - {$ref: '#/components/parameters/ActorSeller'}
+      - {$ref: '#/components/parameters/ActorUser'}
+    get:
+      tags: [Pedidos]
+      summary: Detalle de un pedido con renglones, envío, pago e historial (lambdaGetOrder)
+      responses:
+        '200':
+          description: Detalle del pedido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pedido:
+                    allOf:
+                      - {$ref: '#/components/schemas/OrderSummary'}
+                      - type: object
+                        properties:
+                          payment: {$ref: '#/components/schemas/Payment'}
+        '404': {$ref: '#/components/responses/NotFound'}
+    put:
+      tags: [Pedidos]
+      summary: Prepara, envía, entrega o cancela un pedido (lambdaUpdateOrderStatus)
+      description: Transacción atómica. Al cancelar, las piezas regresan al inventario. Quién puede hacer cada acción depende de su papel y del estado.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [action]
+              properties:
+                action: {type: string, enum: [prepare, ship, deliver, cancel]}
+                reason: {type: string, minLength: 3, maxLength: 200}
+      responses:
+        '200': {description: Pedido actualizado}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+  /sales:
+    get:
+      tags: [Pedidos]
+      summary: Mis ventas (lambdaListSales)
+      parameters:
+        - {$ref: '#/components/parameters/ActorRole'}
+        - {$ref: '#/components/parameters/ActorSeller'}
+        - {$ref: '#/components/parameters/ActorUser'}
+      responses:
+        '200': {description: Pedidos que recibió el vendedor}
+        '403': {$ref: '#/components/responses/Forbidden'}
