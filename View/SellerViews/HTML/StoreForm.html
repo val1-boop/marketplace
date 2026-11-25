@@ -1,0 +1,17 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import render_field %}
+{% block title %}Datos de mi tienda{% endblock %}
+{% block content %}
+<nav aria-label="Ruta"><ol class="crumbs"><li><a href="{{ url_for('main.index') }}">Inicio</a></li><li><a href="{{ url_for('main.profile') }}">Mi perfil</a></li><li aria-current="page">Mi tienda</li></ol></nav>
+<form class="formcard" method="post" action="{{ url_for('store.edit') }}">
+  <h1>Datos de mi tienda</h1>
+  <p class="muted">Así te verán los compradores en tus productos: "Vendido por <strong>{{ form.store_name.data or "tu tienda" }}</strong>".</p>
+  {{ form.hidden_tag() }}
+  {{ render_field(form.store_name, placeholder="Ej. Tecnología Valeria") }}
+  {{ render_field(form.description, hint="Cuenta en una o dos frases qué vendes.") }}
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a class="btn" href="{{ url_for('main.profile') }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

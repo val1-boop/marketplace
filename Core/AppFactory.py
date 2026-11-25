@@ -133,6 +133,7 @@ def create_app(config_name=None):
     from Services.OrderService.OrderService import bp as orders_bp
     from Services.ProductService.ProductService import bp as items_bp
     from Services.ReviewService.ReviewService import bp as reviews_bp
+    from Services.SellerService.SellerService import bp as store_bp
     from Services.UserService.UserService import bp as users_bp
     from View.SharedViews.Utils.Assets import register_assets
     from View.SharedViews.Utils.TemplateHelpers import register_template_helpers
@@ -146,6 +147,7 @@ def create_app(config_name=None):
     app.register_blueprint(addresses_bp)
     app.register_blueprint(orders_bp)
     app.register_blueprint(reviews_bp)
+    app.register_blueprint(store_bp)
     register_assets(app)
 
     # Un solo cliente HTTP del API (las pruebas lo sustituyen por un API Gateway simulado)
