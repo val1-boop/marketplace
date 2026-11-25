@@ -1,0 +1,4304 @@
+{
+  "item": [
+    {
+      "id": "209ec129-9af5-4d7c-9a3e-72d212aad552",
+      "name": "Productos",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "095b1d19-ef98-402f-920e-5fb5aad2cdce",
+          "name": "Lista productos (lambdaListProducts)",
+          "request": {
+            "name": "Lista productos (lambdaListProducts)",
+            "description": {
+              "content": "Sin `limit` devuelve hasta 1000 productos. Con `limit` devuelve esa cantidad y un `next_cursor`\nque se envía como `cursor` para pedir la página siguiente.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "products"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": true,
+                  "key": "seller_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": true,
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": true,
+                  "key": "cursor",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "5dfba62c-1680-4f35-bfcd-183c301b94d0",
+              "name": "Lista de productos",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "seller_id",
+                      "value": "<string>",
+                      "disabled": true
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>",
+                      "disabled": true
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"productos\": [\n    {\n      \"product_id\": \"string\",\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"category\": \"networking\",\n      \"price\": \"749.00\",\n      \"stock\": 9914,\n      \"seller_id\": \"string\",\n      \"seller_sku\": \"string\",\n      \"images\": [\n        \"0123456789abcdef0123456789abcdef.jpg\",\n        \"0123456789abcdef0123456789abcdef.webp\"\n      ],\n      \"condition\": \"REFURBISHED\",\n      \"status\": \"ACTIVE\",\n      \"version\": 6346,\n      \"rating_avg\": \"string\",\n      \"rating_count\": 1246,\n      \"sales_count\": 2927\n    },\n    {\n      \"product_id\": \"string\",\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"category\": \"monitors\",\n      \"price\": \"749.00\",\n      \"stock\": 6363,\n      \"seller_id\": \"string\",\n      \"seller_sku\": \"string\",\n      \"images\": [\n        \"0123456789abcdef0123456789abcdef.jpg\",\n        \"0123456789abcdef0123456789abcdef.png\"\n      ],\n      \"condition\": \"USED\",\n      \"status\": \"DELISTED\",\n      \"version\": 9387,\n      \"rating_avg\": \"string\",\n      \"rating_count\": 5286,\n      \"sales_count\": 6958\n    }\n  ],\n  \"next_cursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bb911d0a-6c9a-40df-9a2c-131299b68df7",
+              "name": "Datos inválidos o campos no permitidos.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "seller_id",
+                      "value": "<string>",
+                      "disabled": true
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>",
+                      "disabled": true
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ca369ab5-b2cd-40a1-8a71-01b9725fec18",
+              "name": "Falta el token (lo responde API Gateway antes de llegar a la Lambda).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "seller_id",
+                      "value": "<string>",
+                      "disabled": true
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>",
+                      "disabled": true
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "135e8593-4b3f-4af4-9315-d91a661366e6",
+              "name": "Token falso, actor no válido o sin permiso para la operación.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "seller_id",
+                      "value": "<string>",
+                      "disabled": true
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>",
+                      "disabled": true
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b71a3f22-1687-43e2-ae32-9a6fc4a9e1e9",
+          "name": "Publica un producto (lambdaCreateProduct)",
+          "request": {
+            "name": "Publica un producto (lambdaCreateProduct)",
+            "description": {},
+            "url": {
+              "path": [
+                "products"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": []
+            },
+            "header": [
+              {
+                "disabled": true,
+                "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                "key": "x-mkt-actor-role",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                "key": "x-mkt-actor-seller",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"category\": \"<string>\",\n  \"price\": \"<string>\",\n  \"stock\": \"<integer>\",\n  \"description\": \"<string>\",\n  \"condition\": \"NEW\",\n  \"seller_sku\": \"<string>\",\n  \"images\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "63aa826e-b647-4203-b62c-34712e06b8ee",
+              "name": "Producto creado",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"category\": \"<string>\",\n  \"price\": \"<string>\",\n  \"stock\": \"<integer>\",\n  \"description\": \"<string>\",\n  \"condition\": \"NEW\",\n  \"seller_sku\": \"<string>\",\n  \"images\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"producto\": {\n    \"product_id\": \"string\",\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"category\": \"audio\",\n    \"price\": \"749.00\",\n    \"stock\": 5990,\n    \"seller_id\": \"string\",\n    \"seller_sku\": \"string\",\n    \"images\": [\n      \"0123456789abcdef0123456789abcdef.jpg\",\n      \"0123456789abcdef0123456789abcdef.webp\"\n    ],\n    \"condition\": \"REFURBISHED\",\n    \"status\": \"ACTIVE\",\n    \"version\": 6296,\n    \"rating_avg\": \"string\",\n    \"rating_count\": 1829,\n    \"sales_count\": 4196\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0503bfc7-f0f2-4d1b-9989-c487642097cc",
+              "name": "Datos inválidos o campos no permitidos.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"category\": \"<string>\",\n  \"price\": \"<string>\",\n  \"stock\": \"<integer>\",\n  \"description\": \"<string>\",\n  \"condition\": \"NEW\",\n  \"seller_sku\": \"<string>\",\n  \"images\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "414b2df3-701a-4d09-a406-04c467d0714e",
+              "name": "Token falso, actor no válido o sin permiso para la operación.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"category\": \"<string>\",\n  \"price\": \"<string>\",\n  \"stock\": \"<integer>\",\n  \"description\": \"<string>\",\n  \"condition\": \"NEW\",\n  \"seller_sku\": \"<string>\",\n  \"images\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e62afabd-e6e5-45b3-9cee-5792b4f90dcb",
+          "name": "Ficha de un producto (lambdaGetProduct)",
+          "request": {
+            "name": "Ficha de un producto (lambdaGetProduct)",
+            "description": {},
+            "url": {
+              "path": [
+                "products",
+                ":product_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "product_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "af45a422-72f3-4eb8-ac6a-f4064552b3e1",
+              "name": "El producto",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"producto\": {\n    \"product_id\": \"string\",\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"category\": \"monitors\",\n    \"price\": \"749.00\",\n    \"stock\": 1761,\n    \"seller_id\": \"string\",\n    \"seller_sku\": \"string\",\n    \"images\": [\n      \"0123456789abcdef0123456789abcdef.webp\",\n      \"0123456789abcdef0123456789abcdef.webp\"\n    ],\n    \"condition\": \"USED\",\n    \"status\": \"DELISTED\",\n    \"version\": 7937,\n    \"rating_avg\": \"string\",\n    \"rating_count\": 9521,\n    \"sales_count\": 9677\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "02ab37f1-931e-4ce4-8fc3-44665a28ea9f",
+              "name": "No existe, o no es tuyo (un recurso ajeno responde 404 para no revelar que existe).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dc75c654-f5b1-4b99-aaec-c5c322245e5f",
+          "name": "Edita (dueño) o modera (administrador) un producto (lambdaUpdateProduct)",
+          "request": {
+            "name": "Edita (dueño) o modera (administrador) un producto (lambdaUpdateProduct)",
+            "description": {
+              "content": "Dueño: `{\"action\": \"update\", \"expected_version\": N, ...campos}` (bloqueo optimista; 409 si cambió).\nAdministrador: `{\"action\": \"block\", \"reason\": \"...\"}`, `{\"action\": \"unblock\"}` o `{\"action\": \"delist\"}`.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "products",
+                ":product_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "product_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": true,
+                "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                "key": "x-mkt-actor-role",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                "key": "x-mkt-actor-seller",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"<string>\",\n  \"expected_version\": \"<integer>\",\n  \"reason\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "12921262-1d95-4ef7-a4e8-0421f5b41abc",
+              "name": "Producto actualizado",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"expected_version\": \"<integer>\",\n  \"reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d4924837-7be7-481f-9eed-4f11376725c6",
+              "name": "Datos inválidos o campos no permitidos.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"expected_version\": \"<integer>\",\n  \"reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "91e3ad64-726d-4a1c-a4f8-429ac395f598",
+              "name": "Token falso, actor no válido o sin permiso para la operación.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"expected_version\": \"<integer>\",\n  \"reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "46a9945b-7301-4968-bf23-8d8a70cd76d7",
+              "name": "No existe, o no es tuyo (un recurso ajeno responde 404 para no revelar que existe).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"expected_version\": \"<integer>\",\n  \"reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6b7eab98-3263-4ca6-8bb3-912e6f040699",
+              "name": "Conflicto de versión, de existencias o de estado del pedido.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"expected_version\": \"<integer>\",\n  \"reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "332626f9-41b5-4c86-962f-b070755b5dbe",
+          "name": "Elimina un producto (dueño o administrador) (lambdaDeleteProduct)",
+          "request": {
+            "name": "Elimina un producto (dueño o administrador) (lambdaDeleteProduct)",
+            "description": {},
+            "url": {
+              "path": [
+                "products",
+                ":product_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "product_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": true,
+                "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                "key": "x-mkt-actor-role",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                "key": "x-mkt-actor-seller",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "id": "7a220fd5-46f7-4f81-8c83-99d1aa18d75d",
+              "name": "Producto eliminado",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "231e4f2a-fc57-4756-99b9-3bfa4fdfda7f",
+              "name": "Token falso, actor no válido o sin permiso para la operación.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2bc244a6-62ad-48b4-9f40-740e59ee12d7",
+              "name": "No existe, o no es tuyo (un recurso ajeno responde 404 para no revelar que existe).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "b91618df-ec40-4dc5-a3a8-d9459c5ef349",
+      "name": "Reseñas",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "dec38c7f-96a7-4c19-a245-77d1864bc43e",
+          "name": "Reseñas de un producto y si la persona puede opinar (lambdaListReviews)",
+          "request": {
+            "name": "Reseñas de un producto y si la persona puede opinar (lambdaListReviews)",
+            "description": {},
+            "url": {
+              "path": [
+                "products",
+                ":product_id",
+                "reviews"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "product_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": true,
+                "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                "key": "x-mkt-actor-user",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "2c46cddc-dc5d-4a75-b9a5-5aa418494ad6",
+              "name": "Reseñas",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products",
+                    ":product_id",
+                    "reviews"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"resenas\": [\n    {\n      \"review_id\": \"string\",\n      \"rating\": 1,\n      \"comment\": \"string\",\n      \"author_name\": \"string\"\n    },\n    {\n      \"review_id\": \"string\",\n      \"rating\": 3,\n      \"comment\": \"string\",\n      \"author_name\": \"string\"\n    }\n  ],\n  \"puede_opinar\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d8cab7b0-852f-454b-a28a-27362e1b2e67",
+          "name": "Publica una reseña (solo de una compra entregada, una vez) (lambdaCreateReview)",
+          "request": {
+            "name": "Publica una reseña (solo de una compra entregada, una vez) (lambdaCreateReview)",
+            "description": {
+              "content": "Transacción atómica de DynamoDB que marca la compra como usada, guarda la reseña y actualiza el promedio.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "products",
+                ":product_id",
+                "reviews"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "product_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": true,
+                "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                "key": "x-mkt-actor-role",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                "key": "x-mkt-actor-seller",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                "key": "x-mkt-actor-user",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": \"<integer>\",\n  \"comment\": \"<string>\",\n  \"author_name\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2ab28406-ebc4-4386-854d-621fa4d4326d",
+              "name": "Reseña creada",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products",
+                    ":product_id",
+                    "reviews"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"rating\": \"<integer>\",\n  \"comment\": \"<string>\",\n  \"author_name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d3d1b137-ba35-4763-ac87-5979a87475ae",
+              "name": "Datos inválidos o campos no permitidos.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products",
+                    ":product_id",
+                    "reviews"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"rating\": \"<integer>\",\n  \"comment\": \"<string>\",\n  \"author_name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ef21e3e-ad8d-424f-9e69-60dae3c6a497",
+              "name": "Token falso, actor no válido o sin permiso para la operación.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products",
+                    ":product_id",
+                    "reviews"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"rating\": \"<integer>\",\n  \"comment\": \"<string>\",\n  \"author_name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9ceac724-c7ca-4661-ab00-b1030da13719",
+              "name": "No existe, o no es tuyo (un recurso ajeno responde 404 para no revelar que existe).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products",
+                    ":product_id",
+                    "reviews"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"rating\": \"<integer>\",\n  \"comment\": \"<string>\",\n  \"author_name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "5344fb33-a6f8-4cb5-b136-c0a1b1eb4b24",
+      "name": "Carrito",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5a082571-0deb-44e8-a264-bef5e37696f8",
+          "name": "Carrito con precios actuales leídos de Products (lambdaGetCart)",
+          "request": {
+            "name": "Carrito con precios actuales leídos de Products (lambdaGetCart)",
+            "description": {},
+            "url": {
+              "path": [
+                "cart"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": []
+            },
+            "header": [
+              {
+                "disabled": true,
+                "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                "key": "x-mkt-actor-role",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                "key": "x-mkt-actor-seller",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                "key": "x-mkt-actor-user",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "5d9ab87b-0537-4385-823b-16e27617734a",
+              "name": "Líneas del carrito y total",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cart"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "61208ab6-7ac6-4c69-9bb3-74cfb54b14ed",
+              "name": "Token falso, actor no válido o sin permiso para la operación.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cart"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "da1b5eed-d54a-411b-9863-00ae0ff9c8d1",
+          "name": "Agrega o fija la cantidad de un producto (lambdaPutCartItem)",
+          "request": {
+            "name": "Agrega o fija la cantidad de un producto (lambdaPutCartItem)",
+            "description": {},
+            "url": {
+              "path": [
+                "cart",
+                ":product_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "product_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": true,
+                "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                "key": "x-mkt-actor-role",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                "key": "x-mkt-actor-seller",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                "key": "x-mkt-actor-user",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": \"<integer>\",\n  \"mode\": \"add\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "97dbe97b-2cba-4a70-a9f4-6ee0033ec6f3",
+              "name": "Carrito actualizado",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cart",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quantity\": \"<integer>\",\n  \"mode\": \"add\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "77f295ef-b183-41cd-9f62-4142ffbe53f6",
+              "name": "Datos inválidos o campos no permitidos.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cart",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quantity\": \"<integer>\",\n  \"mode\": \"add\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "83c39004-87ee-41a2-90f8-7d60204cca31",
+              "name": "No existe, o no es tuyo (un recurso ajeno responde 404 para no revelar que existe).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cart",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quantity\": \"<integer>\",\n  \"mode\": \"add\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ade3d86d-70e5-4f7f-9c5e-c84be3d890bd",
+              "name": "Conflicto de versión, de existencias o de estado del pedido.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cart",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quantity\": \"<integer>\",\n  \"mode\": \"add\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "43c977e2-b7b4-499e-9d21-760f58c1eecc",
+          "name": "Quita un renglón del carrito (lambdaDeleteCartItem)",
+          "request": {
+            "name": "Quita un renglón del carrito (lambdaDeleteCartItem)",
+            "description": {},
+            "url": {
+              "path": [
+                "cart",
+                ":product_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "product_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": true,
+                "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                "key": "x-mkt-actor-role",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                "key": "x-mkt-actor-seller",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                "key": "x-mkt-actor-user",
+                "value": "<uuid>"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "id": "303e52bb-6517-4046-a969-25798088ca49",
+              "name": "Renglón eliminado",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cart",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "f70617a7-5b9e-44bc-8334-151db5a2f585",
+      "name": "Favoritos",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a40f575e-d6bf-4ff9-ab72-49a08e5d9e96",
+          "name": "Lista de favoritos (lambdaListFavorites)",
+          "request": {
+            "name": "Lista de favoritos (lambdaListFavorites)",
+            "description": {},
+            "url": {
+              "path": [
+                "favorites"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": []
+            },
+            "header": [
+              {
+                "disabled": true,
+                "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                "key": "x-mkt-actor-role",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                "key": "x-mkt-actor-seller",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                "key": "x-mkt-actor-user",
+                "value": "<uuid>"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "bf6e38c4-325b-4e3d-b4f1-bdccd7c45588",
+              "name": "Favoritos",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "favorites"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e3a51afe-dbfa-4131-b676-52a6f68a1168",
+          "name": "Agrega un favorito (lambdaAddFavorite)",
+          "request": {
+            "name": "Agrega un favorito (lambdaAddFavorite)",
+            "description": {},
+            "url": {
+              "path": [
+                "favorites",
+                ":product_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "product_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": true,
+                "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                "key": "x-mkt-actor-role",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                "key": "x-mkt-actor-seller",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                "key": "x-mkt-actor-user",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT"
+          },
+          "response": [
+            {
+              "id": "d9f721f8-4854-4634-b6f7-3918dac254a9",
+              "name": "Favorito agregado",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "favorites",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "84d9e8a3-c613-46df-8b86-2683fdf210db",
+              "name": "No existe, o no es tuyo (un recurso ajeno responde 404 para no revelar que existe).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "favorites",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "31576eac-38e5-420d-90eb-06c882a91705",
+              "name": "Conflicto de versión, de existencias o de estado del pedido.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "favorites",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "db06eecd-b8ec-4e55-a27d-da0a4da1c288",
+          "name": "Quita un favorito (lambdaDeleteFavorite)",
+          "request": {
+            "name": "Quita un favorito (lambdaDeleteFavorite)",
+            "description": {},
+            "url": {
+              "path": [
+                "favorites",
+                ":product_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "product_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": true,
+                "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                "key": "x-mkt-actor-role",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                "key": "x-mkt-actor-seller",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                "key": "x-mkt-actor-user",
+                "value": "<uuid>"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "id": "f4c80b6a-ca6f-4994-8766-27aea470d74e",
+              "name": "Favorito eliminado",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "favorites",
+                    ":product_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "63acb64e-7023-471b-9164-8747c65f91e6",
+      "name": "Pedidos",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "81520643-7cc2-4b57-8d5c-07b263ad8c8b",
+          "name": "Paga el carrito y crea un pedido por vendedor (lambdaCreateOrder)",
+          "request": {
+            "name": "Paga el carrito y crea un pedido por vendedor (lambdaCreateOrder)",
+            "description": {
+              "content": "Una sola transacción de DynamoDB (TransactWriteItems): crea los pedidos y su pago simulado,\ndescuenta las existencias (solo si alcanzan) y vacía el carrito. Todo o nada.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "orders"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": []
+            },
+            "header": [
+              {
+                "disabled": true,
+                "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                "key": "x-mkt-actor-role",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                "key": "x-mkt-actor-seller",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                "key": "x-mkt-actor-user",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"address\": {\n    \"recipient_name\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"line1\": \"<string>\",\n    \"city\": \"<string>\",\n    \"state\": \"<string>\",\n    \"postal_code\": \"<string>\",\n    \"line2\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6c54c1ad-cb0e-481c-8036-ee9cd55666b4",
+              "name": "Pedidos creados",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": {\n    \"recipient_name\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"line1\": \"<string>\",\n    \"city\": \"<string>\",\n    \"state\": \"<string>\",\n    \"postal_code\": \"<string>\",\n    \"line2\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"pedidos\": [\n    {\n      \"order_id\": \"string\",\n      \"status\": \"CANCELLED\",\n      \"title\": \"string\",\n      \"total\": \"string\",\n      \"units\": 4857,\n      \"seller_id\": \"string\",\n      \"created_at\": \"string\",\n      \"estimated_from\": \"string\",\n      \"estimated_to\": \"string\"\n    },\n    {\n      \"order_id\": \"string\",\n      \"status\": \"SHIPPED\",\n      \"title\": \"string\",\n      \"total\": \"string\",\n      \"units\": 3648,\n      \"seller_id\": \"string\",\n      \"created_at\": \"string\",\n      \"estimated_from\": \"string\",\n      \"estimated_to\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "860caab3-8950-4cf8-825f-d7e24f912c77",
+              "name": "Datos inválidos o campos no permitidos.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": {\n    \"recipient_name\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"line1\": \"<string>\",\n    \"city\": \"<string>\",\n    \"state\": \"<string>\",\n    \"postal_code\": \"<string>\",\n    \"line2\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "26ae8abc-8b8d-4040-92d5-f498ad426474",
+              "name": "Conflicto de versión, de existencias o de estado del pedido.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": {\n    \"recipient_name\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"line1\": \"<string>\",\n    \"city\": \"<string>\",\n    \"state\": \"<string>\",\n    \"postal_code\": \"<string>\",\n    \"line2\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1bf52678-a0b0-4e65-9ed0-cc6c2a9c9657",
+          "name": "Mis compras (lambdaListOrders)",
+          "request": {
+            "name": "Mis compras (lambdaListOrders)",
+            "description": {},
+            "url": {
+              "path": [
+                "orders"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": []
+            },
+            "header": [
+              {
+                "disabled": true,
+                "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                "key": "x-mkt-actor-role",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                "key": "x-mkt-actor-seller",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                "key": "x-mkt-actor-user",
+                "value": "<uuid>"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "fa31ce11-018c-4782-88b8-ac25b5a96cda",
+              "name": "Pedidos del comprador",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8d65f995-ad2d-4bfc-857e-0e4b8046c49c",
+          "name": "Detalle de un pedido con renglones, envío, pago e historial (lambdaGetOrder)",
+          "request": {
+            "name": "Detalle de un pedido con renglones, envío, pago e historial (lambdaGetOrder)",
+            "description": {},
+            "url": {
+              "path": [
+                "orders",
+                ":order_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "order_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": true,
+                "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                "key": "x-mkt-actor-role",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                "key": "x-mkt-actor-seller",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                "key": "x-mkt-actor-user",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "2016bfb2-16e7-4d42-a858-34d3fde7f3cd",
+              "name": "Detalle del pedido",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pedido\": {\n    \"order_id\": \"string\",\n    \"status\": \"SHIPPED\",\n    \"title\": \"string\",\n    \"total\": \"string\",\n    \"units\": 9815,\n    \"seller_id\": \"string\",\n    \"created_at\": \"string\",\n    \"estimated_from\": \"string\",\n    \"estimated_to\": \"string\",\n    \"payment\": {\n      \"status\": \"PAID\",\n      \"method\": \"SIMULATED\",\n      \"amount\": \"string\",\n      \"paid_at\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b656f870-c012-4e72-86a3-a407188ad366",
+              "name": "No existe, o no es tuyo (un recurso ajeno responde 404 para no revelar que existe).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c2360222-f260-41ae-9783-705cd88d45d9",
+          "name": "Prepara, envía, entrega o cancela un pedido (lambdaUpdateOrderStatus)",
+          "request": {
+            "name": "Prepara, envía, entrega o cancela un pedido (lambdaUpdateOrderStatus)",
+            "description": {
+              "content": "Transacción atómica. Al cancelar, las piezas regresan al inventario. Quién puede hacer cada acción depende de su papel y del estado.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "orders",
+                ":order_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "order_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": true,
+                "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                "key": "x-mkt-actor-role",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                "key": "x-mkt-actor-seller",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                "key": "x-mkt-actor-user",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"<string>\",\n  \"reason\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4de150b5-25f6-4fdf-96cb-5b6c89e8c357",
+              "name": "Pedido actualizado",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a8bce155-69cd-431c-8714-77fa6507a1d1",
+              "name": "Datos inválidos o campos no permitidos.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04643d7b-6c4e-4e22-8dc5-226004710d9b",
+              "name": "Token falso, actor no válido o sin permiso para la operación.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a55d0654-7791-446a-b113-54f4c2fbcce2",
+              "name": "No existe, o no es tuyo (un recurso ajeno responde 404 para no revelar que existe).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "94d9f002-3078-4659-884b-deff8fb00c11",
+              "name": "Conflicto de versión, de existencias o de estado del pedido.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\",\n  \"reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eea6fc96-f048-4ee0-beec-c6a0e932a424",
+          "name": "Mis ventas (lambdaListSales)",
+          "request": {
+            "name": "Mis ventas (lambdaListSales)",
+            "description": {},
+            "url": {
+              "path": [
+                "sales"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": []
+            },
+            "header": [
+              {
+                "disabled": true,
+                "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                "key": "x-mkt-actor-role",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                "key": "x-mkt-actor-seller",
+                "value": "<string>"
+              },
+              {
+                "disabled": true,
+                "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                "key": "x-mkt-actor-user",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "2643eacb-a4cc-4d41-ab04-f9ef6eb7041a",
+              "name": "Pedidos que recibió el vendedor",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sales"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "926d78af-637b-4dd1-8cb0-f4fc3e3b7aac",
+              "name": "Token falso, actor no válido o sin permiso para la operación.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sales"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mkt-token",
+                    "value": "<API Key>",
+                    "disabled": true
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Rol de quien actúa, tomado de la sesión de Flask.",
+                    "key": "x-mkt-actor-role",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "Código de vendedor (SEL-######); vacío si es administrador.",
+                    "key": "x-mkt-actor-seller",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": true,
+                    "description": "UUID del usuario en sesión. Obligatorio en carrito, favoritos, pedidos, ventas y reseñas.",
+                    "key": "x-mkt-actor-user",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mensaje\": \"string\",\n  \"errores\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-mkt-token",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{token}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "0903371b-a3d3-4070-af22-cbc7c7c62fb5",
+    "name": "Marketplace - Protected API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "API HTTP de AWS API Gateway con una función Lambda por ruta y DynamoDB como base de datos.\nSolo el servidor Flask la llama; el navegador nunca. Todas las rutas exigen el token secreto\nen la cabecera `x-mkt-token` (lo valida la Lambda `lambdaAuthorizer`) y las cabeceras de\n\"actor\" que Flask toma de la sesión de la persona. No hay CORS.\n",
+      "type": "text/plain"
+    }
+  }
+}
