@@ -1,0 +1,11 @@
+[tool.ruff]
+line-length = 120
+extend-exclude = [".venv", "aws/lambdas", "aws/lambdas_src/handlers", "instance"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+# Los ayudantes comunes de las Lambdas importan cosas que solo usan algunos manejadores,
+# tienen líneas largas por sus listas, y relanzan errores a propósito sin encadenar.
+"aws/lambdas_src/common.py" = ["F401", "B904", "E501"]

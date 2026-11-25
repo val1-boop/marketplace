@@ -30,3 +30,9 @@ jobs:
         run: pip-audit -r requirements.txt
         # Hoy reporta hallazgos pendientes; se quita cuando se actualicen las librerias.
         continue-on-error: true
+      - name: Estilo del código (ruff)
+        run: |
+          pip install ruff==0.17.6
+          ruff check .
+        # Se hace obligatorio al terminar la limpieza de estilo.
+        continue-on-error: true
