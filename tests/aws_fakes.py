@@ -165,7 +165,7 @@ class _Expr:
     def apply(self, item, expression):
         sections = re.split(r"\b(SET|ADD|REMOVE)\b", expression.strip())
         assert sections[0].strip() == "", f"UpdateExpression no soportada: {expression}"
-        for keyword, body in zip(sections[1::2], sections[2::2]):
+        for keyword, body in zip(sections[1::2], sections[2::2], strict=True):
             for part in _split_top(body):
                 if keyword == "SET":
                     left, right = (p.strip() for p in part.split("=", 1))
@@ -416,7 +416,7 @@ class FakeResponse:
 
 
 P = r"(?P<product_id>[^/]+)"
-O = r"(?P<order_id>[^/]+)"
+OID = r"(?P<order_id>[^/]+)"
 
 
 class FakeApiGateway:
@@ -424,8 +424,8 @@ class FakeApiGateway:
     Las rutas son EXACTAMENTE las de la sección 4.4 del README."""
 
     ROUTES = [
-        ("GET", rf"^/products$", "lambdaListProducts"),
-        ("POST", rf"^/products$", "lambdaCreateProduct"),
+        ("GET", r"^/products$", "lambdaListProducts"),
+        ("POST", r"^/products$", "lambdaCreateProduct"),
         ("GET", rf"^/products/{P}$", "lambdaGetProduct"),
         ("PUT", rf"^/products/{P}$", "lambdaUpdateProduct"),
         ("DELETE", rf"^/products/{P}$", "lambdaDeleteProduct"),
@@ -439,8 +439,8 @@ class FakeApiGateway:
         ("DELETE", rf"^/favorites/{P}$", "lambdaDeleteFavorite"),
         ("POST", r"^/orders$", "lambdaCreateOrder"),
         ("GET", r"^/orders$", "lambdaListOrders"),
-        ("GET", rf"^/orders/{O}$", "lambdaGetOrder"),
-        ("PUT", rf"^/orders/{O}$", "lambdaUpdateOrderStatus"),
+        ("GET", rf"^/orders/{OID}$", "lambdaGetOrder"),
+        ("PUT", rf"^/orders/{OID}$", "lambdaUpdateOrderStatus"),
         ("GET", r"^/sales$", "lambdaListSales"),
     ]
 
