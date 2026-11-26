@@ -81,6 +81,13 @@
         {{ order.shipment.city }}, {{ order.shipment.state }}, C.P. {{ order.shipment.postal_code }}</p>
       <p class="muted small">Esta es una copia tomada al comprar; cambiar tus direcciones no la modifica.</p>
     </section>
+    {% if order.is_paid %}
+    <section class="box">
+      <h2>{{ icon("cash") }} Pago</h2>
+      <p><strong>Pagado</strong> · {{ money(order.payment_amount) }}</p>
+      <p class="muted small">{{ order.payment_when }}</p>
+    </section>
+    {% endif %}
     <section class="box">
       <h2>{{ icon("clock") }} Historial</h2>
       <ol class="history">

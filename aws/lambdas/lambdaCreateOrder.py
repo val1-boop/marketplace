@@ -447,6 +447,7 @@ def load_order(order_id):
         "header": header,
         "items": [r for r in rows if r["SK"].startswith("ITEM#")],
         "shipment": next((r for r in rows if r["SK"] == "SHIPMENT"), {}),
+        "payment": next((r for r in rows if r["SK"] == "PAYMENT"), {}),
         "history": sorted((r for r in rows if r["SK"].startswith("STATUS#")), key=lambda r: r["SK"]),
     }
 
@@ -474,6 +475,8 @@ def order_detail(order, actor):
                       "country", "shipped_at", "delivered_at")},
         "history": [{"status": h.get("status", ""), "at": h.get("at", ""), "by": h.get("by", "")}
                     for h in order["history"]],
+        "payment": {"status": order["payment"].get("status", ""), "method": order["payment"].get("method", ""),
+                    "amount": money(order["payment"].get("amount", 0)), "paid_at": order["payment"].get("paid_at", "")},
     })
     return detail
 
@@ -535,6 +538,11 @@ def _build_operations(actor, address, lines, products, now):
         operations.append({"Put": {"TableName": ORDERS_TABLE, "Item": {
             "PK": pk, "SK": "SHIPMENT", "entity": "Shipment", "order_id": order_id, **address,
             "estimated_from": estimated_from, "estimated_to": estimated_to,
+        }}})
+        # Pago SIMULADO: no se guarda ningún dato de tarjeta, solo que el pedido quedó pagado.
+        operations.append({"Put": {"TableName": ORDERS_TABLE, "Item": {
+            "PK": pk, "SK": "PAYMENT", "entity": "Payment", "order_id": order_id,
+            "status": "PAID", "method": "SIMULATED", "amount": total, "currency": "MXN", "paid_at": now,
         }}})
         operations.append({"Put": {"TableName": ORDERS_TABLE, "Item": {
             "PK": pk, "SK": status_sk(now, "CONFIRMED"), "entity": "StatusChange",

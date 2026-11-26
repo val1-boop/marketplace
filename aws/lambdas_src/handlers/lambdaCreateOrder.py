@@ -69,6 +69,11 @@ def _build_operations(actor, address, lines, products, now):
             "PK": pk, "SK": "SHIPMENT", "entity": "Shipment", "order_id": order_id, **address,
             "estimated_from": estimated_from, "estimated_to": estimated_to,
         }}})
+        # Pago SIMULADO: no se guarda ningún dato de tarjeta, solo que el pedido quedó pagado.
+        operations.append({"Put": {"TableName": ORDERS_TABLE, "Item": {
+            "PK": pk, "SK": "PAYMENT", "entity": "Payment", "order_id": order_id,
+            "status": "PAID", "method": "SIMULATED", "amount": total, "currency": "MXN", "paid_at": now,
+        }}})
         operations.append({"Put": {"TableName": ORDERS_TABLE, "Item": {
             "PK": pk, "SK": status_sk(now, "CONFIRMED"), "entity": "StatusChange",
             "order_id": order_id, "status": "CONFIRMED", "at": now, "by": "buyer",

@@ -135,6 +135,7 @@ class OrderDetailDTO(OrderSummaryDTO):
     items: list = field(default_factory=list)
     shipment: dict = field(default_factory=dict)
     history: list = field(default_factory=list)
+    payment: dict = field(default_factory=dict)
 
     @property
     def actions(self):
@@ -161,6 +162,21 @@ class OrderDetailDTO(OrderSummaryDTO):
     def can_review(self):
         return self.viewer == "buyer" and self.status == "DELIVERED"
 
+    @property
+    def is_paid(self):
+        return self.payment.get("status") == "PAID"
+
+    @property
+    def payment_amount(self):
+        try:
+            return Decimal(self.payment.get("amount") or "0")
+        except ArithmeticError:
+            return Decimal("0")
+
+    @property
+    def payment_when(self):
+        return nice_datetime(self.payment.get("paid_at", ""))
+
     @classmethod
     def from_api(cls, raw):
         base = OrderSummaryDTO.from_api(raw)
@@ -177,5 +193,7 @@ class OrderDetailDTO(OrderSummaryDTO):
                        for h in raw.get("history") or []]
         except (KeyError, TypeError, ValueError, ArithmeticError, AttributeError) as error:
             raise ApiUnavailableError("Pedido con formato inesperado") from error
+        payment = {k: str((raw.get("payment") or {}).get(k) or "")[:40]
+                   for k in ("status", "method", "amount", "paid_at")}
         viewer = raw.get("viewer") if raw.get("viewer") in ("buyer", "seller", "admin") else "admin"
-        return cls(**vars(base), viewer=viewer, items=items, shipment=shipment, history=history)
+        return cls(**vars(base), viewer=viewer, items=items, shipment=shipment, history=history, payment=payment)
