@@ -9,7 +9,7 @@ Seguridad:
 - Ver un pedido ajeno responde 404 (la Lambda no confirma que existe).
 - Quién puede avanzar o cancelar lo decide la Lambda (comprador, vendedor o admin).
 """
-from flask import Blueprint, abort, current_app, flash, redirect, render_template, session, url_for
+from flask import Blueprint, abort, current_app, flash, redirect, render_template, request, session, url_for
 from flask_login import current_user, login_required
 
 from Core.Extensions import limiter
@@ -37,24 +37,38 @@ def checkout():
         flash("Tu carrito está vacío.", "info")
         return redirect(url_for("cart.view"))
     addresses = address_service().list_addresses(current_user)
+    if not addresses:
+        # Sin dirección no se puede pagar: se lleva a crearla y se regresa aquí.
+        flash("Agrega una dirección de envío para continuar con tu compra.", "info")
+        return redirect(url_for("addresses.create", next=url_for("orders.checkout")))
     form = CheckoutForm()
     form.set_addresses(addresses)
-    if form.validate_on_submit():
-        try:
-            orders = order_service().checkout(current_user, form.address_id.data)
-        except NotFoundError:
-            abort(404)
-        except (ConflictError, ValidationFailedError) as error:
-            flash(str(error) + (": " + "; ".join(error.errors) if error.errors else ""), "warning")
-            return redirect(url_for("cart.view"))
-        session["cart_count"] = 0
-        security_log("order_created", user=current_user.id, orders=len(orders))
-        if len(orders) == 1:
-            flash("¡Compra confirmada! Te avisamos aquí cada cambio de estado.", "success")
-            return redirect(url_for("orders.detail", order_id=orders[0].order_id))
-        flash(f"¡Compra confirmada! Se crearon {len(orders)} pedidos, uno por cada vendedor.", "success")
-        return redirect(url_for("orders.list_orders"))
+
+    if request.method == "POST":  # ---- flujo POST: pagar
+        return _pay(cart, addresses, form)
+    # ---- flujo GET: solo muestra el resumen y el formulario
     return render_template("OrderViews/HTML/Checkout.html", cart=cart, addresses=addresses, form=form)
+
+
+def _pay(cart, addresses, form):
+    """Flujo POST del checkout: valida el formulario y crea los pedidos."""
+    if not form.validate_on_submit():
+        flash("Revisa la dirección de envío elegida.", "error")
+        return render_template("OrderViews/HTML/Checkout.html", cart=cart, addresses=addresses, form=form), 400
+    try:
+        orders = order_service().checkout(current_user, form.address_id.data)
+    except NotFoundError:
+        abort(404)
+    except (ConflictError, ValidationFailedError) as error:
+        flash(str(error) + (": " + "; ".join(error.errors) if error.errors else ""), "warning")
+        return redirect(url_for("cart.view"))
+    session["cart_count"] = 0
+    security_log("order_created", user=current_user.id, orders=len(orders))
+    if len(orders) == 1:
+        flash("¡Compra confirmada! Te avisamos aquí cada cambio de estado.", "success")
+        return redirect(url_for("orders.detail", order_id=orders[0].order_id))
+    flash(f"¡Compra confirmada! Se crearon {len(orders)} pedidos, uno por cada vendedor.", "success")
+    return redirect(url_for("orders.list_orders"))
 
 
 @bp.route("/orders/")

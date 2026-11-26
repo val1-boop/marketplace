@@ -224,8 +224,9 @@ def test_address_idor_is_404(client, app):
 # ---------------------------------------------------------------- compra
 def test_checkout_without_address_asks_for_one(as_bob):
     post(as_bob, "/cart/add/PROD-001", {"quantity": "1"})
-    body = as_bob.get("/checkout").get_data(as_text=True)
-    assert "Necesitas una dirección de envío" in body
+    response = as_bob.get("/checkout")
+    # Sin dirección no se puede pagar: se lleva a crearla y se regresa al checkout.
+    assert response.status_code == 302 and "/addresses/new" in response.headers["Location"]
 
 
 def test_checkout_with_someone_elses_address_fails(client, app):
@@ -237,7 +238,7 @@ def test_checkout_with_someone_elses_address_fails(client, app):
     add_address(client)
     post(client, "/cart/add/PROD-001", {"quantity": "1"})
     response = post(client, "/checkout", {"address_id": str(alice_address)}, "/checkout")
-    assert response.status_code == 200  # opción no válida: no se crea nada
+    assert response.status_code == 400  # opción no válida: no se crea nada
     assert products(app)["PROD-001"]["stock"] == 7
 
 
