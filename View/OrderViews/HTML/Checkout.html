@@ -12,7 +12,7 @@
 </ol>
 <h1 class="page-title">Pagar</h1>
 
-<form method="post" action="{{ url_for('orders.checkout') }}" class="cart-layout">
+<form method="post" action="{{ url_for('orders.checkout') }}" class="cart-layout" id="checkout-form">
   {{ form.csrf_token }}
   <div>
     <section class="box">
@@ -73,4 +73,14 @@
     <p class="muted small summary-note">{{ icon("info") }} Recibirás la confirmación de tu pedido y podrás seguirlo en Mis compras.</p>
   </aside>
 </form>
+
+<dialog id="pay-dialog" class="pay-dialog" aria-labelledby="pay-title">
+  <h2 id="pay-title">¿Estás seguro?</h2>
+  <p>Vas a pagar <strong>${{ "{:,.2f}".format(cart.total) }} MXN</strong> por {{ cart.units }} producto{{ "" if cart.units == 1 else "s" }}.</p>
+  <div class="pay-actions">
+    <button type="button" class="btn" id="pay-cancel">Cancelar</button>
+    <button type="button" class="btn btn-primary" id="pay-confirm">Sí, pagar</button>
+  </div>
+</dialog>
+<script src="{{ asset_url('OrderViews', 'JS', 'Checkout.js') }}"></script>
 {% endblock %}
