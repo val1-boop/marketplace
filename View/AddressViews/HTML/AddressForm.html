@@ -7,7 +7,7 @@
 <form class="formcard formcard-wide" method="post"
       action="{{ url_for('addresses.edit', address_id=address.id) if address else url_for('addresses.create') }}">
   <h1>{{ "Editar dirección" if address else "Nueva dirección" }}</h1>
-  <p class="muted">Solo enviamos dentro de México. Revisa bien el código postal y el teléfono.</p>
+  <p class="muted">Escribe tu dirección completa: calle y número, colonia y referencias (entre qué calles está, color de la casa) para que el repartidor te encuentre. Solo enviamos dentro de México.</p>
   {{ form.csrf_token }}
   {{ form.next }}
   <fieldset>

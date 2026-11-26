@@ -33,3 +33,9 @@ def dashboard():
 @login_required
 def profile():
     return render_template("MainViews/HTML/Profile.html", user=current_user)
+
+
+@bp.route("/profile/privacy")
+@login_required
+def privacy():
+    return render_template("MainViews/HTML/Privacy.html")
