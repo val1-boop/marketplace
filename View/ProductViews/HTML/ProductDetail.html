@@ -87,7 +87,7 @@
       <span class="avatar" aria-hidden="true">{{ (seller_name or "V")[:1] }}</span>
       <div>
         <strong>Vendido por {{ seller_name or "un vendedor del marketplace" }}</strong><br>
-        <span class="muted small">Código de vendedor {{ product.seller_id }}</span>
+{% if current_user.is_admin %}<span class="muted small">Tienda {{ product.seller_id }}</span>{% endif %}
       </div>
       {% if current_user.is_admin and seller_user_id %}
         <a class="btn btn-sm" href="{{ url_for('users.detail', user_id=seller_user_id) }}">Ver cuenta</a>
@@ -121,6 +121,7 @@
       <dt>Departamento</dt><dd>{{ department_label(product.category) }}</dd>
       <dt>Categoría</dt><dd>{{ category_label(product.category) }}</dd>
       <dt>Condición</dt><dd>{{ condition_label(product.condition) }}</dd>
+      {% if product.seller_sku %}<dt>SKU</dt><dd>{{ product.seller_sku }}</dd>{% endif %}
       <dt>Unidades disponibles</dt><dd>{{ product.stock }}</dd>
       {% if product.created_at %}<dt>Publicado</dt><dd>{{ product.created_at[:10] }}</dd>{% endif %}
     </dl>
