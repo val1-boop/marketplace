@@ -33,13 +33,8 @@
     </div>
   </section>
   <section>
-    <h2>Privacidad y seguridad de tu cuenta</h2>
-    <ul class="privacy-list">
-      <li>{{ icon("lock") }}<span>Los intentos de acceso están limitados y la cuenta se bloquea 15 minutos tras 5 fallos seguidos.</span></li>
-      <li>{{ icon("shield") }}<span>Al iniciar sesión, cualquier error muestra el mismo mensaje, así nadie puede averiguar qué correos están registrados.</span></li>
-      <li>{{ icon("key") }}<span>Tu contraseña se guarda cifrada; nadie puede leerla, ni siquiera nosotros.</span></li>
-      <li>{{ icon("clock") }}<span>La sesión se cierra sola tras 30 minutos sin actividad.</span></li>
-    </ul>
+    <h2>Privacidad de cuenta</h2>
+    <p><a class="btn btn-sm" href="{{ url_for('main.privacy') }}">{{ icon("shield") }} Ver cómo protegemos tu cuenta</a></p>
   </section>
 </div>
 {% endblock %}

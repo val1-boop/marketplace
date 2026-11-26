@@ -1,0 +1,17 @@
+{% extends "SharedViews/HTML/Base.html" %}
+{% from "SharedViews/HTML/Macros.html" import icon %}
+{% block styles %}<link rel="stylesheet" href="{{ asset_url('MainViews', 'CSS', 'Main.css') }}">{% endblock %}
+{% block title %}Privacidad de cuenta{% endblock %}
+{% block content %}
+<nav aria-label="Ruta"><ol class="crumbs"><li><a href="{{ url_for('main.index') }}">Inicio</a></li><li><a href="{{ url_for('main.profile') }}">Mi perfil</a></li><li aria-current="page">Privacidad de cuenta</li></ol></nav>
+<h1>Privacidad de cuenta</h1>
+<section>
+    <h2>Privacidad y seguridad de tu cuenta</h2>
+    <ul class="privacy-list">
+      <li>{{ icon("lock") }}<span>Los intentos de acceso están limitados y la cuenta se bloquea 15 minutos tras 5 fallos seguidos.</span></li>
+      <li>{{ icon("shield") }}<span>Al iniciar sesión, cualquier error muestra el mismo mensaje, así nadie puede averiguar qué correos están registrados.</span></li>
+      <li>{{ icon("key") }}<span>Tu contraseña se guarda cifrada; nadie puede leerla, ni siquiera nosotros.</span></li>
+      <li>{{ icon("clock") }}<span>La sesión se cierra sola tras 30 minutos sin actividad.</span></li>
+    </ul>
+  </section>
+{% endblock %}
