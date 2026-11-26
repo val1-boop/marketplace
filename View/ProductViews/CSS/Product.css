@@ -95,3 +95,14 @@
   .shop-banner { background-image: none; }
   .shop-banner { padding: 16px 18px 0; min-height: 160px; }
 }
+
+/* ------------------------------------------------------------ ficha: más color y botones destacados */
+.product-info .pricetag { margin: 10px 0 6px; }
+.product-info .pricetag strong { font-size: 2.6rem; color: var(--cat); }
+.buybox { background: var(--cat-soft); border: 2px solid var(--cat); border-radius: var(--radius-l); padding: 18px 20px; margin: 14px 0 18px; }
+.buybox .btn { min-height: 54px; font-size: 1.05rem; font-weight: 700; }
+.buybox .btn-primary { background: var(--cat); border-color: var(--cat); color: #fff; }
+.buybox .btn-primary:hover { filter: brightness(.9); }
+.buybox .btn:not(.btn-primary) { background: #fff; border: 2px solid var(--cat); color: var(--cat); }
+.product-info .seller { background: var(--cat-soft); }
+.specs { background: var(--soft-2); }
