@@ -5,6 +5,7 @@ Así Services/ (las rutas) no importa nada de Implementation/ directamente.
 """
 from flask import current_app
 
+from Implementation.SellerServiceImplementation.SellerServiceImplementation import SellerServiceImplementation
 from Implementation.AddressServiceImplementation.AddressServiceImplementation import AddressServiceImplementation
 from Implementation.AuthServiceImplementation.AuthServiceImplementation import AuthServiceImplementation
 from Implementation.CartServiceImplementation.CartServiceImplementation import CartServiceImplementation
@@ -20,6 +21,7 @@ def build_services():
     products = ProductServiceImplementation()
     addresses = AddressServiceImplementation()
     return {
+        "seller": SellerServiceImplementation(),
         "main": MainServiceImplementation(products),
         "auth": AuthServiceImplementation(),
         "product": products,
@@ -39,6 +41,11 @@ def _service(name):
 def main_service():
     """IMainService"""
     return _service("main")
+
+
+def seller_service():
+    """ISellerService"""
+    return _service("seller")
 
 
 def auth_service():
