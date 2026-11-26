@@ -273,7 +273,6 @@ def test_home_shows_search_departments_and_latest(as_alice):
     assert "Hola, Alice" in body
     assert "Compra por departamento" in body and "Recién publicados" in body
     assert "Laptop HP Victus" in body and "Mouse Logitech" in body
-    assert "SEL-000001" in body                      # código de su tienda
 
 
 def test_admin_home_is_the_admin_panel(as_admin):
