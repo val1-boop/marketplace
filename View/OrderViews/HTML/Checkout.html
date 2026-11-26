@@ -70,7 +70,6 @@
       <button type="button" class="btn btn-primary btn-block" disabled>Confirmar compra</button>
       {% if not cart.can_checkout %}<p class="muted small"><a href="{{ url_for('cart.view') }}">Revisa tu carrito</a>: hay productos sin existencias.</p>{% endif %}
     {% endif %}
-    <p class="muted small summary-note">{{ icon("info") }} Versión de laboratorio: no se cobra nada. El pedido queda como "Confirmado" y el vendedor lo prepara y envía.</p>
   </aside>
 </form>
 {% endblock %}
