@@ -94,28 +94,27 @@
       {% endif %}
     </div>
 
-    {% if is_owner or current_user.is_admin %}
-    <div class="actions owner-actions">
-      {% if is_owner %}
-        <a class="btn btn-primary" href="{{ url_for('items.edit', product_id=product.product_id) }}">{{ icon("edit") }} Editar producto</a>
-      {% endif %}
-      {% if current_user.is_admin %}
-        {% if product.status == 'ACTIVE' %}
-          <a class="btn" href="{{ url_for('items.block', product_id=product.product_id) }}">{{ icon("ban") }} Bloquear</a>
-        {% elif product.status == 'BLOCKED' %}
-          <form class="inline" method="post" action="{{ url_for('items.unblock', product_id=product.product_id) }}">
-            {{ confirm_form.hidden_tag() }}
-            <button type="submit" class="btn">{{ icon("check") }} Desbloquear</button>
-          </form>
-        {% endif %}
-      {% endif %}
-      <form class="inline" method="post" action="{{ url_for('items.delete', product_id=product.product_id) }}"
-            data-confirm="¿Eliminar este producto? Esta acción no se puede deshacer.">
-        {{ confirm_form.hidden_tag() }}
-        <button type="submit" class="btn btn-danger">{{ icon("trash") }} Eliminar</button>
-      </form>
-    </div>
-    {% endif %}
+{% if is_owner %}
+<div class="actions owner-actions">
+  <a class="btn btn-primary" href="{{ url_for('items.mine') }}">{{ icon("store") }} Administrar en Mis productos</a>
+</div>
+{% elif current_user.is_admin %}
+<div class="actions owner-actions">
+  {% if product.status == 'ACTIVE' %}
+    <a class="btn" href="{{ url_for('items.block', product_id=product.product_id) }}">{{ icon("ban") }} Bloquear</a>
+  {% elif product.status == 'BLOCKED' %}
+    <form class="inline" method="post" action="{{ url_for('items.unblock', product_id=product.product_id) }}">
+      {{ confirm_form.hidden_tag() }}
+      <button type="submit" class="btn">{{ icon("check") }} Desbloquear</button>
+    </form>
+  {% endif %}
+  <form class="inline" method="post" action="{{ url_for('items.delete', product_id=product.product_id) }}"
+        data-confirm="¿Eliminar este producto? Esta acción no se puede deshacer.">
+    {{ confirm_form.hidden_tag() }}
+    <button type="submit" class="btn btn-danger">{{ icon("trash") }} Eliminar</button>
+  </form>
+</div>
+{% endif %}
 
     <dl class="specs">
       <dt>Departamento</dt><dd>{{ department_label(product.category) }}</dd>
