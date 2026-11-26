@@ -10,7 +10,7 @@ from .conftest import EMAILS, login, post_form
 
 def test_public_home_without_session(client):
     body = client.get("/").get_data(as_text=True)
-    assert "¿Qué buscas hoy?" in body
+    assert "Encuentra la tecnología que necesitas" in body
     assert "Laptop HP Victus" in body and "Mouse Logitech" in body
     assert "Iniciar sesión" in body and "Crear cuenta" in body
     assert "Tu tienda" not in body and "Mis productos" not in body
@@ -83,7 +83,7 @@ def test_public_catalog_is_rate_limited(client, app):
 
 def test_logged_user_home_still_shows_greeting_and_shop(as_alice):
     body = as_alice.get("/").get_data(as_text=True)
-    assert "¿Qué buscas hoy, Alice?" in body and "Tu tienda" in body
+    assert "Hola, Alice" in body and "Tu tienda" in body
 
 
 # ---------------------------------------------------------------- caché del listado

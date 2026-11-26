@@ -10,7 +10,6 @@
     <h1>{{ user.full_name }}</h1>
     <span class="badge badge-role">{{ "Administrador" if user.is_admin else "Compras y ventas" }}</span>
     <dl class="details">
-      {% if user.seller_id %}<dt>Código de vendedor</dt><dd>{{ user.seller_id }}</dd>{% endif %}
       <dt>Último acceso</dt><dd>{{ user.last_login_at|dt }}</dd>
       <dt>Cuenta creada</dt><dd>{{ user.created_at|dt }}</dd>
     </dl>
