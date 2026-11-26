@@ -106,3 +106,12 @@
 .buybox .btn:not(.btn-primary) { background: #fff; border: 2px solid var(--cat); color: var(--cat); }
 .product-info .seller { background: var(--cat-soft); }
 .specs { background: var(--soft-2); }
+
+/* ------------------------------------------------------------ ficha: compra siempre a la vista */
+.product { gap: 32px; }
+.product-info h1 { font-size: clamp(1.6rem, 2.6vw, 2.2rem); }
+.product-media { max-height: 72vh; }
+@media (max-width: 720px) {
+  /* En celular la barra de compra se queda pegada abajo mientras se lee la ficha. */
+  .buybox { position: sticky; bottom: 0; z-index: 5; margin: 0 -4px; border-radius: var(--radius-l) var(--radius-l) 0 0; box-shadow: 0 -6px 20px rgba(0, 0, 0, .12); }
+}
