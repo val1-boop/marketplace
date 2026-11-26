@@ -279,6 +279,10 @@ def _register_error_handlers(app):
 
     @app.errorhandler(CSRFError)
     def handle_csrf(_error):
+        if request.endpoint == "auth.login" and current_user.is_authenticated:
+            # El mismo formulario de acceso enviado dos veces (doble clic o Enter + clic): el primer envío
+            # ya inició sesión y renovó el token, así que el segundo no hace nada y se manda al panel.
+            return redirect(url_for("main.dashboard"))
         security_log("csrf_failed")
         return _render_error(400)
 
