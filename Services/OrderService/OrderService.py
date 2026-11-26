@@ -65,9 +65,9 @@ def _pay(cart, addresses, form):
     session["cart_count"] = 0
     security_log("order_created", user=current_user.id, orders=len(orders))
     if len(orders) == 1:
-        flash("¡Compra confirmada! Te avisamos aquí cada cambio de estado.", "success")
+        flash("¡Pago exitoso! Tu pedido quedó confirmado y aquí te avisamos cada cambio de estado.", "success")
         return redirect(url_for("orders.detail", order_id=orders[0].order_id))
-    flash(f"¡Compra confirmada! Se crearon {len(orders)} pedidos, uno por cada vendedor.", "success")
+    flash(f"¡Pago exitoso! Se crearon {len(orders)} pedidos, uno por cada vendedor.", "success")
     return redirect(url_for("orders.list_orders"))
 
 
