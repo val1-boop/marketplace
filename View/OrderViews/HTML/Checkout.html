@@ -4,13 +4,13 @@
 <link rel="stylesheet" href="{{ asset_url('CartViews', 'CSS', 'Cart.css') }}">
 <link rel="stylesheet" href="{{ asset_url('OrderViews', 'CSS', 'Order.css') }}">
 {% endblock %}
-{% block title %}Confirmar compra{% endblock %}
+{% block title %}Pagar{% endblock %}
 {% block content %}
-<nav aria-label="Ruta"><ol class="crumbs"><li><a href="{{ url_for('main.index') }}">Inicio</a></li><li><a href="{{ url_for('cart.view') }}">Carrito</a></li><li aria-current="page">Confirmar compra</li></ol></nav>
+<nav aria-label="Ruta"><ol class="crumbs"><li><a href="{{ url_for('main.index') }}">Inicio</a></li><li><a href="{{ url_for('cart.view') }}">Carrito</a></li><li aria-current="page">Pagar</li></ol></nav>
 <ol class="checkout-steps" aria-label="Pasos">
   <li class="done">Carrito</li><li class="current" aria-current="step">Envío y confirmación</li><li>Seguimiento</li>
 </ol>
-<h1 class="page-title">Confirmar compra</h1>
+<h1 class="page-title">Pagar</h1>
 
 <form method="post" action="{{ url_for('orders.checkout') }}" class="cart-layout">
   {{ form.csrf_token }}
@@ -65,11 +65,12 @@
       <div class="total"><dt>Total</dt><dd>${{ "{:,.2f}".format(cart.total) }} <small>MXN</small></dd></div>
     </dl>
     {% if addresses and cart.can_checkout %}
-      <button type="submit" class="btn btn-primary btn-block">Confirmar compra</button>
+      <button type="submit" class="btn btn-primary btn-block" id="pay-button">Pagar ${{ "{:,.2f}".format(cart.total) }}</button>
     {% else %}
-      <button type="button" class="btn btn-primary btn-block" disabled>Confirmar compra</button>
+      <button type="button" class="btn btn-primary btn-block" disabled>Pagar</button>
       {% if not cart.can_checkout %}<p class="muted small"><a href="{{ url_for('cart.view') }}">Revisa tu carrito</a>: hay productos sin existencias.</p>{% endif %}
     {% endif %}
+    <p class="muted small summary-note">{{ icon("info") }} Recibirás la confirmación de tu pedido y podrás seguirlo en Mis compras.</p>
   </aside>
 </form>
 {% endblock %}
