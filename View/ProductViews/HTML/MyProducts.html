@@ -11,13 +11,13 @@
 <div class="toolbar">
   <div>
     <h1>Mis productos</h1>
-    <p class="muted">Código de vendedor {{ current_user.seller_id }}. {{ pagination.total }} producto{{ "" if pagination.total == 1 else "s" }}.</p>
+<p class="muted">{{ pagination.total }} producto{{ "" if pagination.total == 1 else "s" }} en tu tienda.</p>
   </div>
   <a class="btn btn-accent" href="{{ url_for('items.create') }}">{{ icon("plus") }} Publicar producto</a>
 </div>
 <form class="myfilters" method="get" action="{{ url_for('items.mine') }}" role="search">
   <label class="visually-hidden" for="mine-q">Buscar en mis productos</label>
-  <input id="mine-q" type="search" name="q" maxlength="64" value="{{ params.q }}" placeholder="Buscar por nombre o código">
+  <input id="mine-q" type="search" name="q" maxlength="64" value="{{ params.q }}"placeholder="Buscar por nombre o SKU">
   <label class="visually-hidden" for="mine-cat">Categoría</label>
   <select id="mine-cat" name="category" data-autosubmit>
     <option value="">Todas las categorías</option>

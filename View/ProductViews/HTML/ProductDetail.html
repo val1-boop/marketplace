@@ -87,40 +87,40 @@
       <span class="avatar" aria-hidden="true">{{ (seller_name or "V")[:1] }}</span>
       <div>
         <strong>Vendido por {{ seller_name or "un vendedor del marketplace" }}</strong><br>
-        <span class="muted small">Código de vendedor {{ product.seller_id }}</span>
+{% if current_user.is_admin %}<span class="muted small">Tienda {{ product.seller_id }}</span>{% endif %}
       </div>
       {% if current_user.is_admin and seller_user_id %}
         <a class="btn btn-sm" href="{{ url_for('users.detail', user_id=seller_user_id) }}">Ver cuenta</a>
       {% endif %}
     </div>
 
-    {% if is_owner or current_user.is_admin %}
-    <div class="actions owner-actions">
-      {% if is_owner %}
-        <a class="btn btn-primary" href="{{ url_for('items.edit', product_id=product.product_id) }}">{{ icon("edit") }} Editar producto</a>
-      {% endif %}
-      {% if current_user.is_admin %}
-        {% if product.status == 'ACTIVE' %}
-          <a class="btn" href="{{ url_for('items.block', product_id=product.product_id) }}">{{ icon("ban") }} Bloquear</a>
-        {% elif product.status == 'BLOCKED' %}
-          <form class="inline" method="post" action="{{ url_for('items.unblock', product_id=product.product_id) }}">
-            {{ confirm_form.hidden_tag() }}
-            <button type="submit" class="btn">{{ icon("check") }} Desbloquear</button>
-          </form>
-        {% endif %}
-      {% endif %}
-      <form class="inline" method="post" action="{{ url_for('items.delete', product_id=product.product_id) }}"
-            data-confirm="¿Eliminar este producto? Esta acción no se puede deshacer.">
-        {{ confirm_form.hidden_tag() }}
-        <button type="submit" class="btn btn-danger">{{ icon("trash") }} Eliminar</button>
-      </form>
-    </div>
-    {% endif %}
+{% if is_owner %}
+<div class="actions owner-actions">
+  <a class="btn btn-primary" href="{{ url_for('items.mine') }}">{{ icon("store") }} Administrar en Mis productos</a>
+</div>
+{% elif current_user.is_admin %}
+<div class="actions owner-actions">
+  {% if product.status == 'ACTIVE' %}
+    <a class="btn" href="{{ url_for('items.block', product_id=product.product_id) }}">{{ icon("ban") }} Bloquear</a>
+  {% elif product.status == 'BLOCKED' %}
+    <form class="inline" method="post" action="{{ url_for('items.unblock', product_id=product.product_id) }}">
+      {{ confirm_form.hidden_tag() }}
+      <button type="submit" class="btn">{{ icon("check") }} Desbloquear</button>
+    </form>
+  {% endif %}
+  <form class="inline" method="post" action="{{ url_for('items.delete', product_id=product.product_id) }}"
+        data-confirm="¿Eliminar este producto? Esta acción no se puede deshacer.">
+    {{ confirm_form.hidden_tag() }}
+    <button type="submit" class="btn btn-danger">{{ icon("trash") }} Eliminar</button>
+  </form>
+</div>
+{% endif %}
 
     <dl class="specs">
       <dt>Departamento</dt><dd>{{ department_label(product.category) }}</dd>
       <dt>Categoría</dt><dd>{{ category_label(product.category) }}</dd>
       <dt>Condición</dt><dd>{{ condition_label(product.condition) }}</dd>
+      {% if product.seller_sku %}<dt>SKU</dt><dd>{{ product.seller_sku }}</dd>{% endif %}
       <dt>Unidades disponibles</dt><dd>{{ product.stock }}</dd>
       {% if product.created_at %}<dt>Publicado</dt><dd>{{ product.created_at[:10] }}</dd>{% endif %}
     </dl>
