@@ -133,7 +133,7 @@
           <div class="usermenu-panel">
             <div class="who">
               <strong>{{ current_user.full_name }}</strong><br>
-              <span class="muted small">{{ "Administrador" if current_user.is_admin else "Compras y ventas · " ~ (current_user.seller_id or "") }}</span>
+              <span class="muted small">{{ "Administrador" if current_user.is_admin else "Compras y ventas" }}</span>
             </div>
             {% if current_user.is_admin %}
               <a href="{{ url_for('main.dashboard') }}">{{ icon("chart") }} Panel de administración</a>
@@ -182,7 +182,7 @@
   <div class="footer-grid">
     <div>
       <a class="brand" href="{{ url_for('main.index') }}"><span class="brand-mark" aria-hidden="true">M</span><span class="brand-name">Marketplace</span></a>
-      <p class="muted small">Compra y vende tecnología nueva, usada y reacondicionada. Encuentra lo que buscas o dale una segunda vida a lo que ya no usas.</p>
+      <p class="muted small">Tecnología para todos, al mejor precio.</p>
     </div>
     <div>
       <h4>Tienda</h4>
