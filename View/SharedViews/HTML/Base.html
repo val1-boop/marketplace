@@ -148,6 +148,7 @@
             <hr>
             <a href="{{ url_for('main.profile') }}">{{ icon("user") }} Mi perfil</a>
             <a href="{{ url_for('auth.change_password') }}">{{ icon("key") }} Cambiar contraseña</a>
+            <a href="{{ url_for('main.privacy') }}">{{ icon("shield") }} Privacidad de cuenta</a>
             <form method="post" action="{{ url_for('auth.logout') }}">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <button type="submit">{{ icon("logout") }} Cerrar sesión</button>
