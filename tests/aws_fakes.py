@@ -245,9 +245,26 @@ class FakeTable:
         self.items[key] = item
         return {"Attributes": copy.deepcopy(item)} if ReturnValues == "ALL_NEW" else {}
 
-    def scan(self, ExclusiveStartKey=None):
+    def _resume(self, rows, start_key):
+        """Devuelve las filas que siguen a `start_key` (como ExclusiveStartKey de DynamoDB)."""
+        if not start_key:
+            return rows
+        marker = self._key({k: start_key[k] for k in self.keys})
+        for position, row in enumerate(rows):
+            if self._key_of(row) == marker:
+                return rows[position + 1:]
+        return []
+
+    def scan(self, ExclusiveStartKey=None, Limit=None):
         self.calls.append("scan")
-        return {"Items": [copy.deepcopy(i) for i in self.items.values()]}
+        rows = sorted(self.items.values(), key=lambda row: str(self._key_of(row)))
+        rows = self._resume(rows, ExclusiveStartKey)
+        result = {}
+        if Limit and len(rows) > Limit:
+            rows = rows[:Limit]
+            result["LastEvaluatedKey"] = {k: rows[-1][k] for k in self.keys}
+        result["Items"] = [copy.deepcopy(i) for i in rows]
+        return result
 
     def query(self, KeyConditionExpression, ExpressionAttributeValues, IndexName=None,
               ExpressionAttributeNames=None, ScanIndexForward=True, Limit=None, Select=None,
@@ -266,11 +283,20 @@ class FakeTable:
             assert sk_name and sk_name in clauses[1], f"La ordenación debe ser {sk_name}"
         rows = [i for i in self.items.values() if pk_name in i and expr.check(i, KeyConditionExpression)]
         rows.sort(key=lambda i: i.get(sk_name, "") if sk_name else "", reverse=not ScanIndexForward)
-        if Limit:
+        rows = self._resume(rows, ExclusiveStartKey)
+        last_key = None
+        if Limit and len(rows) > Limit:
             rows = rows[:Limit]
+            last_key = {k: rows[-1][k] for k in self.keys}
+            last_key[pk_name] = rows[-1][pk_name]
+            if sk_name:
+                last_key[sk_name] = rows[-1][sk_name]
         if Select == "COUNT":
             return {"Count": len(rows), "Items": []}
-        return {"Items": [copy.deepcopy(i) for i in rows], "Count": len(rows)}
+        result = {"Items": [copy.deepcopy(i) for i in rows], "Count": len(rows)}
+        if last_key:
+            result["LastEvaluatedKey"] = last_key
+        return result
 
 
 class FakeDynamo:
