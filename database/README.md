@@ -11,6 +11,7 @@ Se ejecutan como usuario administrador, en este orden:
 | 1 | `00_mysql_schema.sql` | Crea la base y las tablas `users`, `addresses`, `reports` y `admin_actions` |
 | 2 | `01_mysql_marketplace.sql` | Agrega `session_nonce`, amplía las acciones de administración y crea el usuario `mkt_app` con permisos mínimos |
 | 3 | `03_mysql_addresses.sql` | Da a `mkt_app` permiso sobre `addresses` |
+| 4 | `04_mysql_sellers.sql` | Crea la tabla `sellers` (perfil de la tienda) y da permisos a `mkt_app` |
 
 Las contraseñas **no** van en los archivos: se reemplaza `CAMBIA_ESTA_CLAVE` solo al pegar el script en el
 cliente SQL.
