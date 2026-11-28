@@ -266,6 +266,7 @@ marketplace/
 │   ├── sql/02_postgres_security.sql       ← usuario mkt_app (PostgreSQL)
 │   ├── sql/03_mysql_addresses.sql         ← permisos de mkt_app sobre addresses (entrega 2)
 │   ├── sql/04_mysql_sellers.sql           ← tabla sellers: perfil de la tienda del vendedor (2.1.0)
+│   ├── sql/05_mysql_datos_iniciales.sql   ← datos iniciales: una tienda por cada vendedor existente
 │   ├── lambdas/                           ← 19 archivos .py para pegar en la consola de Lambda
 │   └── lambdas_src/                       ← fuente de las Lambdas: common.py + handlers/ (solo el
 │                                            dueño las edita; tools/build_lambdas.py arma aws/lambdas/)
@@ -572,6 +573,8 @@ aleatoria y `pytest` con **347 passed**.
 9. **Ejecutar el script 04 (tienda del vendedor).** Otra **Query Console nueva** → copia todo
    **`aws/sql/04_mysql_sellers.sql`** (se ejecuta después del 03; no tiene contraseñas) → `Ctrl+A` y
    `Ctrl+Enter`. Es seguro repetirlo (`CREATE TABLE IF NOT EXISTS`).
+   *Opcional:* después ejecuta igual **`aws/sql/05_mysql_datos_iniciales.sql`** (datos iniciales: una tienda por
+   cada cuenta con código de vendedor; también se puede repetir).
 
 ✅ **Punto de control (pestañas de resultado):**
 - Script 04: `SHOW COLUMNS FROM sellers` lista 6 columnas y `SHOW GRANTS FOR 'mkt_app'@'%'` muestra
