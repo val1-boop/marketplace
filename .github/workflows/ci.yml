@@ -28,8 +28,6 @@ jobs:
         run: bandit -r .
       - name: Dependencias con vulnerabilidades conocidas (pip-audit)
         run: pip-audit -r requirements.txt
-        # Hoy reporta hallazgos pendientes; se quita cuando se actualicen las librerias.
-        continue-on-error: true
       - name: Estilo del código (ruff)
         run: |
           pip install ruff==0.17.6
