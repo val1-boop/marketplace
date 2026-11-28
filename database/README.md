@@ -12,6 +12,7 @@ Se ejecutan como usuario administrador, en este orden:
 | 2 | `01_mysql_marketplace.sql` | Agrega `session_nonce`, amplía las acciones de administración y crea el usuario `mkt_app` con permisos mínimos |
 | 3 | `03_mysql_addresses.sql` | Da a `mkt_app` permiso sobre `addresses` |
 | 4 | `04_mysql_sellers.sql` | Crea la tabla `sellers` (perfil de la tienda) y da permisos a `mkt_app` |
+| 5 | `05_mysql_datos_iniciales.sql` | Datos iniciales (DML): crea una tienda por cada cuenta con código de vendedor |
 
 Las contraseñas **no** van en los archivos: se reemplaza `CAMBIA_ESTA_CLAVE` solo al pegar el script en el
 cliente SQL.
