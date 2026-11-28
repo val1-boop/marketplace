@@ -17,8 +17,12 @@ def edit():
     form = StoreForm(obj=seller_service().get_store(current_user))
     if request.method == "POST":  # ---- flujo POST: guardar
         if form.validate_on_submit():
-            seller_service().save_store(current_user, form.to_dto())
-            flash("Los datos de tu tienda se guardaron.", "success")
-            return redirect(url_for("main.profile"))
+            try:
+                seller_service().save_store(current_user, form.to_dto())
+            except ValueError as error:  # el procedimiento almacenado rechazó los datos
+                flash(str(error), "warning")
+            else:
+                flash("Los datos de tu tienda se guardaron.", "success")
+                return redirect(url_for("main.profile"))
     # ---- flujo GET (o POST con errores): mostrar el formulario
     return render_template("SellerViews/HTML/StoreForm.html", form=form)
