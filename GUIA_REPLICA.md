@@ -265,6 +265,7 @@ marketplace/
 │   ├── sql/00_postgres_schema.sql         ← esquema original Parte 5 (PostgreSQL)
 │   ├── sql/02_postgres_security.sql       ← usuario mkt_app (PostgreSQL)
 │   ├── sql/03_mysql_addresses.sql         ← permisos de mkt_app sobre addresses (entrega 2)
+│   ├── sql/04_mysql_sellers.sql           ← tabla sellers: perfil de la tienda del vendedor (2.1.0)
 │   ├── lambdas/                           ← 19 archivos .py para pegar en la consola de Lambda
 │   └── lambdas_src/                       ← fuente de las Lambdas: common.py + handlers/ (solo el
 │                                            dueño las edita; tools/build_lambdas.py arma aws/lambdas/)
@@ -568,8 +569,13 @@ aleatoria y `pytest` con **347 passed**.
 8. **Ejecutar el script 03 (direcciones).** Otra **Query Console nueva** de la conexión MySQL →
    copia todo **`aws/sql/03_mysql_addresses.sql`** (no tiene contraseñas que cambiar) → `Ctrl+A`
    y `Ctrl+Enter`.
+9. **Ejecutar el script 04 (tienda del vendedor).** Otra **Query Console nueva** → copia todo
+   **`aws/sql/04_mysql_sellers.sql`** (se ejecuta después del 03; no tiene contraseñas) → `Ctrl+A` y
+   `Ctrl+Enter`. Es seguro repetirlo (`CREATE TABLE IF NOT EXISTS`).
 
 ✅ **Punto de control (pestañas de resultado):**
+- Script 04: `SHOW COLUMNS FROM sellers` lista 6 columnas y `SHOW GRANTS FOR 'mkt_app'@'%'` muestra
+  además `SELECT, INSERT, UPDATE ON marketplace.sellers` (5 filas en total).
 - `SHOW GRANTS` (del script 03) muestra 4 filas: `USAGE ON *.*`, `SELECT, INSERT ON
   marketplace.admin_actions`, `SELECT, INSERT, UPDATE ON marketplace.addresses` y
   `SELECT, INSERT, UPDATE ON marketplace.users`.
@@ -1058,6 +1064,7 @@ cambia el nombre.
 | 1.0.0 | Versión inicial: Flask + RDS MySQL/PostgreSQL + API Gateway/Lambda/DynamoDB |
 | 1.1.0 | Rediseño estilo marketplace: portada con buscador, catálogo con filtros (departamento, categoría, disponibilidad) y orden, ficha con productos relacionados, nombre público del vendedor, fuente autoalojada e íconos propios. 210 pruebas. |
 | 1.2.0 | Nombres de AWS en inglés: Lambdas con prefijo `lambda` (`lambdaAuthorizer`, `lambdaListProducts`, `lambdaGetProduct`, `lambdaCreateProduct`, `lambdaUpdateProduct`, `lambdaDeleteProduct`; archivos renombrados igual) y API `apiGatewayMarketplace`. README con pasos clic por clic (DataGrip, Lambdas, API Gateway, apagar y retomar) y problemas encontrados en la réplica. El código de las funciones no cambia. 210 pruebas. |
+| 2.1.0 | Cambios de esta entrega: pago simulado registrado en el pedido (entidad Pagos); catálogo paginado y carga masiva de 17,000 productos (`tools/load_products.py`); tienda del vendedor (tabla `sellers`, script 04); checkout con flujos GET y POST separados y confirmación de pago; textos y pantallas según las observaciones; integración continua, `/docs` y `/database`. Hay que volver a pegar las Lambdas de pedidos y `lambdaListProducts`, y ejecutar `04_mysql_sellers.sql`. |
 | 2.0.1 | Corrige `lambdaUpdateProduct`: enviaba a DynamoDB nombres de atributo sin usar (`#st` al editar; `#n` y `#cond` al moderar) y el DynamoDB real respondía `ValidationException` (500 al editar, bloquear o `seed-descriptions`). Ahora solo envía los que usa. El simulador de las pruebas rechaza lo mismo que AWS. Solo hay que volver a pegar `lambdaUpdateProduct`. 346 pruebas. |
 | 2.0.0 | **Entrega 2: tienda completa.** Una cuenta compra y vende. Productos con descripción. Carrito (`Marketplace`, TTL 30 días), favoritos (`Community`), direcciones de envío (RDS `addresses`, script 03), compra en una transacción con un pedido por vendedor, fecha y entrega estimada de 3 a 7 días, estados Confirmado → En preparación → Enviado → Entregado / Cancelado (devuelve existencias), Mis compras y Mis ventas (`Orders`, `GSI1`), reseñas de 1 a 5 estrellas solo de compras entregadas con promedio e histograma. 13 Lambdas y 13 rutas nuevas (una Lambda por ruta) y las 5 de productos actualizadas. API Gateway con implementación manual (regla del profesor). Rediseño visual estilo "Stuffus Shop". Pago fuera del alcance. 346 pruebas. |
 | 1.3.0 | Estructura de carpetas del profesor: `Services/` (rutas), `Interfaces/` (contratos y DTO), `Implementation/` (lógica y datos) y `View/` por módulo (PY, HTML, CSS, JS, Utils), más `Core/`, `Models/` y `Security/`. Catálogo público (portada, catálogo, búsqueda y ficha sin cuenta) con caché de 10 s; reglas del profesor para el agente en el README. Sin cambios en AWS. 238 pruebas. |
