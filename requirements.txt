@@ -5,7 +5,7 @@
 
 # --- Flask y núcleo
 Flask==3.1.3
-Werkzeug==3.1.8
+Werkzeug==3.1.9
 Jinja2==3.1.6
 MarkupSafe==3.0.3
 itsdangerous==2.2.0
@@ -21,14 +21,14 @@ greenlet==3.5.6 ; python_version < "3.14"
 typing_extensions==4.16.0
 Flask-Migrate==4.1.0
 alembic==1.16.2
-Mako==1.3.10
+Mako==1.3.12
 
 # --- Sesiones, formularios y CSRF
 Flask-Login==0.6.3
 Flask-WTF==1.2.2
 WTForms==3.2.1
 email-validator==2.2.0
-dnspython==2.7.0
+dnspython==2.9.2
 idna==3.19
 
 # --- Contraseñas (Argon2id)
@@ -47,20 +47,20 @@ ordered-set==4.1.0
 rich==13.9.4
 markdown-it-py==3.0.0
 mdurl==0.1.2
-Pygments==2.19.1
+Pygments==2.20.0
 
 # --- Cabeceras de seguridad
 flask-talisman==1.1.0
 
 # --- Cliente HTTP del API Gateway de productos
 requests==2.34.2
-urllib3==2.7.0
-certifi==2026.7.22
+urllib3==2.8.0
+certifi==2026.10.18
 charset-normalizer==3.5.1
 
 # --- Drivers de RDS: MySQL (users, admin_actions) y PostgreSQL (login_attempts, auth_events)
 PyMySQL==1.1.2
-cryptography==45.0.5
+cryptography==50.0.0
 psycopg[binary]==3.3.6
 psycopg-binary==3.3.6
 tzdata==2025.2 ; platform_system == "Windows"
