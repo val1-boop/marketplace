@@ -15,6 +15,9 @@ construido con la **seguridad como prioridad** (seguridad > funcionalidad > legi
   dentro de la misma transacción que crea el pedido y descuenta el stock.
 - **Tienda del vendedor:** cada vendedor pone nombre y descripción a su tienda; los compradores ven
   "Vendido por <tienda>".
+- **Procedimientos almacenados (RDS MySQL):** `sp_guardar_tienda` guarda la tienda del vendedor de forma atómica y
+  validada, y `sp_resumen_cuentas` entrega el resumen de cuentas del panel del administrador. Se ejecutan con los
+  permisos de `mkt_app` (solo recibe `EXECUTE`).
 - **Catálogo grande:** el API entrega los productos por páginas y `tools/load_products.py` carga 17,000
   productos de demostración con `BatchWriteItem`.
 - **Reseñas verificadas:** calificación con estrellas solo de compras entregadas, con promedio

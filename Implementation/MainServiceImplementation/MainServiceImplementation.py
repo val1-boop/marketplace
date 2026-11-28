@@ -1,6 +1,7 @@
 """Implementación del servicio principal: portada pública y panel de administración."""
 from Core.Catalog import DEPARTMENTS, categories_of, department_of
 from Core.Extensions import db
+from Implementation.SharedImplementation import StoredProcedures
 from Implementation.SharedImplementation.AccountQueries import seller_display_names
 from Interfaces.MainServiceInterface.IMainService import IMainService
 from Interfaces.MainServiceInterface.MainDTO import AdminDashboardDTO, HomeDTO
@@ -53,9 +54,17 @@ class MainServiceImplementation(IMainService):
     def admin_dashboard(self):
         products = self.products.list_all_products()
         departments, stats = self._summary([p for p in products if p.status == "ACTIVE"])
+        accounts = None
+        if StoredProcedures.available():  # RDS MySQL: consulta consolidada con sp_resumen_cuentas
+            try:
+                accounts = StoredProcedures.account_summary()
+            except StoredProcedures.ProcedureMissing:
+                pass  # falta ejecutar el script 06 en RDS: se cuenta con el ORM
+        if accounts is None:  # SQLite (pruebas y modo local): el mismo conteo con el ORM
+            accounts = {"usuarios": db.session.scalar(
+                db.select(db.func.count()).select_from(User).where(User.status != "deleted")) or 0}
         admin_stats = {
-            "users": db.session.scalar(
-                db.select(db.func.count()).select_from(User).where(User.status != "deleted")) or 0,
+            "users": accounts["usuarios"],
             "blocked": sum(1 for p in products if p.status == "BLOCKED"),
         }
         failures = db.session.scalars(
