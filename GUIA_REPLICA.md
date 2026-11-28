@@ -267,6 +267,7 @@ marketplace/
 │   ├── sql/03_mysql_addresses.sql         ← permisos de mkt_app sobre addresses (entrega 2)
 │   ├── sql/04_mysql_sellers.sql           ← tabla sellers: perfil de la tienda del vendedor (2.1.0)
 │   ├── sql/05_mysql_datos_iniciales.sql   ← datos iniciales: una tienda por cada vendedor existente
+│   ├── sql/06_mysql_procedimientos.sql    ← 2 procedimientos almacenados (sp_guardar_tienda y sp_resumen_cuentas)
 │   ├── lambdas/                           ← 19 archivos .py para pegar en la consola de Lambda
 │   └── lambdas_src/                       ← fuente de las Lambdas: common.py + handlers/ (solo el
 │                                            dueño las edita; tools/build_lambdas.py arma aws/lambdas/)
@@ -575,10 +576,18 @@ aleatoria y `pytest` con **347 passed**.
    `Ctrl+Enter`. Es seguro repetirlo (`CREATE TABLE IF NOT EXISTS`).
    *Opcional:* después ejecuta igual **`aws/sql/05_mysql_datos_iniciales.sql`** (datos iniciales: una tienda por
    cada cuenta con código de vendedor; también se puede repetir).
+10. **Ejecutar el script 06 (procedimientos almacenados).** Otra **Query Console nueva** → copia todo
+   **`aws/sql/06_mysql_procedimientos.sql`** (se ejecuta después del 04; no tiene contraseñas) → `Ctrl+A` y
+   `Ctrl+Enter`. Crea `sp_guardar_tienda` (guarda la tienda del vendedor de forma atómica) y
+   `sp_resumen_cuentas` (resumen de cuentas del panel del administrador) y da a `mkt_app` solo `EXECUTE`.
+   Es seguro repetirlo. Si no lo ejecutas, la app sigue funcionando (usa su camino con el ORM y deja un aviso
+   en el registro), pero entonces no usa los procedimientos.
 
 ✅ **Punto de control (pestañas de resultado):**
 - Script 04: `SHOW COLUMNS FROM sellers` lista 6 columnas y `SHOW GRANTS FOR 'mkt_app'@'%'` muestra
   además `SELECT, INSERT, UPDATE ON marketplace.sellers` (5 filas en total).
+- Script 06: `SHOW PROCEDURE STATUS WHERE Db = 'marketplace'` lista `sp_guardar_tienda` y `sp_resumen_cuentas`
+  (seguridad `INVOKER`) y `SHOW GRANTS FOR 'mkt_app'@'%'` muestra además 2 permisos `EXECUTE ON PROCEDURE`.
 - `SHOW GRANTS` (del script 03) muestra 4 filas: `USAGE ON *.*`, `SELECT, INSERT ON
   marketplace.admin_actions`, `SELECT, INSERT, UPDATE ON marketplace.addresses` y
   `SELECT, INSERT, UPDATE ON marketplace.users`.
@@ -1067,6 +1076,7 @@ cambia el nombre.
 | 1.0.0 | Versión inicial: Flask + RDS MySQL/PostgreSQL + API Gateway/Lambda/DynamoDB |
 | 1.1.0 | Rediseño estilo marketplace: portada con buscador, catálogo con filtros (departamento, categoría, disponibilidad) y orden, ficha con productos relacionados, nombre público del vendedor, fuente autoalojada e íconos propios. 210 pruebas. |
 | 1.2.0 | Nombres de AWS en inglés: Lambdas con prefijo `lambda` (`lambdaAuthorizer`, `lambdaListProducts`, `lambdaGetProduct`, `lambdaCreateProduct`, `lambdaUpdateProduct`, `lambdaDeleteProduct`; archivos renombrados igual) y API `apiGatewayMarketplace`. README con pasos clic por clic (DataGrip, Lambdas, API Gateway, apagar y retomar) y problemas encontrados en la réplica. El código de las funciones no cambia. 210 pruebas. |
+| 2.2.0 | Dos procedimientos almacenados en RDS MySQL (`aws/sql/06_mysql_procedimientos.sql`): `sp_guardar_tienda` (la app guarda la tienda del vendedor con él: atómico, validado y sin choques entre guardados simultáneos) y `sp_resumen_cuentas` (el panel del administrador lee el resumen de cuentas con él). Se ejecutan con los permisos de `mkt_app` (`SQL SECURITY INVOKER`), que solo recibe `EXECUTE`. Con SQLite y sin ejecutar el script 06 la app usa el ORM, que hace lo mismo. Hay que ejecutar el script 06 en DataGrip. |
 | 2.1.1 | Actualiza 7 dependencias con avisos de seguridad (`Werkzeug` 3.1.9, `Mako` 1.3.12, `dnspython` 2.9.2, `Pygments` 2.20.0, `urllib3` 2.8.0, `certifi` 2026.10.18 y `cryptography` 50.0.0): `pip-audit` queda sin hallazgos y la integración continua ya lo exige. Hay que volver a ejecutar `pip install -r requirements.txt`. |
 | 2.1.0 | Cambios de esta entrega: pago simulado registrado en el pedido (entidad Pagos); catálogo paginado y carga masiva de 17,000 productos (`tools/load_products.py`); tienda del vendedor (tabla `sellers`, script 04); checkout con flujos GET y POST separados y confirmación de pago; textos y pantallas según las observaciones; integración continua, `/docs` y `/database`. Hay que volver a pegar las Lambdas de pedidos y `lambdaListProducts`, y ejecutar `04_mysql_sellers.sql`. |
 | 2.0.1 | Corrige `lambdaUpdateProduct`: enviaba a DynamoDB nombres de atributo sin usar (`#st` al editar; `#n` y `#cond` al moderar) y el DynamoDB real respondía `ValidationException` (500 al editar, bloquear o `seed-descriptions`). Ahora solo envía los que usa. El simulador de las pruebas rechaza lo mismo que AWS. Solo hay que volver a pegar `lambdaUpdateProduct`. 346 pruebas. |
