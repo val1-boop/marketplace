@@ -11,6 +11,12 @@ construido con la **seguridad como prioridad** (seguridad > funcionalidad > legi
   carrito, favoritos y direcciones de envío.
 - **Compras:** un pedido por vendedor, con fecha y entrega estimada de 3 a 7 días, y estados
   Confirmado → En preparación → Enviado → Entregado (o Cancelado).
+- **Pago simulado:** el botón Pagar pide confirmación y registra el pago (sin tarjeta ni datos bancarios)
+  dentro de la misma transacción que crea el pedido y descuenta el stock.
+- **Tienda del vendedor:** cada vendedor pone nombre y descripción a su tienda; los compradores ven
+  "Vendido por <tienda>".
+- **Catálogo grande:** el API entrega los productos por páginas y `tools/load_products.py` carga 17,000
+  productos de demostración con `BatchWriteItem`.
 - **Reseñas verificadas:** calificación con estrellas solo de compras entregadas, con promedio
   e histograma.
 - **Administración:** panel de moderación (bloquear o retirar productos, gestionar usuarios) y
