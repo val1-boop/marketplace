@@ -13,7 +13,7 @@
 <div class="toolbar">
   <div>
     <h1>{{ "Mis compras" if buyer else "Mis ventas" }}</h1>
-    <p class="muted">{% if buyer %}Sigue el estado de cada pedido y confirma cuando lo recibas.{% else %}Prepara y envía los pedidos que recibió tu tienda ({{ current_user.seller_id }}).{% endif %}</p>
+    <p class="muted">{% if buyer %}Sigue el estado de cada pedido y confirma cuando lo recibas.{% else %}Prepara y envía los pedidos que recibió tu tienda.{% endif %}</p>
   </div>
 </div>
 

@@ -63,7 +63,7 @@
         <li class="{{ category_class(item.category) }}">
           <span class="mini">{{ icon(category_icon(item.category)) }}</span>
           <span class="mini-name"><a href="{{ url_for('items.detail', product_id=item.product_id) }}">{{ item.name }}</a>
-            <br><span class="muted small">{{ item.product_id }} · ${{ "{:,.2f}".format(item.unit_price) }} × {{ item.quantity }}</span>
+            <br><span class="muted small">${{ "{:,.2f}".format(item.unit_price) }} × {{ item.quantity }}</span>
             {% if order.can_review %}<br><a class="small review-link" href="{{ url_for('items.detail', product_id=item.product_id) }}#opiniones">{{ icon("star") }} Opinar sobre este producto</a>{% endif %}
           </span>
           <span>{{ money(item.subtotal) }}</span>

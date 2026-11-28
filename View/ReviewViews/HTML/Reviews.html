@@ -9,7 +9,7 @@
         <strong>{{ product.rating_avg if product.rating_count else "—" }}</strong>
         <div>
           {{ stars(product.stars, product.rating_avg ~ " de 5 estrellas") }}
-          <p class="muted small">{{ product.rating_count }} opinión{{ "" if product.rating_count == 1 else "es" }}</p>
+          <p class="muted small">{{ product.rating_count }} {{ "opinión" if product.rating_count == 1 else "opiniones" }}</p>
         </div>
       </div>
       <ul class="histogram">
